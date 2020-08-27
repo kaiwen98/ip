@@ -20,6 +20,12 @@ public class Duke {
         printMessage(command, null);
     }
 
+    /**
+     * Prints the corresponding messages onto console depending on input parameter.
+     *
+     * @param command a string of a simple root word to represent a particular message
+     * @param param an input parameter for the message to print, given the command requires further inputs.
+     */
     public static void printMessage(String command, String param){
         String output = "";
         boolean isDrawPartition = true;
