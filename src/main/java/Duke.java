@@ -125,7 +125,6 @@ public class Duke {
             input = in.nextLine();
             inputArray = parseInput(input.toLowerCase());
 
-
             switch(inputArray[0]) {
             case "bye":
                 handleCommand(Command.BYE);
