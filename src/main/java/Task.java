@@ -28,12 +28,6 @@ public class Task {
     }
 
     public String getIsDoneSymbol(){
-       /* if (this.isDone){
-            return "[✓]";
-        }
-        else{
-            return "[✗]";
-        }*/
-        return "";
+        return (this.isDone)? "[✓]":"[✗]";
     }
 }

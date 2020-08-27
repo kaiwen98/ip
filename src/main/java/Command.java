@@ -2,6 +2,7 @@
  * List of commands that Duke can handle
  */
 public enum Command {
+
     HELLO,
     BYE,
     ECHO,

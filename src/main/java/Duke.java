@@ -1,9 +1,10 @@
-import java.util.*;
+import java.util.Scanner;
+
 public class Duke {
-    public static Message message;
+
     public static int charCount = 60;
     public static boolean isListCreated = false;
-    public static ListOfTasks tasks = null;
+    public static ListOfTasks list = null;
 
     /**
      * Prints partition line following each message
@@ -35,49 +36,55 @@ public class Duke {
 
         switch(command){
         case HELLO:
-            output = message.messageHello;
+            output = Messages.messageHello;
             break;
         case BYE:
-            output = message.messageBye;
+            output = Messages.messageBye;
             break;
         case ECHO:
             output = String.format("%s\n", param[0]);
             break;
         case INPUT:
-
             output = ">>> ";
             isDrawPartition = false;
             break;
         case INSERT_TASK:
             if (!isListCreated){
                 isListCreated = true;
-                tasks = new ListOfTasks();
+                list = new ListOfTasks();
             }
-            err = tasks.addTask(param[0]);
+            err = list.addTask(param[0]);
             if (err != Error.NO_ERROR){
-                output = message.getErrorMessage(err);
-            }
-            else {
+                output = Messages.getMessageError(err);
+            } else {
                 output = String.format("Added: %s\n", param[0]);
             }
             break;
         case SHOW_LIST:
             if(!isListCreated){
-                output = message.getErrorMessage(Error.NO_LIST);
-            }
-            else{
-                output = tasks.showAllTasks();
+                output = Messages.getMessageError(Error.NO_LIST);
+            } else{
+                output = list.showAllTasks();
             }
             break;
         case MARK_TASK_AS_DONE:
-
-            output = "To be implemented :) \n";
+            int index = Integer.parseInt(param[0]) - 1;
+            if(!isListCreated){
+                output = Messages.getMessageError(Error.NO_LIST);
+            }
+            err = list.markTaskAsDone(index);
+            if (err != Error.NO_ERROR){
+                output = Messages.getMessageError(err);
+            } else {
+                Task outputTask = list.getTaskByIndex(index);
+                output = Messages.getMessageTaskMarkAsDone(outputTask);
+            }
             break;
         case SHOW_COMMANDS:
-            output = message.messageCommandList;
+            output = Messages.messageCommandList;
             break;
         default:
-            output = message.getErrorMessage(Error.INVALID_COMMAND);
+            output = Messages.getMessageError(Error.INVALID_COMMAND);
             break;
         }
         System.out.print(output);
@@ -133,7 +140,7 @@ public class Duke {
                 handleCommand(Command.SHOW_COMMANDS);
                 break;
             case "done":
-                inputParams[0] = inputArray[0];
+                inputParams[0] = inputArray[1];
                 handleCommand(Command.MARK_TASK_AS_DONE, inputParams);
                 break;
             default:

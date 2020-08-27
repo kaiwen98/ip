@@ -2,6 +2,7 @@
  * Class to collate all the tasks added.
  */
 public class ListOfTasks {
+
     private Task[] tasks;
     private int numOfTasks;
 
@@ -11,6 +12,15 @@ public class ListOfTasks {
     public ListOfTasks(){
         this.tasks = new Task[100];
         this.numOfTasks = 0;
+    }
+
+    /**
+     * Retrieves task instance by index on the task array.
+     * @param index Number on the task array
+     * @return Corresponding task instance.
+     */
+    public Task getTaskByIndex(int index){
+        return tasks[index];
     }
 
     /**
@@ -31,6 +41,20 @@ public class ListOfTasks {
         this.tasks[this.numOfTasks] = new Task(newTaskParam);
         this.numOfTasks ++;
         return Error.NO_ERROR;
+    }
+
+    /**
+     * Mark a specific task as done.
+     * @param taskNumber index of the task on the task array.
+     * @return Error code
+     */
+    public Error markTaskAsDone(int taskNumber){
+        if (taskNumber < 1 || taskNumber > this.numOfTasks-1){
+            return Error.WRONG_ARGUMENTS;
+        } else{
+            tasks[taskNumber].setIsDone(true);
+            return Error.NO_ERROR;
+        }
     }
 
     /**
