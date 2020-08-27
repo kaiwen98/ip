@@ -1,3 +1,4 @@
+import java.util.*;
 public class Duke {
     public static Message message;
     public static int charCount = 30;
@@ -16,23 +17,40 @@ public class Duke {
      * @param command a string of a simple root word to represent a particular message
      */
     public static void printMessage(String command){
+        printMessage(command, null);
+    }
+
+    public static void printMessage(String command, String param){
         String output = "";
+        boolean isDrawPartition = true;
         switch(command){
-            case "hello":
-                output = message.messageHello;
-                break;
-            case "bye":
-                output = message.messageBye;
-                break;
-            default:
-                output = message.messageErr;
-                break;
+        case "hello":
+            output = message.messageHello;
+            break;
+        case "bye":
+            output = message.messageBye;
+            break;
+        case "echo":
+            output = String.format("%s\n", param);
+            break;
+        case "input":
+            output = ">>> ";
+            isDrawPartition = false;
+            break;
+        default:
+            output = message.messageErr;
+            break;
         }
-        System.out.println(output);
-        drawPartition();
+        System.out.print(output);
+
+        if (isDrawPartition){
+            drawPartition();
+        }
     }
 
     public static void main(String[] args) {
+        String input;
+        boolean continueQuery = true;
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
                 + "| | | | | | | |/ / _ \\\n"
@@ -41,7 +59,20 @@ public class Duke {
         System.out.println("Hello from\n" + logo);
         drawPartition();
         printMessage("hello");
-        printMessage("bye");
+        while(continueQuery){
+            printMessage("input");
+            Scanner in = new Scanner(System.in);
+            input = in.nextLine();
+            switch(input) {
+            case "bye":
+                printMessage("bye");
+                continueQuery = false;
+                break;
+            default:
+                printMessage("echo", input);
+                break;
+            }
+        }
     }
 }
 
