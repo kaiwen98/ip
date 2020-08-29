@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class Duke {
-
     public static int charCount = 60;
     public static boolean isListCreated = false;
     public static ListOfTasks list = null;
@@ -19,7 +18,7 @@ public class Duke {
      *
      * @param command A command that is to be executed by Duke.
      */
-    public static void handleCommand(Command command){
+    public static void handleCommand(Constants.Command command){
         handleCommand(command, null);
     }
 
@@ -29,17 +28,17 @@ public class Duke {
      * @param command a string of a simple root word to represent a particular message
      * @param param an input parameter for the message to print, given the command requires further inputs.
      */
-    public static void handleCommand(Command command, String[] param){
+    public static void handleCommand(Constants.Command command, String[] param){
         String output = "";
         boolean isDrawPartition = true;
-        Error err = null;
+        Constants.Error err = null;
 
         switch(command){
         case HELLO:
-            output = Messages.messageHello;
+            output = Messages.MESSAGE_HELLO;
             break;
         case BYE:
-            output = Messages.messageBye;
+            output = Messages.MESSAGE_BYE;
             break;
         case ECHO:
             output = String.format("%s\n", param[0]);
@@ -48,13 +47,41 @@ public class Duke {
             output = ">>> ";
             isDrawPartition = false;
             break;
-        case INSERT_TASK:
+        case INSERT_TASK_TODO:
             if (!isListCreated){
                 isListCreated = true;
                 list = new ListOfTasks();
             }
             err = list.addTask(param[0]);
-            if (err != Error.NO_ERROR){
+            if (err != Constants.Error.NO_ERROR){
+                output = Messages.getMessageError(err);
+            } else {
+                output = String.format("Added: %s\n", param[0]);
+            }
+            break;
+
+        case INSERT_TASK_EVENT:
+            if (!isListCreated){
+                isListCreated = true;
+                list = new ListOfTasks();
+            }
+            Event inputEvent = new Event(param[0], param[1], param[2]);
+            err = list.addTask(inputEvent);
+            if (err != Constants.Error.NO_ERROR){
+                output = Messages.getMessageError(err);
+            } else {
+                output = String.format("Added: %s\n", param[0]);
+            }
+            break;
+
+        case INSERT_TASK_DEADLINE:
+            if (!isListCreated){
+                isListCreated = true;
+                list = new ListOfTasks();
+            }
+            Deadline inputDeadline = new Deadline(param[0], param[1]);
+            err = list.addTask(inputDeadline);
+            if (err != Constants.Error.NO_ERROR){
                 output = Messages.getMessageError(err);
             } else {
                 output = String.format("Added: %s\n", param[0]);
@@ -62,7 +89,7 @@ public class Duke {
             break;
         case SHOW_LIST:
             if(!isListCreated){
-                output = Messages.getMessageError(Error.NO_LIST);
+                output = Messages.getMessageError(Constants.Error.NO_LIST);
             } else{
                 output = list.showAllTasks();
             }
@@ -70,10 +97,10 @@ public class Duke {
         case MARK_TASK_AS_DONE:
             int index = Integer.parseInt(param[0]) - 1;
             if(!isListCreated){
-                output = Messages.getMessageError(Error.NO_LIST);
+                output = Messages.getMessageError(Constants.Error.NO_LIST);
             }
             err = list.markTaskAsDone(index);
-            if (err != Error.NO_ERROR){
+            if (err != Constants.Error.NO_ERROR){
                 output = Messages.getMessageError(err);
             } else {
                 Task outputTask = list.getTaskByIndex(index);
@@ -81,10 +108,10 @@ public class Duke {
             }
             break;
         case SHOW_COMMANDS:
-            output = Messages.messageCommandList;
+            output = Messages.MESSAGE_COMMAND_LIST;
             break;
         default:
-            output = Messages.getMessageError(Error.INVALID_COMMAND);
+            output = Messages.getMessageError(Constants.Error.INVALID_COMMAND);
             break;
         }
         System.out.print(output);
@@ -99,7 +126,8 @@ public class Duke {
      * @return String array of tokens
      */
     public static String[] parseInput(String input){
-        String[] token = input.split("\\s+");
+        String[]
+        String[] token = input.split("/a");
         for(String i: token){
             i = i.trim();
         }
@@ -118,35 +146,41 @@ public class Duke {
                 + "|____/ \\__,_|_|\\_\\___|\n";
         System.out.println("Hello from\n" + logo);
         drawPartition();
-        handleCommand(Command.HELLO);
+        handleCommand(Constants.Command.HELLO);
         while(continueQuery){
-            handleCommand(Command.INPUT);
+            handleCommand(Constants.Command.INPUT);
             Scanner in = new Scanner(System.in);
             input = in.nextLine();
             inputArray = parseInput(input.toLowerCase());
 
             switch(inputArray[0]) {
             case "bye":
-                handleCommand(Command.BYE);
+                handleCommand(Constants.Command.BYE);
                 continueQuery = false;
                 break;
             case "list":
-                handleCommand(Command.SHOW_LIST);
+                handleCommand(Constants.Command.SHOW_LIST);
                 break;
             case"commands":
                 // Flow through
             case "command":
-                handleCommand(Command.SHOW_COMMANDS);
+                handleCommand(Constants.Command.SHOW_COMMANDS);
                 break;
             case "done":
                 inputParams[0] = inputArray[1];
-                handleCommand(Command.MARK_TASK_AS_DONE, inputParams);
+                handleCommand(Constants.Command.MARK_TASK_AS_DONE, inputParams);
                 break;
-            default:
+            case "todo":
                 //inputParams = parseInput(input);
                 inputParams[0] = input;
-                handleCommand(Command.INSERT_TASK, inputParams);
+                handleCommand(Constants.Command.INSERT_TASK_TODO, inputParams);
                 break;
+            case "event":
+                System.arraycopy(inputArray, 1, inputParams, 0, inputArray.length-1);
+                handleCommand(Constants.Command.INSERT_TASK_EVENT, inputParams);
+            case "deadline":
+                System.arraycopy(inputArray, 1, inputParams, 0, inputArray.length-1);
+                handleCommand(Constants.Command.INSERT_TASK_DEADLINE, inputParams);
             }
         }
     }

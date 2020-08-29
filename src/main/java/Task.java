@@ -2,21 +2,55 @@
  * Task class to encapsulate its features and methods.
  */
 public class Task {
-    private String taskName;
-    private boolean isDone;
+    protected String taskName;
+    protected IsDone isDone;
+    protected TaskType taskType;
+    enum TaskType {
+        TODO("[T]"),
+        DEADLINE("[D]"),
+        EVENT("[E]");
+
+        private String literal;
+        TaskType(String literal){
+            this.literal = literal;
+        }
+        @Override
+        public String toString(){
+            return this.literal;
+        }
+    }
+
+    enum IsDone {
+        DONE("[✓]", true),
+        NOT_DONE("[✗]", false);
+
+        private String literal;
+        private boolean bool;
+        IsDone(String literal, boolean bool){
+            this.literal = literal;
+            this.bool = bool;
+        }
+        @Override
+        public String toString(){
+            return this.literal;
+        }
+
+        public boolean toBoolean(){
+            return bool;
+        }
+    }
 
     public Task(String taskName){
-        this.taskName = taskName;
-        this.isDone = false;
+        this(taskName, false);
     }
 
     public Task(String taskName, boolean isDone){
         this.taskName = taskName;
-        this.isDone = isDone;
+        this.setIsDone(isDone);
     }
 
     public void setIsDone(boolean isDone){
-        this.isDone = isDone;
+        this.isDone = (isDone) ? IsDone.DONE:IsDone.NOT_DONE;
     }
 
     public String getTaskName(){
@@ -24,10 +58,15 @@ public class Task {
     }
 
     public boolean getIsDone(){
-        return this.isDone;
+        return this.isDone.toBoolean();
     }
 
-    public String getIsDoneSymbol(){
-        return (this.isDone)? "[✓]":"[✗]";
+    public String getTypeMessage(){
+        return "";
+    }
+
+    @Override
+    public String toString(){
+        return String.format("%s%s %s %s", this.isDone, this.taskName, this.getTypeMessage());
     }
 }
