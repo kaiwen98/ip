@@ -1,17 +1,17 @@
 /**
  * Class to collate all the tasks added.
  */
-public class ListOfTasks {
+public class ListTasks {
 
     private Task[] tasks;
-    private int numOfTasks;
+    private int numTasks;
 
     /**
      * Non-parameterized class constructor
      */
-    public ListOfTasks(){
-        this.tasks = new Task[100];
-        this.numOfTasks = 0;
+    public ListTasks(){
+        this.tasks = new Task[Constants.MAX_LIST_LEN];
+        this.numTasks = 0;
     }
 
     /**
@@ -23,13 +23,19 @@ public class ListOfTasks {
         return tasks[index];
     }
 
+    public int getNumTasks(){
+        return this.numTasks;
+    }
     /**
      * Append new tasks into the list.
      * @param newTask Task that is created beforehand via a separate process.
      */
     public Constants.Error addTask(Task newTask){
-        this.tasks[this.numOfTasks] = newTask;
-        this.numOfTasks ++;
+        if (newTask.error != Constants.Error.NO_ERROR){
+            return newTask.error;
+        }
+        this.tasks[this.numTasks] = newTask;
+        this.numTasks++;
         return Constants.Error.NO_ERROR;
     }
 
@@ -39,9 +45,7 @@ public class ListOfTasks {
      * @return Error code
      */
     public Constants.Error addTask(String newTaskParam){
-        this.tasks[this.numOfTasks] = new Task(newTaskParam);
-        this.numOfTasks ++;
-        return Constants.Error.NO_ERROR;
+        return addTask(new Task(newTaskParam));
     }
 
     /**
@@ -50,7 +54,7 @@ public class ListOfTasks {
      * @return Error code
      */
     public Constants.Error markTaskAsDone(int taskNumber){
-        if (taskNumber < 1 || taskNumber > this.numOfTasks-1){
+        if (taskNumber < 0 || taskNumber > this.numTasks -1){
             return Constants.Error.WRONG_ARGUMENTS;
         } else{
             tasks[taskNumber].setIsDone(true);
@@ -59,26 +63,12 @@ public class ListOfTasks {
     }
 
     /**
-     * Add task to list.
-     * @param newTaskParams Parameters specified to initialize an instance of a task.
-     * @return Error code
-     */
-    public Constants.Error addTask(String[] newTaskParams){
-        if (!(newTaskParams[1].toLowerCase().equals("true") || newTaskParams[1].toLowerCase().equals("false"))){
-            return Constants.Error.WRONG_ARGUMENTS;
-        }
-        this.tasks[this.numOfTasks] = new Task(newTaskParams[0], Boolean.parseBoolean(newTaskParams[1]));
-        this.numOfTasks ++;
-        return Constants.Error.NO_ERROR;
-    }
-
-    /**
      * Prints the contents of the list, displaying also its number and whether it is completed.
      * @return String representing the contents of the list
      */
     public String showAllTasks(){
         String output = "";
-        for (int i = 0; i < this.numOfTasks; i++){
+        for (int i = 0; i < this.numTasks; i++){
             output += String.format("%d.%s\n", i+1, this.tasks[i]);
         }
         return output;

@@ -1,17 +1,15 @@
+import javax.swing.*;
 import java.util.Scanner;
 
 public class Duke {
-    public static int charCount = 60;
+    public static int charCount = Constants.MAX_PARTITION_LINE_LEN;
     public static boolean isListCreated = false;
-    public static ListOfTasks list = null;
+    public static ListTasks list = null;
 
     /**
      * Prints partition line following each message
      */
-    public static void drawPartition(){
-        String partitionLine = new String(new char[charCount]).replace("\0", "_");
-        System.out.println(partitionLine);
-    }
+
 
     /**
      * Handles command and prints messages, if any onto console depending on input parameter.
@@ -26,97 +24,132 @@ public class Duke {
      * Handles command and prints messages, if any onto console depending on input parameter.
      *
      * @param command a string of a simple root word to represent a particular message
-     * @param param an input parameter for the message to print, given the command requires further inputs.
+     * @param packet an input parameter for the message to print, given the command requires further inputs.
      */
-    public static void handleCommand(Constants.Command command, String[] param){
+    public static void handleCommand(Constants.Command command, Packet packet){
         String output = "";
         boolean isDrawPartition = true;
         Constants.Error err = null;
 
         switch(command){
         case HELLO:
-            output = Messages.MESSAGE_HELLO;
+            output = UiManager.MESSAGE_LOGO;
+            output += UiManager.MESSAGE_HELLO;
             break;
         case BYE:
-            output = Messages.MESSAGE_BYE;
+            output = UiManager.MESSAGE_BYE;
             break;
         case ECHO:
-            output = String.format("%s\n", param[0]);
+            output = String.format("%s\n", packet.getPacketPayload());
             break;
-        case INPUT:
+        case PROMPT_INPUT:
             output = ">>> ";
             isDrawPartition = false;
             break;
         case INSERT_TASK_TODO:
             if (!isListCreated){
                 isListCreated = true;
-                list = new ListOfTasks();
+                list = new ListTasks();
             }
-            err = list.addTask(param[0]);
+            ToDo inputToDo = new ToDo(packet.getPacketPayload());
+            err = list.addTask(inputToDo);
             if (err != Constants.Error.NO_ERROR){
-                output = Messages.getMessageError(err);
+                String customErrorMessage = "Due to error input, the task is not added. Try again.";
+                UiManager.printErrorMessage(err, customErrorMessage);
+                return;
             } else {
-                output = String.format("Added: %s\n", param[0]);
+                output = UiManager.getMessageTaskAdded(inputToDo);
+                output += UiManager.getMessageReportNumTasks(list);
             }
             break;
 
         case INSERT_TASK_EVENT:
             if (!isListCreated){
                 isListCreated = true;
-                list = new ListOfTasks();
+                list = new ListTasks();
             }
-            Event inputEvent = new Event(param[0], param[1], param[2]);
+            try {
+                packet.getParamMap();
+            } catch(java.lang.NullPointerException exception) {
+                String customErrorMessage = "This command requires a 2 parameter headers and parameter inputs. eg. /at Monday 12-6pm\n";
+                customErrorMessage += "Due to error input, the task is not added. Try again.";
+                UiManager.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+                break;
+            }
+            Event inputEvent = new Event(packet.getPacketPayload(), packet.getParamMap());
+            inputEvent.setParamMap(packet.getParamMap());
             err = list.addTask(inputEvent);
-            if (err != Constants.Error.NO_ERROR){
-                output = Messages.getMessageError(err);
+
+            if (err != Constants.Error.NO_ERROR ){
+                String customErrorMessage = "Due to error input, the task is not added. Try again.";
+                UiManager.printErrorMessage(err, customErrorMessage);
+
             } else {
-                output = String.format("Added: %s\n", param[0]);
+                output = UiManager.getMessageTaskAdded(inputEvent);
+                output += UiManager.getMessageReportNumTasks(list);
             }
             break;
-
         case INSERT_TASK_DEADLINE:
             if (!isListCreated){
                 isListCreated = true;
-                list = new ListOfTasks();
+                list = new ListTasks();
             }
-            Deadline inputDeadline = new Deadline(param[0], param[1]);
+            try {
+                packet.getParamMap();
+            } catch(java.lang.NullPointerException exception) {
+                String customErrorMessage = "This command requires a parameter header and parameter inputs. eg. /by Monday\n";
+                customErrorMessage += "Due to error input, the task is not added. Try again.";
+                UiManager.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+                break;
+            }
+            Deadline inputDeadline = new Deadline(packet.getPacketPayload(), packet.getParamMap());
             err = list.addTask(inputDeadline);
             if (err != Constants.Error.NO_ERROR){
-                output = Messages.getMessageError(err);
+                String customErrorMessage = "Due to error input, the task is not added. Try again.";
+                UiManager.printErrorMessage(err, customErrorMessage);
             } else {
-                output = String.format("Added: %s\n", param[0]);
+                output = UiManager.getMessageTaskAdded(inputDeadline);
+                output += UiManager.getMessageReportNumTasks(list);
             }
             break;
         case SHOW_LIST:
-            if(!isListCreated){
-                output = Messages.getMessageError(Constants.Error.NO_LIST);
+            if(!isListCreated || list.getNumTasks() == 0){
+                UiManager.printErrorMessage(Constants.Error.NO_LIST);
             } else{
                 output = list.showAllTasks();
             }
             break;
         case MARK_TASK_AS_DONE:
-            int index = Integer.parseInt(param[0]) - 1;
+            String customErrorMessage = "";
+            int index = Integer.parseInt(packet.getPacketPayload().trim()) - 1;
             if(!isListCreated){
-                output = Messages.getMessageError(Constants.Error.NO_LIST);
-            }
-            err = list.markTaskAsDone(index);
-            if (err != Constants.Error.NO_ERROR){
-                output = Messages.getMessageError(err);
+                UiManager.printErrorMessage(Constants.Error.NO_LIST);
             } else {
-                Task outputTask = list.getTaskByIndex(index);
-                output = Messages.getMessageTaskMarkAsDone(outputTask);
+                err = list.markTaskAsDone(index);
+                if (err != Constants.Error.NO_ERROR) {
+                    if (list.getNumTasks() != 1) {
+                        customErrorMessage = "Your list number ranges from 1 to";
+                        customErrorMessage += String.format(" %d. Please check your input list number.", list.getNumTasks());
+                    } else {
+                        customErrorMessage = "There is only 1 task in your list.";
+                    }
+                    UiManager.printErrorMessage(err, customErrorMessage);
+                } else {
+                    Task outputTask = list.getTaskByIndex(index);
+                    output = UiManager.getMessageTaskMarkAsDone(outputTask);
+                }
             }
             break;
         case SHOW_COMMANDS:
-            output = Messages.MESSAGE_COMMAND_LIST;
+            output = UiManager.MESSAGE_COMMAND_LIST;
             break;
         default:
-            output = Messages.getMessageError(Constants.Error.INVALID_COMMAND);
+            UiManager.printErrorMessage(Constants.Error.INVALID_COMMAND);
             break;
         }
         System.out.print(output);
         if (isDrawPartition){
-            drawPartition();
+            UiManager.drawPartition();
         }
     }
 
@@ -125,34 +158,57 @@ public class Duke {
      * @param input
      * @return String array of tokens
      */
-    public static String[] parseInput(String input){
-        String[] token = input.split("");
-        for(String i: token){
-            i = i.trim();
+    public static Packet parseInput(String input){
+        String[] token = input.split(" ");
+        String[] buffer = new String[]{"", "", "", ""};
+        Packet packet = null;
+        boolean isParam = false;
+        boolean scanParams = false;
+        buffer[0] = token[0].trim();
+        packet = new Packet(buffer[0]);
+        for(int scannedTokens = 1 ; scannedTokens < token.length; scannedTokens++){
+            token[scannedTokens] = token[scannedTokens].trim();
+
+            if (!token[scannedTokens].matches("/.*")) {
+                if (!scanParams) {
+                    buffer[1] += token[scannedTokens] + " ";
+                    if (scannedTokens == token.length-1){
+                        packet.setPacketPayload(buffer[1]);
+                    }
+                } else {
+                    buffer[3] += token[scannedTokens];
+                    if((scannedTokens == token.length - 1) || token[scannedTokens+1].matches("/.*")){
+                        packet.addParamToMap(buffer[2], buffer[3]);
+                        continue;
+                    }
+                    buffer[3] += " ";
+                }
+            } else {
+                if (!scanParams){
+                    packet.setPacketPayload(buffer[1]);
+                }
+                scanParams = true;
+                buffer[2] = token[scannedTokens];
+                packet = new Packet(buffer[0], buffer[1]);
+                buffer[3] = "";
+            }
         }
-        return token;
+        return packet;
     }
 
     public static void main(String[] args) {
         String input;
-        String[] inputArray = null;
-        String[] inputParams = new String[10];
+        Packet packet = null;
+        String[] inputParams = new String[Constants.MAX_ARRAY_LEN];
         boolean continueQuery = true;
-        String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println("Hello from\n" + logo);
-        drawPartition();
+        UiManager.drawPartition();
         handleCommand(Constants.Command.HELLO);
         while(continueQuery){
-            handleCommand(Constants.Command.INPUT);
+            handleCommand(Constants.Command.PROMPT_INPUT);
             Scanner in = new Scanner(System.in);
             input = in.nextLine();
-            inputArray = parseInput(input.toLowerCase());
-
-            switch(inputArray[0]) {
+            packet = parseInput(input.toLowerCase());
+            switch(packet.getPacketType()) {
             case "bye":
                 handleCommand(Constants.Command.BYE);
                 continueQuery = false;
@@ -165,21 +221,21 @@ public class Duke {
             case "command":
                 handleCommand(Constants.Command.SHOW_COMMANDS);
                 break;
-            case "done":
-                inputParams[0] = inputArray[1];
-                handleCommand(Constants.Command.MARK_TASK_AS_DONE, inputParams);
+            case "done": ;
+                handleCommand(Constants.Command.MARK_TASK_AS_DONE, packet);
                 break;
             case "todo":
-                //inputParams = parseInput(input);
-                inputParams[0] = input;
-                handleCommand(Constants.Command.INSERT_TASK_TODO, inputParams);
+                handleCommand(Constants.Command.INSERT_TASK_TODO, packet);
                 break;
             case "event":
-                System.arraycopy(inputArray, 1, inputParams, 0, inputArray.length-1);
-                handleCommand(Constants.Command.INSERT_TASK_EVENT, inputParams);
+                handleCommand(Constants.Command.INSERT_TASK_EVENT, packet);
+                break;
             case "deadline":
-                System.arraycopy(inputArray, 1, inputParams, 0, inputArray.length-1);
-                handleCommand(Constants.Command.INSERT_TASK_DEADLINE, inputParams);
+                handleCommand(Constants.Command.INSERT_TASK_DEADLINE, packet);
+                break;
+            default:
+                UiManager.printErrorMessage(Constants.Error.INVALID_COMMAND);
+                break;
             }
         }
     }
