@@ -126,9 +126,7 @@ public class Duke {
      * @return String array of tokens
      */
     public static String[] parseInput(String input){
-        String[]
-        String[] token = input.split("/a" +
-                "");
+        String[] token = input.split("");
         for(String i: token){
             i = i.trim();
         }
