@@ -49,7 +49,7 @@ public class ListOfTasks {
      * @return Error code
      */
     public Error markTaskAsDone(int taskNumber){
-        if (taskNumber < 1 || taskNumber > this.numOfTasks-1){
+        if (taskNumber < 0 || taskNumber > this.numOfTasks-1){
             return Error.WRONG_ARGUMENTS;
         } else{
             tasks[taskNumber].setIsDone(true);

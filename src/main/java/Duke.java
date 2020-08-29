@@ -68,6 +68,7 @@ public class Duke {
             }
             break;
         case MARK_TASK_AS_DONE:
+            // By convention, we take index as the index on an array (Starting from 0)
             int index = Integer.parseInt(param[0]) - 1;
             if(!isListCreated){
                 output = Messages.getMessageError(Error.NO_LIST);
