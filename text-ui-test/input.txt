@@ -1,0 +1,7 @@
+todo hello
+deadline walk the dog /by monday 2-6pm
+todo goodbye
+deadline walk the cat /at monday
+list
+command
+bye
