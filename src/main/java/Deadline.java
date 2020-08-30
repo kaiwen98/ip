@@ -1,5 +1,8 @@
 import java.util.Hashtable;
 
+/**
+ * Sub-class of Task that takes in a date as deadline of task
+ */
 public class Deadline extends Task{
     private String deadline;
 
@@ -25,7 +28,7 @@ public class Deadline extends Task{
             this.deadline = token[0];
             break;
         default:
-            String customErrorMessage = String.format("The parameter type %s is not implemented. You may want to check you spelling.\n", paramType);
+            String customErrorMessage = String.format("The parameter type %s is not implemented. You may want to check your spelling.\n", paramType);
             UiManager.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
             return Constants.Error.WRONG_ARGUMENTS;
         }

@@ -1,9 +1,13 @@
 import java.util.Hashtable;
 
+/**
+ * A subclass of Task that takes in date and time when the event happens
+ */
 public class Event extends Task{
     private String date;
     private String time;
 
+    // Constructor
     public Event(String taskName, Hashtable paramMap){
         super(taskName, false, paramMap);
         super.taskType = TaskType.EVENT;
@@ -18,6 +22,8 @@ public class Event extends Task{
         }
     }
 
+    // Checks for param type and corresponding param, and returns error if
+    // given param is not recognised.
     private Constants.Error parsePayload(String paramType){
         String[] token = null;
         switch(paramType){
@@ -34,7 +40,7 @@ public class Event extends Task{
             }
             break;
         default:
-            String customErrorMessage = String.format("The parameter type %s is not implemented. You may want to check you spelling.\n", paramType);
+            String customErrorMessage = String.format("The parameter type %s is not implemented. You may want to check your spelling.\n", paramType);
             UiManager.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
             return Constants.Error.WRONG_ARGUMENTS;
         }
@@ -51,6 +57,7 @@ public class Event extends Task{
                 break;
             default:
                 // Due to exception handling at parsePayload above, there is no need to catch errors here
+                // Fall through
                 break;
             }
         }

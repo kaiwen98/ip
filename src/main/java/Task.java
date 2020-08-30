@@ -1,5 +1,6 @@
 /**
  * Task class to encapsulate its features and methods.
+ * Acts as super class to ToDo, Event and Deadline classes.
  */
 import java.util.Hashtable;
 import java.util.Set;
@@ -17,9 +18,11 @@ public class Task {
         EVENT("[E]");
 
         private String literal;
+
         TaskType(String literal){
             this.literal = literal;
         }
+
         @Override
         public String toString(){
             return this.literal;
@@ -32,10 +35,12 @@ public class Task {
 
         private String literal;
         private boolean bool;
+
         IsDone(String literal, boolean bool){
             this.literal = literal;
             this.bool = bool;
         }
+
         @Override
         public String toString(){
             return this.literal;
@@ -46,6 +51,7 @@ public class Task {
         }
     }
 
+    // Constructor
     public Task(String taskName, boolean isDone, Hashtable paramMap){
         this.taskName = taskName;
         this.setIsDone(isDone);
@@ -71,7 +77,7 @@ public class Task {
         return "";
     }
     public void setIsDone(boolean isDone){
-        this.isDone = (isDone) ? IsDone.DONE:IsDone.NOT_DONE;
+        this.isDone = (isDone) ? IsDone.DONE : IsDone.NOT_DONE;
     }
     public void setParamMap(Hashtable paramMap){
         this.paramMap = new Hashtable();

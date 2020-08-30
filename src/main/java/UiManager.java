@@ -1,8 +1,7 @@
 /**
- * Class recording all possible messages printable on console
+ * Class handling all possible console outputs.
  */
 public class UiManager {
-
     public static final String MESSAGE_LOGO = "Hello from\n"
             + "____        _        \n"
             + "|  _ \\ _   _| | _____ \n"
@@ -16,7 +15,7 @@ public class UiManager {
             + "...L....\\..........|.......\n"
             + ".........\\_________/.......\n"
             + "...........|...|...........\n"
-            + "..........————————/........\n\n\n"; //OI
+            + "..........————————/........\n\n\n";
 
     public static final String MESSAGE_HELLO = "Hello! I'm Duke."
             + "\nType \"command\" to check available commands to try out!"
