@@ -2,6 +2,12 @@ todo hello
 deadline walk the dog /by monday 2-6pm
 todo goodbye
 deadline walk the cat /at monday
+event
+event party /at Monday
+event party /at Monday 6-9pm
+done 2
+done 100
+done -1
 list
 command
 bye
