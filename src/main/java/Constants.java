@@ -11,6 +11,7 @@ public class Constants {
         INVALID_COMMAND,
         NO_LIST,
         NO_ERROR,
+        TASK_NOT_CREATED,
         OTHER_ERROR
     }
 

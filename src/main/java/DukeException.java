@@ -12,6 +12,9 @@ public class DukeException {
         case INVALID_COMMAND:
             output = "Command not recognised. Please enter \"command\" for command list!\n";
             break;
+        case TASK_NOT_CREATED:
+            output = "Due to error input, the task is not added. Try again.\n";
+            break;
         case NO_ERROR:
             output = "";
             break;
@@ -19,7 +22,7 @@ public class DukeException {
             // Fall through
             break;
         }
-        System.out.println(output + customErrorMessage);
+        System.out.print(output + customErrorMessage);
     }
 
     public static void printErrorMessage(Constants.Error error){

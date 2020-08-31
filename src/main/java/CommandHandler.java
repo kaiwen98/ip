@@ -32,10 +32,9 @@ public class CommandHandler {
             }
             ToDo inputToDo = new ToDo(packet.getPacketPayload());
             err = Duke.list.addTask(inputToDo);
-            if (err != Constants.Error.NO_ERROR){
-                String customErrorMessage = "Due to error input, the task is not added. Try again.";
-                DukeException.printErrorMessage(err, customErrorMessage);
-                return;
+            if (err != Constants.Error.NO_ERROR ){
+                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
+                break;
             } else {
                 output = UiManager.getMessageTaskAdded(inputToDo);
                 output += UiManager.getMessageReportNumTasks(Duke.list);
@@ -51,8 +50,8 @@ public class CommandHandler {
                 packet.getParamMap();
             } catch(NullPointerException exception) {
                 String customErrorMessage = "This command requires a 2 parameter headers and parameter inputs. eg. /at Monday 12-6pm\n";
-                customErrorMessage += "Due to error input, the task is not added. Try again.";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
                 break;
             }
             Event inputEvent = new Event(packet.getPacketPayload(), packet.getParamMap());
@@ -60,9 +59,8 @@ public class CommandHandler {
             err = Duke.list.addTask(inputEvent);
 
             if (err != Constants.Error.NO_ERROR ){
-                String customErrorMessage = "Due to error input, the task is not added. Try again.";
-                DukeException.printErrorMessage(err, customErrorMessage);
-
+                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
+                break;
             } else {
                 output = UiManager.getMessageTaskAdded(inputEvent);
                 output += UiManager.getMessageReportNumTasks(Duke.list);
@@ -83,9 +81,9 @@ public class CommandHandler {
             }
             Deadline inputDeadline = new Deadline(packet.getPacketPayload(), packet.getParamMap());
             err = Duke.list.addTask(inputDeadline);
-            if (err != Constants.Error.NO_ERROR){
-                String customErrorMessage = "Due to error input, the task is not added. Try again.";
-                DukeException.printErrorMessage(err, customErrorMessage);
+            if (err != Constants.Error.NO_ERROR ){
+                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
+                break;
             } else {
                 output = UiManager.getMessageTaskAdded(inputDeadline);
                 output += UiManager.getMessageReportNumTasks(Duke.list);
@@ -117,7 +115,7 @@ public class CommandHandler {
                     }
                     DukeException.printErrorMessage(err, customErrorMessage);
                 } catch (NullPointerException exception){
-                    customErrorMessage = "So which task have you done? Specify a task number.";
+                    customErrorMessage = "So which task have you done? Specify a task number.\n";
                     DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 }
             }
