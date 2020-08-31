@@ -1,3 +1,6 @@
+/**
+ * Handles exceptions with regards to input errors.
+ */
 public class DukeException {
     public static void printErrorMessage(Constants.Error error, String customErrorMessage){
         String output = "";
