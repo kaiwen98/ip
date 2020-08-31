@@ -48,31 +48,6 @@ public class UiManager {
             + "\t@ <parameter type>:\t /by\n"
             + "\t\t# <parameter 1>:\t Date w/o time\n";
 
-    public static void printErrorMessage(Constants.Error error, String customErrorMessage){
-        String output = "";
-        customErrorMessage = customErrorMessage.equals("")? "" : "\t[NOTE]: "+ customErrorMessage;
-        switch(error){
-        case NO_LIST:
-            output = "No list exists yet. Begin by adding some tasks!\n";
-            break;
-        case WRONG_ARGUMENTS:
-            output = "Wrong arguments supplied. Please enter \"command\" to check acceptable arguments.\n";
-            break;
-        case INVALID_COMMAND:
-            output = "Command not recognised. Please enter \"command\" for command list!\n";
-            break;
-        case NO_ERROR:
-            output = "";
-            break;
-        default:
-            // Fall through
-            break;
-        }
-        System.out.println(output + customErrorMessage);
-    }
-    public static void printErrorMessage(Constants.Error error){
-        printErrorMessage(error, "");
-    }
     public static String getMessageTaskAdded(Task task){
         return String.format("Got it! I've added this task:\n  %s\n", task);
     }
@@ -81,7 +56,7 @@ public class UiManager {
         return String.format("Now, you have %d task%c in the list.\n", list.getNumTasks(),isS);
     }
     public static String getMessageTaskMarkAsDone(Task outputTask){
-        return String.format("Nice! I've marked this task as done:%s\n", outputTask);
+        return String.format("Nice! I've marked this task as done:\n%s\n", outputTask);
     }
 
     public static void drawPartition(){

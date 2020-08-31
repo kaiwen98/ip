@@ -35,13 +35,13 @@ public class Event extends Task{
             } catch (java.lang.ArrayIndexOutOfBoundsException exception){
                 String customErrorMessage = String.format("You seem to have missed either the date or the time, " +
                         "or you have forgotten to separate with spacing. Check your input. \n", paramType);
-                UiManager.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 return Constants.Error.WRONG_ARGUMENTS;
             }
             break;
         default:
             String customErrorMessage = String.format("The parameter type %s is not implemented. You may want to check your spelling.\n", paramType);
-            UiManager.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+            DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
             return Constants.Error.WRONG_ARGUMENTS;
         }
         return Constants.Error.NO_ERROR;

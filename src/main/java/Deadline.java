@@ -29,7 +29,7 @@ public class Deadline extends Task{
             break;
         default:
             String customErrorMessage = String.format("The parameter type %s is not implemented. You may want to check your spelling.\n", paramType);
-            UiManager.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+            DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
             return Constants.Error.WRONG_ARGUMENTS;
         }
         return Constants.Error.NO_ERROR;

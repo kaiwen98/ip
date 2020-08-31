@@ -45,7 +45,7 @@ public class Duke {
                 CommandHandler.handleCommand(Constants.Command.INSERT_TASK_DEADLINE, packet);
                 break;
             default:
-                UiManager.printErrorMessage(Constants.Error.INVALID_COMMAND);
+                DukeException.printErrorMessage(Constants.Error.INVALID_COMMAND);
                 break;
             }
         }

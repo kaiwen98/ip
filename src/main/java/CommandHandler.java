@@ -34,7 +34,7 @@ public class CommandHandler {
             err = Duke.list.addTask(inputToDo);
             if (err != Constants.Error.NO_ERROR){
                 String customErrorMessage = "Due to error input, the task is not added. Try again.";
-                UiManager.printErrorMessage(err, customErrorMessage);
+                DukeException.printErrorMessage(err, customErrorMessage);
                 return;
             } else {
                 output = UiManager.getMessageTaskAdded(inputToDo);
@@ -52,7 +52,7 @@ public class CommandHandler {
             } catch(NullPointerException exception) {
                 String customErrorMessage = "This command requires a 2 parameter headers and parameter inputs. eg. /at Monday 12-6pm\n";
                 customErrorMessage += "Due to error input, the task is not added. Try again.";
-                UiManager.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 break;
             }
             Event inputEvent = new Event(packet.getPacketPayload(), packet.getParamMap());
@@ -61,7 +61,7 @@ public class CommandHandler {
 
             if (err != Constants.Error.NO_ERROR ){
                 String customErrorMessage = "Due to error input, the task is not added. Try again.";
-                UiManager.printErrorMessage(err, customErrorMessage);
+                DukeException.printErrorMessage(err, customErrorMessage);
 
             } else {
                 output = UiManager.getMessageTaskAdded(inputEvent);
@@ -78,14 +78,14 @@ public class CommandHandler {
             } catch(NullPointerException exception) {
                 String customErrorMessage = "This command requires a parameter header and parameter inputs. eg. /by Monday\n";
                 customErrorMessage += "Due to error input, the task is not added. Try again.";
-                UiManager.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 break;
             }
             Deadline inputDeadline = new Deadline(packet.getPacketPayload(), packet.getParamMap());
             err = Duke.list.addTask(inputDeadline);
             if (err != Constants.Error.NO_ERROR){
                 String customErrorMessage = "Due to error input, the task is not added. Try again.";
-                UiManager.printErrorMessage(err, customErrorMessage);
+                DukeException.printErrorMessage(err, customErrorMessage);
             } else {
                 output = UiManager.getMessageTaskAdded(inputDeadline);
                 output += UiManager.getMessageReportNumTasks(Duke.list);
@@ -93,29 +93,32 @@ public class CommandHandler {
             break;
         case SHOW_LIST:
             if(!Duke.isListCreated || Duke.list.getNumTasks() == 0){
-                UiManager.printErrorMessage(Constants.Error.NO_LIST);
+                DukeException.printErrorMessage(Constants.Error.NO_LIST);
             } else{
                 output = Duke.list.showAllTasks();
             }
             break;
         case MARK_TASK_AS_DONE:
             String customErrorMessage = "";
-            int index = Integer.parseInt(packet.getPacketPayload().trim()) - 1;
             if(!Duke.isListCreated){
-                UiManager.printErrorMessage(Constants.Error.NO_LIST);
+                DukeException.printErrorMessage(Constants.Error.NO_LIST);
             } else {
-                err = Duke.list.markTaskAsDone(index);
-                if (err != Constants.Error.NO_ERROR) {
+                try {
+                    int index = Integer.parseInt(packet.getPacketPayload().trim()) - 1;
+                    err = Duke.list.markTaskAsDone(index);
+                    Task outputTask = Duke.list.getTaskByIndex(index);
+                    output = UiManager.getMessageTaskMarkAsDone(outputTask);
+                } catch (IndexOutOfBoundsException exception) {
                     if (Duke.list.getNumTasks() != 1) {
                         customErrorMessage = "Your list number ranges from 1 to";
                         customErrorMessage += String.format(" %d. Please check your input list number.", Duke.list.getNumTasks());
                     } else {
                         customErrorMessage = "There is only 1 task in your list.";
                     }
-                    UiManager.printErrorMessage(err, customErrorMessage);
-                } else {
-                    Task outputTask = Duke.list.getTaskByIndex(index);
-                    output = UiManager.getMessageTaskMarkAsDone(outputTask);
+                    DukeException.printErrorMessage(err, customErrorMessage);
+                } catch (NullPointerException exception){
+                    customErrorMessage = "So which task have you done? Specify a task number.";
+                    DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 }
             }
             break;
@@ -123,7 +126,7 @@ public class CommandHandler {
             output = UiManager.MESSAGE_COMMAND_LIST;
             break;
         default:
-            UiManager.printErrorMessage(Constants.Error.INVALID_COMMAND);
+            DukeException.printErrorMessage(Constants.Error.INVALID_COMMAND);
             break;
         }
         System.out.print(output);
