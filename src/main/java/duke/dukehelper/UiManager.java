@@ -60,7 +60,11 @@ public class UiManager {
         return String.format("Now, you have %d task%c in the list.\n", list.getNumTasks(),isS);
     }
     public static String getMessageTaskMarkAsDone(Task outputTask){
-        return String.format("Nice! I've marked this task as done:\n%s\n", outputTask);
+        return String.format("Nice! I've marked this task as done:\n  %s\n", outputTask);
+    }
+
+    public static String getMessageTaskRemove(Task outputTask){
+        return String.format("Noted! I've removed the following task:\n  %s\n", outputTask);
     }
 
     public static void drawPartition(){

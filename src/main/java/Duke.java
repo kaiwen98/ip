@@ -46,6 +46,9 @@ public class Duke {
             case "deadline":
                 CommandHandler.handleCommand(Constants.Command.INSERT_TASK_DEADLINE, packet);
                 break;
+            case "remove":
+                CommandHandler.handleCommand(Constants.Command.REMOVE_TASK, packet);
+                break;
             default:
                 DukeException.printErrorMessage(Constants.Error.INVALID_COMMAND);
                 break;

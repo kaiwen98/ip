@@ -3,6 +3,8 @@
  */
 package duke.dukehelper;
 public class DukeException {
+    static class InvalidDescription extends Exception {
+    }
     public static void printErrorMessage(Constants.Error error, String customErrorMessage){
         String output = "";
         customErrorMessage = customErrorMessage.equals("")? "" : "\t[NOTE]: "+ customErrorMessage;

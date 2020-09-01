@@ -54,14 +54,14 @@ public class ListTasks {
 
     /**
      * Mark a specific task as done.
-     * @param taskNumber index of the task on the task array.
+     * @param taskIndex index of the task on the task array.
      * @return Error code
      */
-    public Constants.Error markTaskAsDone(int taskNumber){
-        if (taskNumber < 0 || taskNumber > this.numTasks -1){
+    public Constants.Error markTaskAsDone(int taskIndex){
+        if (taskIndex < 0 || taskIndex > this.numTasks -1){
             return Constants.Error.WRONG_ARGUMENTS;
         } else{
-            tasks.get(taskNumber).setIsDone(true);
+            this.tasks.get(taskIndex).setIsDone(true);
             return Constants.Error.NO_ERROR;
         }
     }
@@ -76,5 +76,15 @@ public class ListTasks {
             output += String.format("%d.%s\n", i+1, this.tasks.get(i));
         }
         return output;
+    }
+
+    public Constants.Error removeTask(int taskIndex){
+        if (taskIndex < 0 || taskIndex > this.numTasks -1){
+            return Constants.Error.WRONG_ARGUMENTS;
+        } else{
+            this.tasks.remove(taskIndex);
+            this.numTasks--;
+            return Constants.Error.NO_ERROR;
+        }
     }
 }
