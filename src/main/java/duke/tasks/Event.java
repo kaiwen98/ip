@@ -12,7 +12,9 @@ public class Event extends Task{
     public Event(String taskName, Hashtable paramMap){
         super(taskName, false, paramMap);
         super.taskType = TaskType.EVENT;
+        // Terminate if there are no param inputs
         this.error = (paramMap == null) ? Constants.Error.WRONG_ARGUMENTS : Constants.Error.NO_ERROR;
+        // Terminate if there are invalid params
         if (this.error == Constants.Error.NO_ERROR){
             for (Object paramType: this.getParamTypes()){
                 if (parsePayload((String) paramType) != Constants.Error.NO_ERROR) {

@@ -64,6 +64,7 @@ public class Parser {
         buffer[1] = (input.substring(input.indexOf(" "), input.indexOf('/'))).replace(" ", " ").trim();
         packet = new Packet(buffer[0]);
         packet.setPacketPayload(buffer[1]);
+
         // Implemented in case future commands with multiple param types are to be implemented
         do {
             input = input.substring(input.indexOf('/')).trim();
@@ -75,7 +76,7 @@ public class Parser {
             // Extract param name
             buffer[3] = (input.substring(0, input.indexOf('/'))).trim();
             packet.addParamToMap(buffer[2], buffer[3]);
-        } while(true);
+        } while (true);
 
         return packet;
     }

@@ -16,11 +16,11 @@ public class Duke {
 
         UiManager.drawPartition();
         CommandHandler.handleCommand(Constants.Command.HELLO);
-        while(continueQuery){
+        while (continueQuery){
             CommandHandler.handleCommand(Constants.Command.PROMPT_INPUT);
             input = in.nextLine();
             packet = Parser.parseInput(input.toLowerCase());
-            switch(packet.getPacketType()) {
+            switch (packet.getPacketType()) {
             case "bye":
                 CommandHandler.handleCommand(Constants.Command.BYE);
                 continueQuery = false;

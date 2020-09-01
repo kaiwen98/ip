@@ -12,13 +12,13 @@ public class CommandHandler {
     private static ListTasks list = new ListTasks();
 
     private static void validatePayload(Packet packet) throws DukeException.InvalidDescription {
-        if(packet.getPacketPayload() == null){
+        if (packet.getPacketPayload() == null){
             throw new DukeException.InvalidDescription();
         }
     }
 
     private static void validateList() throws DukeException.NoList {
-        if(list.getNumTasks() == 0){
+        if (list.getNumTasks() == 0){
             throw new DukeException.NoList();
         }
     }
@@ -34,20 +34,24 @@ public class CommandHandler {
             output = UiManager.MESSAGE_LOGO;
             output += UiManager.MESSAGE_HELLO;
             break;
+
         case BYE:
             output = UiManager.MESSAGE_BYE;
             break;
+
         case ECHO:
             output = String.format("%s\n", packet.getPacketPayload());
             break;
+
         case PROMPT_INPUT:
             output = ">>> ";
             isDrawPartition = false;
             break;
+
         case INSERT_TASK_TODO:
             try {
                 validatePayload(packet);
-            } catch(DukeException.InvalidDescription e){
+            } catch (DukeException.InvalidDescription e){
                 customErrorMessage = "You have not entered a valid description!\n";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
@@ -68,17 +72,18 @@ public class CommandHandler {
             try {
                 validatePayload(packet);
                 packet.getParamMap();
-            } catch(NullPointerException exception) {
+            } catch (NullPointerException exception) {
                 customErrorMessage = "This command requires a 2 parameter headers and parameter inputs. eg. /at Monday 12-6pm\n";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
                 break;
-            } catch(DukeException.InvalidDescription e) {
+            } catch (DukeException.InvalidDescription e) {
                 customErrorMessage = "You have not entered a valid description!\n";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
                 break;
             }
+
             Event inputEvent = new Event(packet.getPacketPayload(), packet.getParamMap());
             inputEvent.setParamMap(packet.getParamMap());
             err = list.addTask(inputEvent);
@@ -91,23 +96,26 @@ public class CommandHandler {
                 output += UiManager.getMessageReportNumTasks(list);
             }
             break;
+
         case INSERT_TASK_DEADLINE:
             try {
                 validatePayload(packet);
                 packet.getParamMap();
-            } catch(NullPointerException exception) {
+            } catch (NullPointerException exception) {
                 customErrorMessage = "This command requires a parameter header and parameter inputs. eg. /by Monday\n";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
                 break;
-            } catch(DukeException.InvalidDescription e) {
+            } catch (DukeException.InvalidDescription e) {
                 customErrorMessage = "You have not entered a valid description!\n";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
                 break;
             }
+
             Deadline inputDeadline = new Deadline(packet.getPacketPayload(), packet.getParamMap());
             err = list.addTask(inputDeadline);
+
             if (err != Constants.Error.NO_ERROR ){
                 DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
                 break;
@@ -116,13 +124,15 @@ public class CommandHandler {
                 output += UiManager.getMessageReportNumTasks(list);
             }
             break;
+
         case SHOW_LIST:
-            if(!isListCreated || list.getNumTasks() == 0){
+            if (!isListCreated || list.getNumTasks() == 0){
                 DukeException.printErrorMessage(Constants.Error.NO_LIST);
-            } else{
+            } else {
                 output = list.showAllTasks();
             }
             break;
+
         case MARK_TASK_DONE:
             try {
                 validatePayload(packet);
@@ -178,9 +188,11 @@ public class CommandHandler {
                 DukeException.printErrorMessage(Constants.Error.NO_LIST);
             }
             break;
+
         case SHOW_COMMANDS:
             output = UiManager.MESSAGE_COMMAND_LIST;
             break;
+
         default:
             DukeException.printErrorMessage(Constants.Error.INVALID_COMMAND);
             break;
