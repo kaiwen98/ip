@@ -1,3 +1,5 @@
+package duke.dukehelper;
+import duke.taskhelper.*;
 public class Parser {
     /**
      * Process input string, tokenising it by a space seperator and removing trailing spaces per token.

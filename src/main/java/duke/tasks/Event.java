@@ -1,8 +1,9 @@
-import java.util.Hashtable;
-
 /**
  * A subclass of Task that takes in date and time when the event happens
  */
+package duke.tasks;
+import duke.dukehelper.*;
+import java.util.Hashtable;
 public class Event extends Task{
     private String date;
     private String time;

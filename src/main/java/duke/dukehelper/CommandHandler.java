@@ -1,3 +1,6 @@
+package duke.dukehelper;
+import duke.taskhelper.*;
+import duke.tasks.*;
 public class CommandHandler {
     /**
      * Handles command and prints messages, if any onto console depending on input parameter.
@@ -5,8 +8,12 @@ public class CommandHandler {
      * @param command a string of a simple root word to represent a particular message
      * @param packet an input parameter for the message to print, given the command requires further inputs.
      */
+    private static boolean isListCreated = false;
+    private static ListTasks list;
+
     public static void handleCommand(Constants.Command command, Packet packet){
         String output = "";
+        String customErrorMessage = "";
         boolean isDrawPartition = true;
         Constants.Error err = null;
 
@@ -26,90 +33,89 @@ public class CommandHandler {
             isDrawPartition = false;
             break;
         case INSERT_TASK_TODO:
-            if (!Duke.isListCreated){
-                Duke.isListCreated = true;
-                Duke.list = new ListTasks();
+            if (!isListCreated){
+                isListCreated = true;
+                list = new ListTasks();
             }
             ToDo inputToDo = new ToDo(packet.getPacketPayload());
-            err = Duke.list.addTask(inputToDo);
+            err = list.addTask(inputToDo);
             if (err != Constants.Error.NO_ERROR ){
                 DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
                 break;
             } else {
                 output = UiManager.getMessageTaskAdded(inputToDo);
-                output += UiManager.getMessageReportNumTasks(Duke.list);
+                output += UiManager.getMessageReportNumTasks(list);
             }
             break;
 
         case INSERT_TASK_EVENT:
-            if (!Duke.isListCreated){
-                Duke.isListCreated = true;
-                Duke.list = new ListTasks();
+            if (!isListCreated){
+                isListCreated = true;
+                list = new ListTasks();
             }
             try {
                 packet.getParamMap();
             } catch(NullPointerException exception) {
-                String customErrorMessage = "This command requires a 2 parameter headers and parameter inputs. eg. /at Monday 12-6pm\n";
+                customErrorMessage = "This command requires a 2 parameter headers and parameter inputs. eg. /at Monday 12-6pm\n";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
                 break;
             }
             Event inputEvent = new Event(packet.getPacketPayload(), packet.getParamMap());
             inputEvent.setParamMap(packet.getParamMap());
-            err = Duke.list.addTask(inputEvent);
+            err = list.addTask(inputEvent);
 
             if (err != Constants.Error.NO_ERROR ){
                 DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
                 break;
             } else {
                 output = UiManager.getMessageTaskAdded(inputEvent);
-                output += UiManager.getMessageReportNumTasks(Duke.list);
+                output += UiManager.getMessageReportNumTasks(list);
             }
             break;
         case INSERT_TASK_DEADLINE:
-            if (!Duke.isListCreated){
-                Duke.isListCreated = true;
-                Duke.list = new ListTasks();
+            if (!isListCreated){
+                isListCreated = true;
+                list = new ListTasks();
             }
             try {
                 packet.getParamMap();
             } catch(NullPointerException exception) {
-                String customErrorMessage = "This command requires a parameter header and parameter inputs. eg. /by Monday\n";
-                customErrorMessage += "Due to error input, the task is not added. Try again.";
+                customErrorMessage = "This command requires a parameter header and parameter inputs. eg. /by Monday\n";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
                 break;
             }
             Deadline inputDeadline = new Deadline(packet.getPacketPayload(), packet.getParamMap());
-            err = Duke.list.addTask(inputDeadline);
+            err = list.addTask(inputDeadline);
             if (err != Constants.Error.NO_ERROR ){
                 DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
                 break;
             } else {
                 output = UiManager.getMessageTaskAdded(inputDeadline);
-                output += UiManager.getMessageReportNumTasks(Duke.list);
+                output += UiManager.getMessageReportNumTasks(list);
             }
             break;
         case SHOW_LIST:
-            if(!Duke.isListCreated || Duke.list.getNumTasks() == 0){
+            if(!isListCreated || list.getNumTasks() == 0){
                 DukeException.printErrorMessage(Constants.Error.NO_LIST);
             } else{
-                output = Duke.list.showAllTasks();
+                output = list.showAllTasks();
             }
             break;
-        case MARK_TASK_AS_DONE:
-            String customErrorMessage = "";
-            if(!Duke.isListCreated){
+        case MARK_TASK_DONE:
+            if(!isListCreated){
                 DukeException.printErrorMessage(Constants.Error.NO_LIST);
             } else {
                 try {
                     int index = Integer.parseInt(packet.getPacketPayload().trim()) - 1;
-                    err = Duke.list.markTaskAsDone(index);
-                    Task outputTask = Duke.list.getTaskByIndex(index);
+                    err = list.markTaskAsDone(index);
+                    Task outputTask = list.getTaskByIndex(index);
                     output = UiManager.getMessageTaskMarkAsDone(outputTask);
                 } catch (IndexOutOfBoundsException exception) {
-                    if (Duke.list.getNumTasks() != 1) {
+                    if (list.getNumTasks() != 1) {
                         customErrorMessage = "Your list number ranges from 1 to";
-                        customErrorMessage += String.format(" %d. Please check your input list number.", Duke.list.getNumTasks());
+                        customErrorMessage += String.format(" %d. Please check your input list number.\n", list.getNumTasks());
                     } else {
                         customErrorMessage = "There is only 1 task in your list.";
                     }

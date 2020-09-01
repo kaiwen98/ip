@@ -1,6 +1,7 @@
 /**
  * Contains constants used in command, error, etc.
  */
+package duke.dukehelper;
 public class Constants {
     public static final int MAX_ARRAY_LEN = 10;
     public static final int MAX_PARTITION_LINE_LEN = 60;
@@ -25,6 +26,6 @@ public class Constants {
         INSERT_TASK_EVENT,
         SHOW_LIST,
         SHOW_COMMANDS,
-        MARK_TASK_AS_DONE
+        MARK_TASK_DONE
     }
 }

@@ -2,15 +2,17 @@
  * Task class to encapsulate its features and methods.
  * Acts as super class to ToDo, Event and Deadline classes.
  */
+package duke.tasks;
 import java.util.Hashtable;
 import java.util.Set;
+import duke.dukehelper.*;
 
 public class Task {
     protected String taskName;
     protected IsDone isDone;
     protected TaskType taskType;
     protected Hashtable paramMap;
-    protected Constants.Error error;
+    public Constants.Error error;
 
     enum TaskType {
         TODO("[T]"),

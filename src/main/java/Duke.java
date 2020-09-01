@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import duke.taskhelper.*;
+import duke.dukehelper.*;
 
 public class Duke {
     public static int charCount = Constants.MAX_PARTITION_LINE_LEN;
@@ -33,7 +35,7 @@ public class Duke {
                 CommandHandler.handleCommand(Constants.Command.SHOW_COMMANDS);
                 break;
             case "done": ;
-                CommandHandler.handleCommand(Constants.Command.MARK_TASK_AS_DONE, packet);
+                CommandHandler.handleCommand(Constants.Command.MARK_TASK_DONE, packet);
                 break;
             case "todo":
                 CommandHandler.handleCommand(Constants.Command.INSERT_TASK_TODO, packet);

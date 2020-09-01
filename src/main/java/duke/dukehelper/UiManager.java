@@ -1,6 +1,10 @@
 /**
  * Class handling all possible console outputs.
  */
+package duke.dukehelper;
+import duke.taskhelper.*;
+import duke.tasks.*;
+
 public class UiManager {
     public static final String MESSAGE_LOGO = "Hello from\n"
             + "____        _        \n"

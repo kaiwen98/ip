@@ -1,16 +1,20 @@
+package duke.taskhelper;
+import duke.tasks.*;
+import duke.dukehelper.*;
+import java.util.ArrayList;
 /**
  * Class to collate all the tasks added.
  */
 public class ListTasks {
 
-    private Task[] tasks;
+    private ArrayList<Task> tasks;
     private int numTasks;
 
     /**
      * Non-parameterized class constructor
      */
     public ListTasks(){
-        this.tasks = new Task[Constants.MAX_LIST_LEN];
+        this.tasks = new ArrayList<Task>();
         this.numTasks = 0;
     }
 
@@ -20,7 +24,7 @@ public class ListTasks {
      * @return Corresponding task instance.
      */
     public Task getTaskByIndex(int index){
-        return tasks[index];
+        return tasks.get(index);
     }
 
     public int getNumTasks(){
@@ -34,7 +38,7 @@ public class ListTasks {
         if (newTask.error != Constants.Error.NO_ERROR){
             return newTask.error;
         }
-        this.tasks[this.numTasks] = newTask;
+        this.tasks.add(newTask);
         this.numTasks++;
         return Constants.Error.NO_ERROR;
     }
@@ -57,7 +61,7 @@ public class ListTasks {
         if (taskNumber < 0 || taskNumber > this.numTasks -1){
             return Constants.Error.WRONG_ARGUMENTS;
         } else{
-            tasks[taskNumber].setIsDone(true);
+            tasks.get(taskNumber).setIsDone(true);
             return Constants.Error.NO_ERROR;
         }
     }
@@ -69,7 +73,7 @@ public class ListTasks {
     public String showAllTasks(){
         String output = "";
         for (int i = 0; i < this.numTasks; i++){
-            output += String.format("%d.%s\n", i+1, this.tasks[i]);
+            output += String.format("%d.%s\n", i+1, this.tasks.get(i));
         }
         return output;
     }

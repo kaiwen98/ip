@@ -1,10 +1,13 @@
-import java.util.Hashtable;
-import java.util.Set;
-
 /**
  * Organises data from input string into distinct data types and structure.
  * For scalability purposes, a hash table is implemented to map param type to its corresponding params.
  */
+package duke.taskhelper;
+import duke.dukehelper.*;
+import java.util.Hashtable;
+import java.util.Set;
+
+
 public class Packet {
     private String packetType;
     private String packetPayload;

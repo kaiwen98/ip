@@ -1,8 +1,9 @@
-import java.util.Hashtable;
-
 /**
  * Sub-class of Task that takes in a date as deadline of task
  */
+package duke.tasks;
+import java.util.Hashtable;
+import duke.dukehelper.*;
 public class Deadline extends Task{
     private String deadline;
 

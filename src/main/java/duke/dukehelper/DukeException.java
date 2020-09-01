@@ -1,6 +1,7 @@
 /**
  * Handles exceptions with regards to input errors.
  */
+package duke.dukehelper;
 public class DukeException {
     public static void printErrorMessage(Constants.Error error, String customErrorMessage){
         String output = "";
