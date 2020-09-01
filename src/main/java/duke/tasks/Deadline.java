@@ -43,7 +43,7 @@ public class Deadline extends Task{
             switch ((String) paramType) {
             case "/by":
                 output = String.format("(by: %s)", this.deadline);
-                break;
+
             default:
                 // Due to exception handling at parsePayload above, there is no need to catch errors here
                 break;

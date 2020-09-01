@@ -7,7 +7,6 @@ public class Duke {
     public static boolean isListCreated = false;
     public static ListTasks list = null;
 
-
     public static void main(String[] args) {
         String input;
         Packet packet = null;
@@ -45,6 +44,9 @@ public class Duke {
                 break;
             case "deadline":
                 CommandHandler.handleCommand(Constants.Command.INSERT_TASK_DEADLINE, packet);
+                break;
+            case "remove":
+                CommandHandler.handleCommand(Constants.Command.REMOVE_TASK, packet);
                 break;
             default:
                 DukeException.printErrorMessage(Constants.Error.INVALID_COMMAND);

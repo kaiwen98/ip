@@ -26,6 +26,8 @@ public class Constants {
         INSERT_TASK_EVENT,
         SHOW_LIST,
         SHOW_COMMANDS,
-        MARK_TASK_DONE
+        MARK_TASK_DONE,
+        REMOVE_TASK,
+        SAVE
     }
 }
