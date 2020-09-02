@@ -8,7 +8,7 @@ public class CommandHandler {
      * @param command a string of a simple root word to represent a particular message
      * @param packet an input parameter for the message to print, given the command requires further inputs.
      */
-    private static boolean isListCreated = false;
+
     private static ListTasks list = new ListTasks();
 
     private static void validatePayload(Packet packet) throws DukeException.InvalidDescription {
@@ -126,7 +126,7 @@ public class CommandHandler {
             break;
 
         case SHOW_LIST:
-            if (!isListCreated || list.getNumTasks() == 0){
+            if (list.getNumTasks() == 0){
                 DukeException.printErrorMessage(Constants.Error.NO_LIST);
             } else {
                 output = list.showAllTasks();
@@ -146,7 +146,7 @@ public class CommandHandler {
                     customErrorMessage = "Your list number ranges from 1 to";
                     customErrorMessage += String.format(" %d. Please check your input list number.\n", list.getNumTasks());
                 } else {
-                    customErrorMessage = "There is only 1 task in your list.";
+                    customErrorMessage = "There is only 1 task in your list.\n";
                 }
                 DukeException.printErrorMessage(err, customErrorMessage);
             } catch (NullPointerException exception){
@@ -174,9 +174,9 @@ public class CommandHandler {
                     customErrorMessage = "Your list number ranges from 1 to";
                     customErrorMessage += String.format(" %d. Please check your input list number.\n", list.getNumTasks());
                 } else {
-                    customErrorMessage = "There is only 1 task in your list.";
+                    customErrorMessage = "There is only 1 task in your list.\n";
                 }
-                DukeException.printErrorMessage(err, customErrorMessage);
+                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
             } catch (NullPointerException exception){
                 customErrorMessage = "So which task are you deleting? Specify a task number.\n";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);

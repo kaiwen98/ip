@@ -67,13 +67,9 @@ public class ListTasks {
     }
 
     public Constants.Error removeTask(int taskIndex){
-        if (taskIndex < 0 || taskIndex > this.numTasks -1){
-            return Constants.Error.WRONG_ARGUMENTS;
-        } else{
-            this.tasks.remove(taskIndex);
-            this.numTasks--;
-            return Constants.Error.NO_ERROR;
-        }
+        this.tasks.remove(taskIndex);
+        this.numTasks--;
+        return Constants.Error.NO_ERROR;
     }
 
     /**

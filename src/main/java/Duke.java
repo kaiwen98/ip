@@ -19,7 +19,7 @@ public class Duke {
         while (continueQuery){
             CommandHandler.handleCommand(Constants.Command.PROMPT_INPUT);
             input = in.nextLine();
-            packet = Parser.parseInput(input.toLowerCase());
+            packet = Parser.parseInput(input);
             switch (packet.getPacketType()) {
             case "bye":
                 CommandHandler.handleCommand(Constants.Command.BYE);

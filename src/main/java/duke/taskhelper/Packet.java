@@ -43,7 +43,7 @@ public class Packet {
         return (Hashtable)this.paramMap.clone();
     }
     public void setPacketPayload(String payload){
-        this.packetPayload = payload;
+        this.packetPayload = (payload.equals("") ? null : payload);
     }
     public Constants.Error addParamToMap(String paramType, String paramString){
         if (this.paramMap == null){
