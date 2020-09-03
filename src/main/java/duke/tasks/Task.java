@@ -84,6 +84,7 @@ public class Task {
         this.paramMap = (Hashtable) paramMap.clone();
     }
     protected void processParamMap() {
+        String customErrorMessage = "";
         if (!this.paramMap.isEmpty()) {
             for (Object paramType : this.getParamTypes()) {
                 // If there is at least one valid param type and param to process, no need to dismiss the entire task.
@@ -91,6 +92,9 @@ public class Task {
                     this.error = Constants.Error.NO_ERROR;
                 }
             }
+        } else {
+            customErrorMessage = "This command expects a param type-param input, eg. /by Monday etc.\n";
+            DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
         }
     }
 
