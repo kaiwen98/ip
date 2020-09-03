@@ -2,6 +2,7 @@
  * Contains constants used in command, error, etc.
  */
 package duke.dukehelper;
+
 public class Constants {
     public static final int MAX_ARRAY_LEN = 10;
     public static final int MAX_PARTITION_LINE_LEN = 60;

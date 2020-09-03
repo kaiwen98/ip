@@ -1,21 +1,33 @@
+/**
+ * Class to handle command inputs by user
+ */
 package duke.dukehelper;
 import duke.taskhelper.*;
 import duke.tasks.*;
+
 public class CommandHandler {
     private static ListTasks list = new ListTasks();
 
+    /**
+     * Validates if the input supplies a description as needed by the command
+     * @param packet
+     * @throws DukeException.InvalidDescription
+     */
     private static void validatePayload(Packet packet) throws DukeException.InvalidDescription {
         if (packet.getPacketPayload() == null){
             throw new DukeException.InvalidDescription();
         }
     }
 
+    /**
+     * Validates if list is empty
+     * @throws DukeException.NoList
+     */
     private static void validateList() throws DukeException.NoList {
         if (list.getNumTasks() == 0){
             throw new DukeException.NoList();
         }
     }
-
     /**
      * Handles command and prints messages, if any onto console depending on input parameter.
      *
@@ -132,7 +144,17 @@ public class CommandHandler {
             UiManager.drawPartition();
         }
     }
+    public static void handleCommand(Constants.Command command){
+        CommandHandler.handleCommand(command, null);
+    }
 
+    /**
+     * Since task removal and task completion record is given a generalised treatment in handleCommand(),
+     * We will use this function to output the corresponding status message.
+     * @param command command by user
+     * @param outputTask task to be deleted/ marked as done
+     * @return
+     */
     private static String getMessageTaskCommands(Constants.Command command, Task outputTask) {
         switch (command){
         case MARK_TASK_DONE:
@@ -144,10 +166,13 @@ public class CommandHandler {
         }
     }
 
-    public static void handleCommand(Constants.Command command){
-        CommandHandler.handleCommand(command, null);
-    }
-
+    /**
+     * Since all variants of tasks are given a generalised treatment in handleCommand(),
+     * We will use this function to output the corresponding task to add to list.
+     * @param command command by user
+     * @param packet packet that are supplying params and payload of data
+     * @return task with corresponding type
+     */
     private static Task generateTask(Constants.Command command, Packet packet){
         switch (command) {
         case INSERT_TASK_DEADLINE:
@@ -161,6 +186,13 @@ public class CommandHandler {
         }
     }
 
+    /**
+     * Handles commands that are specific to a particular task.
+     * @param list lists containing the tasks
+     * @param command command input by user
+     * @param index index of task to be deleted/ marked as done
+     * @return error due to task commands failing if applicable
+     */
     private static Constants.Error handleTaskCommands(ListTasks list, Constants.Command command, int index){
         switch (command) {
         case MARK_TASK_DONE:

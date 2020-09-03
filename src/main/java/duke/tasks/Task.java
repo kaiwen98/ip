@@ -83,6 +83,10 @@ public class Task {
         this.paramMap = new Hashtable();
         this.paramMap = (Hashtable) paramMap.clone();
     }
+
+    /**
+     * For each param type in the hash table (Param Map), task to handle the contents accordingly with a corresponding action.
+     */
     protected void processParamMap() {
         String customErrorMessage = "";
         if (!this.paramMap.isEmpty()) {
@@ -98,6 +102,11 @@ public class Task {
         }
     }
 
+    /**
+     * To be overridden by the variants of tasks, depending on how they should handle the param type given.
+     * @param ParamType
+     * @return
+     */
     // To be overridden by subclasses based on the param types they can receive
     protected Constants.Error handleParams(String ParamType) {
         return Constants.Error.NO_ERROR;

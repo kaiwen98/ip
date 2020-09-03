@@ -15,8 +15,6 @@ public class Deadline extends Task{
         this.processParamMap();
     }
 
-    // Checks for param type and corresponding param, and returns error if
-    // given param is not recognised.
     @Override
     protected Constants.Error handleParams(String paramType) {
         String token = "";

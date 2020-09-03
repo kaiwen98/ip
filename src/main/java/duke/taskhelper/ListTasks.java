@@ -1,10 +1,11 @@
+/**
+ * Class to collate all the tasks added.
+ */
 package duke.taskhelper;
 import duke.tasks.*;
 import duke.dukehelper.*;
 import java.util.ArrayList;
-/**
- * Class to collate all the tasks added.
- */
+
 public class ListTasks {
 
     private ArrayList<Task> tasks;
@@ -66,6 +67,11 @@ public class ListTasks {
         }
     }
 
+    /**
+     * Removes task from list
+     * @param taskIndex index of task
+     * @return error where applicable
+     */
     public Constants.Error removeTask(int taskIndex){
         this.tasks.remove(taskIndex);
         this.numTasks--;
