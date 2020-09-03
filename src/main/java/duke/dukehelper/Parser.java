@@ -1,6 +1,9 @@
 package duke.dukehelper;
 import duke.taskhelper.*;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Parser {
 
     // Eliminated because it is not very elegant, but kept for reference
@@ -54,6 +57,9 @@ public class Parser {
      * @return A packet instance with different categories of information sorted out.
      */
     public static Packet parseInput(String input){
+        String regex = "(/\\w+)(\\s+)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
         input += " /end ";
         // A String buffer is used as placeholder for extracted string fragments from parsing input string.
         String[] buffer = new String[]{"", "", "", ""};
@@ -75,10 +81,13 @@ public class Parser {
                 System.out.println(input);
                 // Remove param type from input string
                 input = input.replaceFirst("(/\\w+)(\\s+)", "\0");
-                input = " " + input;
+                input =" " + input;
                 System.out.println(input);
                 // Extract param name
-                buffer[3] = (input.substring(0, input.indexOf(" /end"))).trim();
+                System.out.println(input.indexOf(' '));
+                matcher = pattern.matcher(input);
+                buffer[3] = (input.substring(0, input.indexOf("/e")));
+                System.out.println(buffer[3]);
                 // If following param is blank, do not add to map
                 packet.addParamToMap(buffer[2], buffer[3]);
             } while (true);
