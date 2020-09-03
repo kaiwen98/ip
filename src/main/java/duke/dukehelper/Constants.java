@@ -13,6 +13,7 @@ public class Constants {
         NO_LIST,
         NO_ERROR,
         TASK_NOT_CREATED,
+        TASK_COMMAND_FAIL,
         OTHER_ERROR
     }
 

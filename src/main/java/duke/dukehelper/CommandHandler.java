@@ -2,13 +2,6 @@ package duke.dukehelper;
 import duke.taskhelper.*;
 import duke.tasks.*;
 public class CommandHandler {
-    /**
-     * Handles command and prints messages, if any onto console depending on input parameter.
-     *
-     * @param command a string of a simple root word to represent a particular message
-     * @param packet an input parameter for the message to print, given the command requires further inputs.
-     */
-
     private static ListTasks list = new ListTasks();
 
     private static void validatePayload(Packet packet) throws DukeException.InvalidDescription {
@@ -23,6 +16,12 @@ public class CommandHandler {
         }
     }
 
+    /**
+     * Handles command and prints messages, if any onto console depending on input parameter.
+     *
+     * @param command a string of a simple root word to represent a particular message
+     * @param packet an input parameter for the message to print, given the command requires further inputs.
+     */
     public static void handleCommand(Constants.Command command, Packet packet){
         String output = "";
         String customErrorMessage = "";
@@ -48,80 +47,34 @@ public class CommandHandler {
             isDrawPartition = false;
             break;
 
+        case INSERT_TASK_DEADLINE:
+            //Fall through
         case INSERT_TASK_TODO:
-            try {
-                validatePayload(packet);
-            } catch (DukeException.InvalidDescription e){
-                customErrorMessage = "You have not entered a valid description!\n";
-                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
-                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
-                break;
-            }
-            ToDo inputToDo = new ToDo(packet.getPacketPayload());
-            err = list.addTask(inputToDo);
-            if (err != Constants.Error.NO_ERROR ){
-                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
-                break;
-            } else {
-                output = UiManager.getMessageTaskAdded(inputToDo);
-                output += UiManager.getMessageReportNumTasks(list);
-            }
-            break;
-
+            //Fall through
         case INSERT_TASK_EVENT:
-            try {
+            /**
+             *  The exception handling task is split into 2 types.
+             *  The first exception type should be detected by the command handler; If the command needs a
+             *  description and the input does not supply any, we throw an exception here.
+             *  The second exception type is unique to what the different variants of tasks want,
+             *  so we encapsulate the task-unique exception handling within their own class.
+             */
+            label: try {
                 validatePayload(packet);
-                packet.getParamMap();
-            } catch (NullPointerException exception) {
-                customErrorMessage = "This command requires a 2 parameter header and parameter inputs. eg. /at Monday 12-6pm\n";
-                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
-                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
-                break;
-            } catch (DukeException.InvalidDescription e) {
-                customErrorMessage = "You have not entered a valid description!\n";
-                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
-                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
-                break;
-            }
-
-            Event inputEvent = new Event(packet.getPacketPayload(), packet.getParamMap());
-            inputEvent.setParamMap(packet.getParamMap());
-            err = list.addTask(inputEvent);
-
-            if (err != Constants.Error.NO_ERROR ){
-                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
-                break;
-            } else {
+                Task inputEvent = generateTask(command, packet);
+                err = list.addTask(inputEvent);
+                if (err != Constants.Error.NO_ERROR) {
+                    break label;
+                }
                 output = UiManager.getMessageTaskAdded(inputEvent);
                 output += UiManager.getMessageReportNumTasks(list);
-            }
-            break;
-
-        case INSERT_TASK_DEADLINE:
-            try {
-                validatePayload(packet);
-                packet.getParamMap();
-            } catch (NullPointerException exception) {
-                customErrorMessage = "This command requires a parameter header and parameter inputs. eg. /by Monday\n";
-                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
-                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
-                break;
-            } catch (DukeException.InvalidDescription e) {
+            } catch (DukeException.InvalidDescription exception) {
                 customErrorMessage = "You have not entered a valid description!\n";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
-                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
-                break;
-            }
-
-            Deadline inputDeadline = new Deadline(packet.getPacketPayload(), packet.getParamMap());
-            err = list.addTask(inputDeadline);
-
-            if (err != Constants.Error.NO_ERROR ){
-                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
-                break;
-            } else {
-                output = UiManager.getMessageTaskAdded(inputDeadline);
-                output += UiManager.getMessageReportNumTasks(list);
+            } finally {
+                if (err != Constants.Error.NO_ERROR ) {
+                    DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
+                }
             }
             break;
 
@@ -133,42 +86,16 @@ public class CommandHandler {
             }
             break;
 
+        case REMOVE_TASK:
+            // Fall through
         case MARK_TASK_DONE:
             try {
                 validatePayload(packet);
                 validateList();
                 int index = Integer.parseInt(packet.getPacketPayload().trim()) - 1;
-                err = list.markTaskAsDone(index);
+                err = handleTaskCommands(list, command, index);
                 Task outputTask = list.getTaskByIndex(index);
-                output = UiManager.getMessageTaskMarkAsDone(outputTask);
-            } catch (IndexOutOfBoundsException exception) {
-                if (list.getNumTasks() != 1) {
-                    customErrorMessage = "Your list number ranges from 1 to";
-                    customErrorMessage += String.format(" %d. Please check your input list number.\n", list.getNumTasks());
-                } else {
-                    customErrorMessage = "There is only 1 task in your list.\n";
-                }
-                DukeException.printErrorMessage(err, customErrorMessage);
-            } catch (NullPointerException exception){
-                customErrorMessage = "So which task have you done? Specify a task number.\n";
-                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
-            } catch (DukeException.InvalidDescription e){
-                customErrorMessage = "You have not entered a valid task number!\n";
-                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
-                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
-            } catch (DukeException.NoList e) {
-                DukeException.printErrorMessage(Constants.Error.NO_LIST);
-            }
-            break;
-
-        case REMOVE_TASK:
-            try {
-                validatePayload(packet);
-                validateList();
-                int index = Integer.parseInt(packet.getPacketPayload().trim()) - 1;
-                Task outputTask = list.getTaskByIndex(index);
-                output = UiManager.getMessageTaskRemove(outputTask);
-                err = list.removeTask(index);
+                output = getMessageTaskCommands(command, outputTask);
             } catch (IndexOutOfBoundsException exception) {
                 if (list.getNumTasks() != 1) {
                     customErrorMessage = "Your list number ranges from 1 to";
@@ -177,15 +104,18 @@ public class CommandHandler {
                     customErrorMessage = "There is only 1 task in your list.\n";
                 }
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
-            } catch (NullPointerException exception){
-                customErrorMessage = "So which task are you deleting? Specify a task number.\n";
-                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
-            } catch (DukeException.InvalidDescription e){
+            } catch (DukeException.InvalidDescription exception){
                 customErrorMessage = "You have not entered a valid task number!\n";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
-                DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
-            } catch (DukeException.NoList e) {
+            } catch (DukeException.NoList exception) {
                 DukeException.printErrorMessage(Constants.Error.NO_LIST);
+            } catch (NumberFormatException exception){
+                customErrorMessage = "Non-numeric inputs are not acceptable.\n";
+                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+            } finally {
+                if (err != Constants.Error.NO_ERROR){
+                    DukeException.printErrorMessage(Constants.Error.TASK_COMMAND_FAIL);
+                }
             }
             break;
 
@@ -203,7 +133,42 @@ public class CommandHandler {
         }
     }
 
+    private static String getMessageTaskCommands(Constants.Command command, Task outputTask) {
+        switch (command){
+        case MARK_TASK_DONE:
+            return UiManager.getMessageTaskMarkAsDone(outputTask);
+        case REMOVE_TASK:
+            return UiManager.getMessageTaskRemove(outputTask);
+        default:
+            return null;
+        }
+    }
+
     public static void handleCommand(Constants.Command command){
         CommandHandler.handleCommand(command, null);
+    }
+
+    private static Task generateTask(Constants.Command command, Packet packet){
+        switch (command) {
+        case INSERT_TASK_DEADLINE:
+            return new Deadline(packet.getPacketPayload(), packet.getParamMap());
+        case INSERT_TASK_EVENT:
+            return new Event(packet.getPacketPayload(), packet.getParamMap());
+        case INSERT_TASK_TODO:
+            return new ToDo(packet.getPacketPayload());
+        default:
+            return null;
+        }
+    }
+
+    private static Constants.Error handleTaskCommands(ListTasks list, Constants.Command command, int index){
+        switch (command) {
+        case MARK_TASK_DONE:
+            return list.markTaskAsDone(index);
+        case REMOVE_TASK:
+            return list.removeTask(index);
+        default:
+            return Constants.Error.OTHER_ERROR;
+        }
     }
 }

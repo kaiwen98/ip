@@ -59,7 +59,7 @@ public class Task {
     public Task(String taskName, boolean isDone, Hashtable paramMap){
         this.taskName = taskName;
         this.setIsDone(isDone);
-        this.error = Constants.Error.NO_ERROR;
+        this.error = Constants.Error.WRONG_ARGUMENTS;
         this.taskMessage = new String[Constants.MAX_ARRAY_LEN];
         Arrays.fill(this.taskMessage, "");
         if (paramMap != null){
@@ -73,12 +73,6 @@ public class Task {
     public Set getParamTypes(){
         return paramMap.keySet();
     }
-    public String getTaskName(){
-        return this.taskName;
-    }
-    public boolean getIsDone(){
-        return this.isDone.toBoolean();
-    }
     public String getTypeMessage(){
         return String.join(" ", this.taskMessage);
     }
@@ -90,16 +84,18 @@ public class Task {
         this.paramMap = (Hashtable) paramMap.clone();
     }
     protected void processParamMap() {
-        for (Object paramType: this.getParamTypes()){
-            // If there is at least one valid param type and param to process, no need to dismiss the entire task.
-            if (this.handleParams((String) paramType) == Constants.Error.NO_ERROR) {
-                this.error = Constants.Error.NO_ERROR;
+        if (!this.paramMap.isEmpty()) {
+            for (Object paramType : this.getParamTypes()) {
+                // If there is at least one valid param type and param to process, no need to dismiss the entire task.
+                if (this.handleParams((String) paramType) == Constants.Error.NO_ERROR) {
+                    this.error = Constants.Error.NO_ERROR;
+                }
             }
         }
     }
 
     // To be overridden by subclasses based on the param types they can receive
-    protected Constants.Error handleParams(String ParamType){
+    protected Constants.Error handleParams(String ParamType) {
         return Constants.Error.NO_ERROR;
     }
 

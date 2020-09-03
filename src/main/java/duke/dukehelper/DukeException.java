@@ -7,6 +7,8 @@ public class DukeException {
     }
     static class NoList extends Exception{
     }
+    static class TaskCreateFail extends Exception{
+    }
 
     public static void printErrorMessage(Constants.Error error, String customErrorMessage){
         String output = "";
@@ -22,8 +24,10 @@ public class DukeException {
             output = "Command not recognised. Please enter \"command\" for command list!\n";
             break;
         case TASK_NOT_CREATED:
-            output = "Due to error input, the task is not added. Try again.\n";
+            output = "Due to error in input, the task is not added. Try again.\n";
             break;
+        case TASK_COMMAND_FAIL:
+            output = "Due to error in input, the task command failed. Try again. \n";
         case NO_ERROR:
             output = "";
             break;
