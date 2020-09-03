@@ -25,6 +25,7 @@ public class Parser {
         // Extract task name
         buffer[1] = (input.substring(input.indexOf(" "), input.indexOf(" /", 1))).replace(" ", " ").trim();
 
+        // Initialize packet with known parameters: command and command payload
         packet = new Packet(buffer[0]);
         packet.setPacketPayload(buffer[1]);
 
