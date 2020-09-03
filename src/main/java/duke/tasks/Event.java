@@ -7,27 +7,19 @@ import java.util.Hashtable;
 public class Event extends Task{
     private String date;
     private String time;
+    private String test;
 
     // Constructor
     public Event(String taskName, Hashtable paramMap){
         super(taskName, false, paramMap);
         super.taskType = TaskType.EVENT;
-        // Terminate if there are no param inputs
-        this.error = (paramMap == null) ? Constants.Error.WRONG_ARGUMENTS : Constants.Error.NO_ERROR;
-        // Terminate if there are invalid params
-        if (this.error == Constants.Error.NO_ERROR){
-            for (Object paramType: this.getParamTypes()){
-                if (parsePayload((String) paramType) != Constants.Error.NO_ERROR) {
-                    this.error = Constants.Error.WRONG_ARGUMENTS;
-                }
-                if (this.error ==  Constants.Error.WRONG_ARGUMENTS) break;
-            }
-        }
+        super.processParamMap();
     }
 
     // Checks for param type and corresponding param, and returns error if
     // given param is not recognised.
-    private Constants.Error parsePayload(String paramType){
+    @Override
+    protected Constants.Error handleParams(String paramType){
         String[] token = null;
         switch(paramType){
         case "/at":
@@ -41,7 +33,13 @@ public class Event extends Task{
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 return Constants.Error.WRONG_ARGUMENTS;
             }
+            super.taskMessage[0] = String.format("(at: %s %s)", this.date, this.time);
             break;
+
+        case "/test":
+            super.taskMessage[1] = "Got it!";
+            break;
+
         default:
             String customErrorMessage = String.format("The parameter type %s is not implemented. You may want to check your spelling.\n", paramType);
             DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
@@ -49,22 +47,4 @@ public class Event extends Task{
         }
         return Constants.Error.NO_ERROR;
     }
-
-    @Override
-    public String getTypeMessage(){
-        String output = "";
-        for(Object paramType: this.getParamTypes()) {
-            switch ((String) paramType) {
-            case "/at":
-                output = String.format("(at: %s %s)", this.date, this.time);
-                break;
-            default:
-                // Due to exception handling at parsePayload above, there is no need to catch errors here
-                // Fall through
-                break;
-            }
-        }
-        return output;
-    }
-
 }

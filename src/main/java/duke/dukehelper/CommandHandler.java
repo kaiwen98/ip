@@ -73,7 +73,7 @@ public class CommandHandler {
                 validatePayload(packet);
                 packet.getParamMap();
             } catch (NullPointerException exception) {
-                customErrorMessage = "This command requires a 2 parameter headers and parameter inputs. eg. /at Monday 12-6pm\n";
+                customErrorMessage = "This command requires a 2 parameter header and parameter inputs. eg. /at Monday 12-6pm\n";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
                 break;

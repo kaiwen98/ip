@@ -7,7 +7,6 @@ import duke.dukehelper.*;
 import java.util.Hashtable;
 import java.util.Set;
 
-
 public class Packet {
     private String packetType;
     private String packetPayload;
@@ -16,6 +15,7 @@ public class Packet {
     public Packet(String taskType, String taskName){
         this.packetType = taskType;
         this.packetPayload = taskName;
+        this.paramMap = new Hashtable();
     }
     public Packet(String taskType){
         this(taskType, null);
@@ -46,9 +46,6 @@ public class Packet {
         this.packetPayload = (payload.equals("") ? null : payload);
     }
     public Constants.Error addParamToMap(String paramType, String paramString){
-        if (this.paramMap == null){
-            this.paramMap = new Hashtable();
-        }
         this.paramMap.put(paramType, paramString);
         return Constants.Error.NO_ERROR;
     }

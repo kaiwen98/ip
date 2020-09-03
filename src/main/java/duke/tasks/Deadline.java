@@ -10,17 +10,7 @@ public class Deadline extends Task{
     public Deadline(String taskName, Hashtable paramMap){
         super(taskName, false, paramMap);
         super.taskType = Task.TaskType.DEADLINE;
-        // Terminate if there are no param inputs
-        this.error = (paramMap == null) ? Constants.Error.WRONG_ARGUMENTS : Constants.Error.NO_ERROR;
-        // Terminate if there are invalid params
-        if (this.error == Constants.Error.NO_ERROR){
-            for (Object paramType: this.getParamTypes()){
-                if (parsePayload((String) paramType) != Constants.Error.NO_ERROR) {
-                    this.error = Constants.Error.WRONG_ARGUMENTS;
-                }
-                if (this.error ==  Constants.Error.WRONG_ARGUMENTS) break;
-            }
-        }
+        super.processParamMap();
     }
 
     private Constants.Error parsePayload(String paramType){
@@ -37,6 +27,7 @@ public class Deadline extends Task{
         }
         return Constants.Error.NO_ERROR;
     }
+
 
     @Override
     public String getTypeMessage(){

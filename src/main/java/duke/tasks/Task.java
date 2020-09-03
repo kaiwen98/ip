@@ -5,6 +5,7 @@
 package duke.tasks;
 import java.util.Hashtable;
 import java.util.Set;
+import java.util.Arrays;
 import duke.dukehelper.*;
 
 public class Task {
@@ -12,6 +13,7 @@ public class Task {
     protected IsDone isDone;
     protected TaskType taskType;
     protected Hashtable paramMap;
+    protected String[] taskMessage;
     public Constants.Error error;
 
     enum TaskType {
@@ -58,6 +60,8 @@ public class Task {
         this.taskName = taskName;
         this.setIsDone(isDone);
         this.error = Constants.Error.NO_ERROR;
+        this.taskMessage = new String[Constants.MAX_ARRAY_LEN];
+        Arrays.fill(this.taskMessage, "");
         if (paramMap != null){
             this.setParamMap(paramMap);
         }
@@ -76,7 +80,7 @@ public class Task {
         return this.isDone.toBoolean();
     }
     public String getTypeMessage(){
-        return "";
+        return String.join(" ", this.taskMessage);
     }
     public void setIsDone(boolean isDone){
         this.isDone = (isDone) ? IsDone.DONE : IsDone.NOT_DONE;
@@ -84,6 +88,19 @@ public class Task {
     public void setParamMap(Hashtable paramMap){
         this.paramMap = new Hashtable();
         this.paramMap = (Hashtable) paramMap.clone();
+    }
+    protected void processParamMap() {
+        for (Object paramType: this.getParamTypes()){
+            // If there is at least one valid param type and param to process, no need to dismiss the entire task.
+            if (this.handleParams((String) paramType) == Constants.Error.NO_ERROR) {
+                this.error = Constants.Error.NO_ERROR;
+            }
+        }
+    }
+
+    // To be overridden by subclasses based on the param types they can receive
+    protected Constants.Error handleParams(String ParamType){
+        return Constants.Error.NO_ERROR;
     }
 
     @Override
