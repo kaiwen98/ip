@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.Arrays;
 import duke.dukehelper.*;
 
-public class Task {
+public abstract class Task {
     protected String taskName;
     protected IsDone isDone;
     protected TaskType taskType;
@@ -108,9 +108,7 @@ public class Task {
      * @return
      */
     // To be overridden by subclasses based on the param types they can receive
-    protected Constants.Error handleParams(String ParamType) {
-        return Constants.Error.NO_ERROR;
-    }
+    protected abstract Constants.Error handleParams(String ParamType) ;
 
     @Override
     public String toString(){
