@@ -45,15 +45,6 @@ public class ListTasks {
     }
 
     /**
-     * Add task to list.
-     * @param newTaskParam Task name, if the task is to be created by its name, then which it is automatically assumed to be an uncompleted task.
-     * @return Error code
-     */
-    public Constants.Error addTask(String newTaskParam){
-        return addTask(new Task(newTaskParam));
-    }
-
-    /**
      * Mark a specific task as done.
      * @param taskIndex index of the task on the task array.
      * @return Error code
