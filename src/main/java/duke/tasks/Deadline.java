@@ -36,7 +36,7 @@ public class Deadline extends Task{
             break;
 
         case "/sorry":
-            super.taskMessage[1] = "< Sorry, the code is very extra. I'm just trying to learn java. >";
+            this.taskMessage[1] = "< Sorry, the code is very extra. I'm just trying to learn java. >";
             break;
 
         default:
