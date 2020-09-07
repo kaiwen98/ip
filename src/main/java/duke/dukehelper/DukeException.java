@@ -28,6 +28,7 @@ public class DukeException {
             break;
         case TASK_COMMAND_FAIL:
             output = "Due to error in input, the task command failed. Try again. \n";
+            break;
         case NO_ERROR:
             output = "";
             break;

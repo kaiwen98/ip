@@ -50,10 +50,6 @@ public class CommandHandler {
             output = UiManager.MESSAGE_BYE;
             break;
 
-        case ECHO:
-            output = String.format("%s\n", packet.getPacketPayload());
-            break;
-
         case PROMPT_INPUT:
             output = ">>> ";
             isDrawPartition = false;
@@ -106,6 +102,7 @@ public class CommandHandler {
                 validateList();
                 int index = Integer.parseInt(packet.getPacketPayload().trim()) - 1;
                 err = handleTaskCommands(list, command, index);
+                System.out.println("lol");
                 Task outputTask = list.getTaskByIndex(index);
                 output = getMessageTaskCommands(command, outputTask);
             } catch (IndexOutOfBoundsException exception) {

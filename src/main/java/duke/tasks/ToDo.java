@@ -9,12 +9,10 @@ public class ToDo extends Task{
         super(taskName);
         super.taskType = Task.TaskType.TODO;
         this.error = Constants.Error.NO_ERROR;
-        System.out.println("todo");
     }
 
     @Override
     protected Constants.Error handleParams(String paramType){
         return Constants.Error.NO_ERROR;
     }
-
 }
