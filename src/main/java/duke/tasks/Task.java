@@ -5,13 +5,15 @@
 package duke.tasks;
 import java.util.Hashtable;
 import java.util.Set;
+import java.util.Arrays;
 import duke.dukehelper.*;
 
-public class Task {
+public abstract class Task {
     protected String taskName;
     protected IsDone isDone;
     protected TaskType taskType;
     protected Hashtable paramMap;
+    protected String[] taskMessage;
     public Constants.Error error;
 
     enum TaskType {
@@ -57,7 +59,9 @@ public class Task {
     public Task(String taskName, boolean isDone, Hashtable paramMap){
         this.taskName = taskName;
         this.setIsDone(isDone);
-        this.error = Constants.Error.NO_ERROR;
+        this.error = Constants.Error.WRONG_ARGUMENTS;
+        this.taskMessage = new String[Constants.MAX_ARRAY_LEN];
+        Arrays.fill(this.taskMessage, "");
         if (paramMap != null){
             this.setParamMap(paramMap);
         }
@@ -69,14 +73,8 @@ public class Task {
     public Set getParamTypes(){
         return paramMap.keySet();
     }
-    public String getTaskName(){
-        return this.taskName;
-    }
-    public boolean getIsDone(){
-        return this.isDone.toBoolean();
-    }
     public String getTypeMessage(){
-        return "";
+        return String.join(" ", this.taskMessage);
     }
     public void setIsDone(boolean isDone){
         this.isDone = (isDone) ? IsDone.DONE : IsDone.NOT_DONE;
@@ -85,6 +83,32 @@ public class Task {
         this.paramMap = new Hashtable();
         this.paramMap = (Hashtable) paramMap.clone();
     }
+
+    /**
+     * For each param type in the hash table (Param Map), task to handle the contents accordingly with a corresponding action.
+     */
+    protected void processParamMap() {
+        String customErrorMessage = "";
+        if (!this.paramMap.isEmpty()) {
+            for (Object paramType : this.getParamTypes()) {
+                // If there is at least one valid param type and param to process, no need to dismiss the entire task.
+                if (this.handleParams((String) paramType) == Constants.Error.NO_ERROR) {
+                    this.error = Constants.Error.NO_ERROR;
+                }
+            }
+        } else {
+            customErrorMessage = "This command expects a param type-param input, eg. /by Monday etc.\n";
+            DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+        }
+    }
+
+    /**
+     * To be overridden by the variants of tasks, depending on how they should handle the param type given.
+     * @param ParamType
+     * @return
+     */
+    // To be overridden by subclasses based on the param types they can receive
+    protected abstract Constants.Error handleParams(String ParamType) ;
 
     @Override
     public String toString(){

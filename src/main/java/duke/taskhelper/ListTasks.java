@@ -1,10 +1,11 @@
+/**
+ * Class to collate all the tasks added.
+ */
 package duke.taskhelper;
 import duke.tasks.*;
 import duke.dukehelper.*;
 import java.util.ArrayList;
-/**
- * Class to collate all the tasks added.
- */
+
 public class ListTasks {
 
     private ArrayList<Task> tasks;
@@ -44,26 +45,29 @@ public class ListTasks {
     }
 
     /**
-     * Add task to list.
-     * @param newTaskParam Task name, if the task is to be created by its name, then which it is automatically assumed to be an uncompleted task.
+     * Mark a specific task as done.
+     * @param taskIndex index of the task on the task array.
      * @return Error code
      */
-    public Constants.Error addTask(String newTaskParam){
-        return addTask(new Task(newTaskParam));
+    public Constants.Error markTaskAsDone(int taskIndex){
+        if (taskIndex <= 0 || taskIndex > this.numTasks -1){
+            System.out.println("haha");
+            return Constants.Error.WRONG_ARGUMENTS;
+        } else{
+            this.tasks.get(taskIndex).setIsDone(true);
+            return Constants.Error.NO_ERROR;
+        }
     }
 
     /**
-     * Mark a specific task as done.
-     * @param taskNumber index of the task on the task array.
-     * @return Error code
+     * Removes task from list
+     * @param taskIndex index of task
+     * @return error where applicable
      */
-    public Constants.Error markTaskAsDone(int taskNumber){
-        if (taskNumber < 0 || taskNumber > this.numTasks -1){
-            return Constants.Error.WRONG_ARGUMENTS;
-        } else{
-            tasks.get(taskNumber).setIsDone(true);
-            return Constants.Error.NO_ERROR;
-        }
+    public Constants.Error removeTask(int taskIndex){
+        this.tasks.remove(taskIndex);
+        this.numTasks--;
+        return Constants.Error.NO_ERROR;
     }
 
     /**

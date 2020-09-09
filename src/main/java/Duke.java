@@ -7,7 +7,6 @@ public class Duke {
     public static boolean isListCreated = false;
     public static ListTasks list = null;
 
-
     public static void main(String[] args) {
         String input;
         Packet packet = null;
@@ -17,11 +16,11 @@ public class Duke {
 
         UiManager.drawPartition();
         CommandHandler.handleCommand(Constants.Command.HELLO);
-        while(continueQuery){
+        while (continueQuery){
             CommandHandler.handleCommand(Constants.Command.PROMPT_INPUT);
             input = in.nextLine();
-            packet = Parser.parseInput(input.toLowerCase());
-            switch(packet.getPacketType()) {
+            packet = Parser.parseInput(input);
+            switch (packet.getPacketType()) {
             case "bye":
                 CommandHandler.handleCommand(Constants.Command.BYE);
                 continueQuery = false;
@@ -45,6 +44,9 @@ public class Duke {
                 break;
             case "deadline":
                 CommandHandler.handleCommand(Constants.Command.INSERT_TASK_DEADLINE, packet);
+                break;
+            case "remove":
+                CommandHandler.handleCommand(Constants.Command.REMOVE_TASK, packet);
                 break;
             default:
                 DukeException.printErrorMessage(Constants.Error.INVALID_COMMAND);
