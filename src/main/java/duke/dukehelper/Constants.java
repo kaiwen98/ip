@@ -22,7 +22,6 @@ public class Constants {
         FILE_EXISTS,
         LIST_EXISTS,
         OTHER_ERROR,
-        STATUS
     }
 
     public enum Command {
