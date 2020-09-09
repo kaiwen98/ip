@@ -30,8 +30,9 @@ public class ToDo extends Task{
             this.setIsDone(isDone);
             break;
         default:
-            // Pass through
-            break;
+            customErrorMessage = String.format("The parameter type %s is not implemented.\n", paramType);
+            DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+            return Constants.Error.WRONG_ARGUMENTS;
         }
         return Constants.Error.NO_ERROR;
     }

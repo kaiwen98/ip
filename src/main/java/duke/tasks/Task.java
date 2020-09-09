@@ -3,10 +3,12 @@
  * Acts as super class to ToDo, Event and Deadline classes.
  */
 package duke.tasks;
+
+import duke.dukehelper.Command;
+import duke.dukehelper.Constants;
+
 import java.util.Hashtable;
-import java.util.Set;
 import java.util.Arrays;
-import duke.dukehelper.*;
 
 public abstract class Task extends Command {
     protected String taskName;
@@ -79,6 +81,12 @@ public abstract class Task extends Command {
     public String getIsDone() {
         return String.format("%s", this.isDone);
     }
+
+    public boolean getIsDoneBool() {
+        return this.isDone.toBoolean();
+    }
+
+
 
     public String getTypeMessage() {
         return String.join(" ", this.taskMessage);

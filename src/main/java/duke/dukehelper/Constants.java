@@ -20,6 +20,7 @@ public class Constants {
         FILE_SAVE_FAIL,
         FILE_NOT_FOUND,
         FILE_EXISTS,
+        LIST_EXISTS,
         OTHER_ERROR,
         STATUS
     }
@@ -32,11 +33,11 @@ public class Constants {
         INSERT_TASK_TODO,
         INSERT_TASK_EVENT,
         SHOW_LIST,
+        SHOW_SAVE_STATES,
         SHOW_COMMANDS,
         MARK_TASK_DONE,
         REMOVE_TASK,
         SAVE_FILE,
-        LOAD_FILE,
-
+        LOAD_FILE
     }
 }

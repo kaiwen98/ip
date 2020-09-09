@@ -1,5 +1,14 @@
-import duke.taskhelper.*;
-import duke.dukehelper.*;
+/**
+ * Main class to execute program
+ */
+
+import duke.dukehelper.CommandHandler;
+import duke.dukehelper.Constants;
+import duke.dukehelper.DukeException;
+import duke.dukehelper.Parser;
+import duke.dukehelper.UiManager;
+import duke.taskhelper.ListTasks;
+import duke.taskhelper.Packet;
 
 import java.util.Scanner;
 
@@ -10,7 +19,6 @@ public class Duke {
     public static Constants.Command commandToReply = null;
 
     public static void main(String[] args) {
-        //System.out.println(Constants.SAVE_PATH);
         String input;
         Packet packet = null;
         String[] inputParams = new String[Constants.MAX_ARRAY_LEN];
@@ -61,6 +69,9 @@ public class Duke {
                 break;
             case "load":
                 commandToReply = CommandHandler.handleCommand(Constants.Command.LOAD_FILE, packet);
+                break;
+            case "saves":
+                commandToReply = CommandHandler.handleCommand(Constants.Command.SHOW_SAVE_STATES);
                 break;
             default:
                 DukeException.printErrorMessage(Constants.Error.INVALID_COMMAND);

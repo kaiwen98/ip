@@ -1,4 +1,9 @@
+/**
+ * Class that handles all file IO operations concerning save states of the program.
+ */
+
 package duke.dukehelper;
+
 import duke.taskhelper.ListTasks;
 import duke.taskhelper.Packet;
 import duke.taskhelper.TaskException;
@@ -10,20 +15,28 @@ import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Hashtable;
 
 public class SaveManager extends Command {
-    public static ArrayList<String> saveStatesNames = new ArrayList<String>();
     private String name = "";
     private String saveFolderPath = Constants.DEFAULT_SAVE_PATH;
+
     public SaveManager(){
     }
-    public SaveManager(Hashtable paramMap){
-        super.setParamMap(paramMap);
+
+    /**
+     * Use Stream method to evaluate existence of file in directory.
+     * @param fileName file name input by users
+     * @return true if file exists in directory
+     */
+    public boolean isExistingFileName(String fileName){
+        return Arrays.stream(getSaveStateNames()).anyMatch(fileName::equals);
     }
 
+    /**
+     * Prints save states onto console in a list.
+     */
     public void printSaveStates(){
-        String output = "";
+        String output = String.format("Save states in [%s]:\n", this.saveFolderPath);
         int i = 0;
         for(String fileName : this.getSaveStateNames()) {
             i++;
@@ -32,11 +45,34 @@ public class SaveManager extends Command {
         System.out.println(output);
     }
 
-    public boolean isExistingFileName(String fileName){
-        //System.out.println(fileName);
-        return Arrays.stream(getSaveStateNames()).anyMatch(fileName::equals);
+    /**
+     * Variant of printSaveStates()
+     * @return save states onto console in a list in a string.
+     */
+    public String getSaveStates(){
+        String output = String.format("Save states in [%s]:\n", this.saveFolderPath);
+        int i = 0;
+        for(String fileName : this.getSaveStateNames()) {
+            i++;
+            output += String.format("%d.\t%s\n", i, fileName);
+        }
+        return output;
     }
 
+    /**
+     * Return total number
+     * @return total number of save states in the particular directory
+     */
+    public int getNumSaveStates(){
+        File saveStatesFolder = new File(this.saveFolderPath);
+        File[] saveStates = saveStatesFolder.listFiles();
+        return saveStates.length;
+    }
+
+    /**
+     * Get full file path of the specified file
+     * @return string of the file path
+     */
     public String getFilePath(){
         return this.saveFolderPath + this.name + "\\";
     }
@@ -45,9 +81,11 @@ public class SaveManager extends Command {
         return this.name;
     }
 
-
+    /**
+     * Helper function, to consolidate names of save states for searching functions
+     * @return String array of save state names in the particular directory
+     */
     public String[] getSaveStateNames(){
-        //System.out.println(this.saveFolderPath);
         File saveStatesFolder = new File(this.saveFolderPath);
         File[] saveStates = saveStatesFolder.listFiles();
         String[] saveStateNames = new String[saveStates.length];
@@ -57,7 +95,12 @@ public class SaveManager extends Command {
         return saveStateNames;
     }
 
-    public String showAllTasksSave(ListTasks list){
+    /**
+     * Formats the list in a particular way before outputting to .txt file
+     * @param list
+     * @return String of the formatted list
+     */
+    public String getAllTasksSaveToString(ListTasks list){
         Task task;
         String output = "";
         for(int i = 0; i < list.getNumTasks(); i ++) {
@@ -72,6 +115,28 @@ public class SaveManager extends Command {
         return output;
     }
 
+    /**
+     * Ensures that the width occupied by the task name in the output text file is the same, hence it looks neater. Purely cosmetic in purpose.
+     * @param taskName
+     * @param maxWidth With of the longest task name in the list for correct allocation of width sizes
+     * @return String of task name left-adjusted in a char field of fixed width
+     */
+    public static String getTaskNameFormatted(String taskName, int maxWidth) {
+        return String.format("%s%s", taskName, UiManager.returnLineWithSymbol(maxWidth - taskName.length()," "));
+    }
+    public static String getTypeMessageFormatted(String typeMessage) {
+        if (typeMessage.strip().length() != 0) {
+            return " | " + typeMessage;
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * Function that performs the list-to-file conversion.
+     * @param list
+     * @return error code where applicable.
+     */
     public Constants.Error saveToTxt(ListTasks list) {
         this.setParamMap(this.paramMap);
         try {
@@ -79,15 +144,21 @@ public class SaveManager extends Command {
                 throw new DukeException.ListSaveLoadFail();
             }
             FileWriter fileWriter = new FileWriter(this.saveFolderPath + this.name);
-            fileWriter.write(showAllTasksSave(list));
+            fileWriter.write(getAllTasksSaveToString(list));
             fileWriter.close();
-            saveStatesNames.add(this.name);
         } catch (IOException | DukeException.ListSaveLoadFail exception) {
             return Constants.Error.FILE_SAVE_FAIL;
         }
         return this.error;
     }
 
+    /**
+     * Function that performs the file-to-list conversion.
+     * First, it will check whether the file exists in the specified directory.
+     * If found, then it will retrieve the file and convert to a list within the program with all information inherited.
+     * @param list
+     * @return error code where applicable
+     */
     public Constants.Error loadFromTxt(ListTasks list) {
         char[] inputArray = new char[1024];
         String output = null;
@@ -104,7 +175,6 @@ public class SaveManager extends Command {
             fileReader.close();
             output = new String(inputArray);
             processSaveStateToString(output);
-            saveStatesNames.add(this.name);
         } catch (IOException | DukeException.ListSaveLoadFail exception) {
             return Constants.Error.FILE_LOAD_FAIL;
         } catch (DukeException.FileNotFound exception){
@@ -116,16 +186,23 @@ public class SaveManager extends Command {
         return this.error;
     }
 
+    /**
+     * Parameters handled by the command
+     * /name - Name for the save state file to be saved locally.
+     * /dir - custom directory that is different from the default save directory.
+     * @param paramType
+     * @return error code where applicable.
+     */
     @Override
     protected Constants.Error handleParams(String paramType){
         String token = "";
         switch(paramType){
         case "/name":
             try {
-                if (((String) this.paramMap.get(paramType)).length() == 0){
+                if (((String) this.paramMap.get(paramType)).length() == 0) {
                     throw new TaskException.IllegalParam();
                 }
-                token = (String) this.paramMap.get(paramType);
+                token = ((String) this.paramMap.get(paramType)).replace(".txt", "");
                 this.name = String.format("%s.txt", token);
             } catch (TaskException.IllegalParam exception){
                 String customErrorMessage = String.format("Param %s is expecting 1 string argument: "
@@ -147,17 +224,14 @@ public class SaveManager extends Command {
         return Constants.Error.NO_ERROR;
     }
 
-    public static String getTaskNameFormatted(String taskName, int maxWidth) {
-        return String.format("%s%s", taskName, UiManager.returnLineWithSymbol(maxWidth - taskName.length()," "));
-    }
-    public static String getTypeMessageFormatted(String typeMessage) {
-        if (typeMessage.strip().length() != 0) {
-            return " | " + typeMessage;
-        } else {
-            return "";
-        }
-    }
-    public String processSaveStateToString(String saveState){
+    /**
+     * From a string extracted from a given text file, parse the string to consolidate information in a packet class
+     * Then, input the packet instance into handleCommand such that each task is added into the local list
+     * Note that a boolean value = false is passed into handleCommand. This is to turn off the verbosity of the command,
+     * Hence it will not spam the user while the tasks are extracted and added into the list.
+     * @param saveState
+     */
+    public void processSaveStateToString(String saveState){
         Packet packet;
 
         saveState = saveState.trim();
@@ -167,13 +241,9 @@ public class SaveManager extends Command {
         Constants.Command command = null;
 
         for (String token: tokens) {
-//            System.out.println("newln");
-//            System.out.println(token);
             token = token.replace("|", ";").replaceFirst(";", "\0");
             buffer = token.split(";");
-//            System.out.println(token);
-//            System.out.println(buffer[1]);
-//            System.out.println(buffer[2]);
+
             for (int i = 0; i < buffer.length; i ++){
                 buffer[i] = buffer[i].trim();
             }
@@ -184,18 +254,14 @@ public class SaveManager extends Command {
                         (buffer[0].equals("T")) ? "todo" :
                         (buffer[0].equals("E")) ? "event" : "";
 
-//            System.out.println(buffer[3]);
             packet = new Packet(buffer[0], buffer[2].strip());
             packet.addParamToMap("/done", buffer[1]);
+
             if (buffer.length == 4) {
                 paramBuffer = buffer[3].replace(":", ";").split(";");
-//                System.out.println(paramBuffer[0]);
-//                System.out.println(paramBuffer[1]);
                 packet.addParamToMap("/" + paramBuffer[0].trim(), paramBuffer[1].trim());
             }
-//            System.out.println(command);
             CommandHandler.handleCommand(command, packet, false, false);
         }
-        return saveState;
     }
 }
