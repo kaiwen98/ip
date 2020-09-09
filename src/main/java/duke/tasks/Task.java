@@ -3,115 +3,106 @@
  * Acts as super class to ToDo, Event and Deadline classes.
  */
 package duke.tasks;
-import java.util.Hashtable;
-import java.util.Set;
-import java.util.Arrays;
-import duke.dukehelper.*;
 
-public abstract class Task {
+import duke.dukehelper.Command;
+import duke.dukehelper.Constants;
+
+import java.util.Hashtable;
+import java.util.Arrays;
+
+public abstract class Task extends Command {
     protected String taskName;
     protected IsDone isDone;
     protected TaskType taskType;
-    protected Hashtable paramMap;
     protected String[] taskMessage;
-    public Constants.Error error;
 
     enum TaskType {
-        TODO("[T]"),
-        DEADLINE("[D]"),
-        EVENT("[E]");
+        TODO("T"),
+        DEADLINE("D"),
+        EVENT("E");
 
         private String literal;
 
-        TaskType(String literal){
+        TaskType(String literal) {
             this.literal = literal;
         }
 
         @Override
-        public String toString(){
+        public String toString() {
             return this.literal;
         }
     }
 
     enum IsDone {
-        DONE("[✓]", true),
-        NOT_DONE("[✗]", false);
+        DONE("✓", true),
+        NOT_DONE("✗", false);
 
         private String literal;
         private boolean bool;
 
-        IsDone(String literal, boolean bool){
+        IsDone(String literal, boolean bool) {
             this.literal = literal;
             this.bool = bool;
         }
 
         @Override
-        public String toString(){
+        public String toString() {
             return this.literal;
         }
 
-        public boolean toBoolean(){
+        public boolean toBoolean() {
             return bool;
         }
     }
 
     // Constructor
-    public Task(String taskName, boolean isDone, Hashtable paramMap){
+    public Task(String taskName, boolean isDone, Hashtable paramMap) {
         this.taskName = taskName;
         this.setIsDone(isDone);
-        this.error = Constants.Error.WRONG_ARGUMENTS;
         this.taskMessage = new String[Constants.MAX_ARRAY_LEN];
         Arrays.fill(this.taskMessage, "");
-        if (paramMap != null){
+        if (paramMap != null) {
             this.setParamMap(paramMap);
         }
     }
-    public Task(String taskName){
+
+    public Task(String taskName) {
         this(taskName, false, null);
     }
 
-    public Set getParamTypes(){
-        return paramMap.keySet();
+    public String getTaskName() {
+        return this.taskName;
     }
-    public String getTypeMessage(){
+
+    public String getTaskType() {
+        return String.format("%s", this.taskType);
+    }
+
+    public String getIsDone() {
+        return String.format("%s", this.isDone);
+    }
+
+    public boolean getIsDoneBool() {
+        return this.isDone.toBoolean();
+    }
+
+
+
+    public String getTypeMessage() {
         return String.join(" ", this.taskMessage);
     }
-    public void setIsDone(boolean isDone){
+
+    public void setIsDone(boolean isDone) {
         this.isDone = (isDone) ? IsDone.DONE : IsDone.NOT_DONE;
     }
-    public void setParamMap(Hashtable paramMap){
-        this.paramMap = new Hashtable();
-        this.paramMap = (Hashtable) paramMap.clone();
-    }
-
-    /**
-     * For each param type in the hash table (Param Map), task to handle the contents accordingly with a corresponding action.
-     */
-    protected void processParamMap() {
-        String customErrorMessage = "";
-        if (!this.paramMap.isEmpty()) {
-            for (Object paramType : this.getParamTypes()) {
-                // If there is at least one valid param type and param to process, no need to dismiss the entire task.
-                if (this.handleParams((String) paramType) == Constants.Error.NO_ERROR) {
-                    this.error = Constants.Error.NO_ERROR;
-                }
-            }
-        } else {
-            customErrorMessage = "This command expects a param type-param input, eg. /by Monday etc.\n";
-            DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
-        }
-    }
-
-    /**
-     * To be overridden by the variants of tasks, depending on how they should handle the param type given.
-     * @param ParamType
-     * @return
-     */
-    // To be overridden by subclasses based on the param types they can receive
-    protected abstract Constants.Error handleParams(String ParamType) ;
 
     @Override
     public String toString(){
-        return String.format("%s%s %s %s", this.taskType, this.isDone, this.taskName, this.getTypeMessage());
+        String output = "";
+        output = String.format("[%s][%s] %s", this.taskType, this.isDone, this.taskName);
+        if ((this.getTypeMessage().strip()).length() != 0){
+            output += String.format(" (%s)", this.getTypeMessage().strip());
+        }
+        return output;
     }
 }

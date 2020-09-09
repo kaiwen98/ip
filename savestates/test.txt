@@ -1,0 +1,4 @@
+| T | ✗ | walk the dog in the park
+| D | ✓ | walk the cat in the sea  | by: tuesday         
+| E | ✗ | party in te sun          | at: tuesday 2-3pm         
+| T | ✗ | jump the rope           
