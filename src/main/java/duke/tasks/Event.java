@@ -22,6 +22,7 @@ public class Event extends Task{
     @Override
     protected Constants.Error handleParams(String paramType) {
         String[] token = null;
+        String customErrorMessage = "";
         switch(paramType){
         case "/at":
             try {
@@ -33,7 +34,7 @@ public class Event extends Task{
                 this.time = token[1];
                 super.taskMessage[0] = String.format("at: %s %s", this.date, this.time);
             } catch (ArrayIndexOutOfBoundsException | TaskException.IllegalParam exception){
-                String customErrorMessage = String.format("Param %s is expecting 2 string arguments: "
+                customErrorMessage = String.format("Param %s is expecting 2 string arguments: "
                         + "Date and Time. Check your input.\n", paramType);
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 return Constants.Error.WRONG_ARGUMENTS;
@@ -44,8 +45,22 @@ public class Event extends Task{
             super.taskMessage[1] = "< Sorry, the code is very extra. I'm just trying to learn java. >";
             break;
 
+        case "/done":
+            boolean isDone;
+            if (((String)this.paramMap.get(paramType)).equals("✓")){
+                isDone = true;
+            } else if (((String)this.paramMap.get(paramType)).equals("✗")){
+                isDone = false;
+            } else {
+                customErrorMessage = "Done symbol is not recognised from source file!\n";
+                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+                return Constants.Error.WRONG_ARGUMENTS;
+            }
+            this.setIsDone(isDone);
+            break;
+
         default:
-            String customErrorMessage = String.format("The parameter type %s is not implemented.\n", paramType);
+            customErrorMessage = String.format("The parameter type %s is not implemented.\n", paramType);
             DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
             return Constants.Error.WRONG_ARGUMENTS;
         }

@@ -11,6 +11,8 @@ public class DukeException {
     }
     static class ListSaveLoadFail extends Exception{
     }
+    static class FileNotFound extends Exception{
+    }
 
     public static void printErrorMessage(Constants.Error error, String customErrorMessage){
         String output = "";
@@ -31,8 +33,20 @@ public class DukeException {
         case TASK_COMMAND_FAIL:
             output = "Due to error in input, the task command failed. Try again. \n";
             break;
+        case FILE_SAVE_FAIL:
+            output = "Due to error in input, the list save failed. Try again. \n";
+            break;
+        case FILE_LOAD_FAIL:
+            output = "Due to error in input, the list load failed. Try again. \n";
+            break;
+        case FILE_NOT_FOUND:
+            output = "The file name supplied does not exist in the directory: \n";
+            break;
+        case FILE_EXISTS:
+            output = "The file name supplied already exists in the directory. Are you sure you want to override it? [Y\\N]\n";
+            break;
         case NO_ERROR:
-            output = "";
+            output = "Process completed successfully!";
             break;
         default:
             // Fall through

@@ -60,7 +60,7 @@ public class ListTasks {
      * @return Error code
      */
     public Constants.Error markTaskAsDone(int taskIndex){
-        if (taskIndex <= 0 || taskIndex > this.numTasks -1){
+        if (taskIndex < 0 || taskIndex > this.numTasks -1){
             return Constants.Error.WRONG_ARGUMENTS;
         } else{
             this.tasks.get(taskIndex).setIsDone(true);

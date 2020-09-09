@@ -12,9 +12,7 @@ public abstract class Task extends Command {
     protected String taskName;
     protected IsDone isDone;
     protected TaskType taskType;
-
     protected String[] taskMessage;
-    public Constants.Error error;
 
     enum TaskType {
         TODO("T"),
@@ -59,7 +57,6 @@ public abstract class Task extends Command {
     public Task(String taskName, boolean isDone, Hashtable paramMap) {
         this.taskName = taskName;
         this.setIsDone(isDone);
-        this.error = Constants.Error.WRONG_ARGUMENTS;
         this.taskMessage = new String[Constants.MAX_ARRAY_LEN];
         Arrays.fill(this.taskMessage, "");
         if (paramMap != null) {

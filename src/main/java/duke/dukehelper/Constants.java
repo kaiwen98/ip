@@ -4,7 +4,7 @@
 package duke.dukehelper;
 
 public class Constants {
-    public static final String DEFAULT_SAVE_PATH = System.getProperty("user.dir") + "\\savestates";
+    public static final String DEFAULT_SAVE_PATH = System.getProperty("user.dir") + "\\savestates\\";
     public static final int MAX_ARRAY_LEN = 10;
     public static final int MAX_PARTITION_LINE_LEN = 60;
     public static final int MAX_LIST_LEN = 10;
@@ -16,18 +16,18 @@ public class Constants {
         NO_ERROR,
         TASK_NOT_CREATED,
         TASK_COMMAND_FAIL,
-        FILE_WRITE_FAIL,
+        FILE_LOAD_FAIL,
         FILE_SAVE_FAIL,
-        OTHER_ERROR
+        FILE_NOT_FOUND,
+        FILE_EXISTS,
+        OTHER_ERROR,
+        STATUS
     }
 
     public enum Command {
         HELLO,
         BYE,
-        ECHO,
         PROMPT_INPUT,
-        PROMPT_SAVE,
-        PROMPT_LOAD,
         INSERT_TASK_DEADLINE,
         INSERT_TASK_TODO,
         INSERT_TASK_EVENT,
@@ -36,6 +36,7 @@ public class Constants {
         MARK_TASK_DONE,
         REMOVE_TASK,
         SAVE_FILE,
-        LOAD_FILE
+        LOAD_FILE,
+
     }
 }

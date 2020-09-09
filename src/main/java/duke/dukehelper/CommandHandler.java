@@ -5,11 +5,9 @@ package duke.dukehelper;
 import duke.taskhelper.*;
 import duke.tasks.*;
 
-import javax.swing.*;
-
 public class CommandHandler {
-    private static ListTasks list = new ListTasks();
-    private static SaveManager saveManager = new SaveManager();
+    public static ListTasks list = new ListTasks();
+    private static SaveManager saveManager = null;
 
     /**
      * Validates if the input supplies a description as needed by the command
@@ -37,12 +35,13 @@ public class CommandHandler {
      * @param command a string of a simple root word to represent a particular message
      * @param packet an input parameter for the message to print, given the command requires further inputs.
      */
-    public static void handleCommand(Constants.Command command, Packet packet){
+    public static Constants.Command handleCommand(Constants.Command command, Packet packet, boolean verbose, boolean isReply){
         String output = "";
         String customErrorMessage = "";
         boolean isDrawPartition = true;
+        boolean isRestartQuery = false;
+        Constants.Command commandToReply = null;
         Constants.Error err = null;
-
         switch(command){
         case HELLO:
             output = UiManager.MESSAGE_LOGO;
@@ -103,9 +102,11 @@ public class CommandHandler {
             try {
                 validatePayload(packet);
                 validateList();
+                // We offset index by negative 1 to correspond with array index sequence.
                 int index = Integer.parseInt(packet.getPacketPayload().trim()) - 1;
                 err = handleTaskCommands(list, command, index);
-                System.out.println("lol");
+                System.out.println(err);
+                System.out.println(list.getNumTasks());
                 Task outputTask = list.getTaskByIndex(index);
                 output = getMessageTaskCommands(command, outputTask);
             } catch (IndexOutOfBoundsException exception) {
@@ -132,11 +133,51 @@ public class CommandHandler {
             break;
 
         case SAVE_FILE:
-            err = saveManager.saveToTxt(packet.getParamMap(), list);
-            if (err == Constants.Error.NO_ERROR) {
-                output = UiManager.getMessageListSaved(list);
+            if (!isReply) {
+                saveManager = new SaveManager();
+                saveManager.setParamMap(packet.getParamMap());
+                if (saveManager.isExistingFileName(saveManager.getFileName())){
+                    DukeException.printErrorMessage(Constants.Error.FILE_EXISTS);
+                    commandToReply = command;
+                    break;
+                }
             } else {
-                DukeException.printErrorMessage(Constants.Error.FILE_SAVE_FAIL);
+                switch(packet.getPacketPayload()) {
+                case "y":
+                    customErrorMessage  = String.format("Alright, save state below will be overwritten:\t[%s]\n", saveManager.getFilePath());
+                    DukeException.printErrorMessage(Constants.Error.NO_ERROR, customErrorMessage);
+                    commandToReply = null;
+                    break;
+                case "n":
+                    customErrorMessage = "Got it. Enter some other commands then!\n";
+                    DukeException.printErrorMessage(Constants.Error.NO_ERROR, customErrorMessage);
+                    commandToReply = null;
+                    break;
+                default:
+                    customErrorMessage = "Input not recognised. Enter either \"Y\" or \"N\".\n";
+                    DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+                    isRestartQuery = true;
+                    break;
+                }
+            }
+
+            if (!isRestartQuery) {
+                err = saveManager.saveToTxt(list);
+                if (err == Constants.Error.NO_ERROR) {
+                    output = UiManager.getMessageListSaved(list);
+                } else {
+                    DukeException.printErrorMessage(Constants.Error.FILE_SAVE_FAIL);
+                }
+            }
+            break;
+
+        case LOAD_FILE:
+            saveManager.setParamMap(packet.getParamMap());
+            err = saveManager.loadFromTxt(list);
+            if (err == Constants.Error.NO_ERROR) {
+                output = UiManager.getMessageListLoaded(list);
+            } else {
+                DukeException.printErrorMessage(Constants.Error.FILE_LOAD_FAIL);
             }
             break;
 
@@ -148,13 +189,19 @@ public class CommandHandler {
             DukeException.printErrorMessage(Constants.Error.INVALID_COMMAND);
             break;
         }
-        System.out.print(output);
-        if (isDrawPartition){
-            UiManager.drawPartition();
+        if (verbose) {
+            System.out.print(output);
+            if (isDrawPartition){
+                UiManager.drawPartition();
+            }
         }
+        return commandToReply;
     }
-    public static void handleCommand(Constants.Command command){
-        CommandHandler.handleCommand(command, null);
+    public static Constants.Command handleCommand(Constants.Command command, Packet packet){
+        return handleCommand(command, packet, true, false);
+    }
+    public static Constants.Command handleCommand(Constants.Command command){
+        return CommandHandler.handleCommand(command, null, true, false);
     }
 
     /**

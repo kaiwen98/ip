@@ -5,10 +5,9 @@ import java.util.Set;
 
 public abstract class Command {
     protected Hashtable paramMap;
-    protected Constants.Error error;
+    public Constants.Error error = Constants.Error.OTHER_ERROR;
 
     protected abstract Constants.Error handleParams(String paramType);
-
     /**
      * For each param type in the hash table (Param Map), task to handle the contents accordingly with a corresponding action.
      */
