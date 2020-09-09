@@ -4,6 +4,7 @@
 package duke.dukehelper;
 
 public class Constants {
+    public static final String SAVE_PATH = System.getProperty("user.dir") + "\\savestates";
     public static final int MAX_ARRAY_LEN = 10;
     public static final int MAX_PARTITION_LINE_LEN = 60;
     public static final int MAX_LIST_LEN = 10;
@@ -15,6 +16,8 @@ public class Constants {
         NO_ERROR,
         TASK_NOT_CREATED,
         TASK_COMMAND_FAIL,
+        FILE_WRITE_FAIL,
+        FILE_SAVE_FAIL,
         OTHER_ERROR
     }
 
@@ -30,6 +33,7 @@ public class Constants {
         SHOW_COMMANDS,
         MARK_TASK_DONE,
         REMOVE_TASK,
-        SAVE
+        SAVE_FILE,
+        LOAD_FILE
     }
 }

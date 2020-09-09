@@ -1,6 +1,7 @@
-import java.util.Scanner;
 import duke.taskhelper.*;
 import duke.dukehelper.*;
+
+import java.util.Scanner;
 
 public class Duke {
     public static int charCount = Constants.MAX_PARTITION_LINE_LEN;
@@ -8,6 +9,7 @@ public class Duke {
     public static ListTasks list = null;
 
     public static void main(String[] args) {
+        //System.out.println(Constants.SAVE_PATH);
         String input;
         Packet packet = null;
         String[] inputParams = new String[Constants.MAX_ARRAY_LEN];
@@ -48,6 +50,8 @@ public class Duke {
             case "remove":
                 CommandHandler.handleCommand(Constants.Command.REMOVE_TASK, packet);
                 break;
+            case "save":
+                CommandHandler.handleCommand(Constants.Command.SAVE_FILE, packet);
             default:
                 DukeException.printErrorMessage(Constants.Error.INVALID_COMMAND);
                 break;

@@ -51,7 +51,6 @@ public class ListTasks {
      */
     public Constants.Error markTaskAsDone(int taskIndex){
         if (taskIndex <= 0 || taskIndex > this.numTasks -1){
-            System.out.println("haha");
             return Constants.Error.WRONG_ARGUMENTS;
         } else{
             this.tasks.get(taskIndex).setIsDone(true);

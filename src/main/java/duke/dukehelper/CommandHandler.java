@@ -127,6 +127,10 @@ public class CommandHandler {
                 }
             }
             break;
+        case SAVE_FILE:
+
+            SaveManager.saveToTxt(saveStateName, list);
+            break;
 
         case SHOW_COMMANDS:
             output = UiManager.MESSAGE_COMMAND_LIST;
