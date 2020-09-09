@@ -52,6 +52,7 @@ public class Duke {
                 break;
             case "save":
                 CommandHandler.handleCommand(Constants.Command.SAVE_FILE, packet);
+                break;
             default:
                 DukeException.printErrorMessage(Constants.Error.INVALID_COMMAND);
                 break;

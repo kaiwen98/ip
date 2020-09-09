@@ -15,7 +15,6 @@ public class Event extends Task{
     public Event(String taskName, Hashtable paramMap){
         super(taskName, false, paramMap);
         this.taskType = TaskType.EVENT;
-        this.processParamMap();
     }
 
     // Checks for param type and corresponding param, and returns error if
@@ -32,7 +31,7 @@ public class Event extends Task{
                 token = ((String) this.paramMap.get(paramType)).split(" ");
                 this.date = token[0];
                 this.time = token[1];
-                super.taskMessage[0] = String.format("(at: %s %s)", this.date, this.time);
+                super.taskMessage[0] = String.format("at: %s %s", this.date, this.time);
             } catch (ArrayIndexOutOfBoundsException | TaskException.IllegalParam exception){
                 String customErrorMessage = String.format("Param %s is expecting 2 string arguments: "
                         + "Date and Time. Check your input.\n", paramType);

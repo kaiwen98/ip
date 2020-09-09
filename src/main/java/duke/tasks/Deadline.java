@@ -12,7 +12,6 @@ public class Deadline extends Task{
     public Deadline(String taskName, Hashtable paramMap){
         super(taskName, false, paramMap);
         this.taskType = Task.TaskType.DEADLINE;
-        this.processParamMap();
     }
 
     @Override
@@ -26,7 +25,7 @@ public class Deadline extends Task{
                 }
                 token = (String) this.paramMap.get(paramType);
                 this.deadline = token;
-                this.taskMessage[0] = String.format("(by: %s)", this.deadline);
+                this.taskMessage[0] = String.format("by: %s", this.deadline);
             } catch (TaskException.IllegalParam exception){
                 String customErrorMessage = String.format("Param %s is expecting 1 string argument: "
                         + "Deadline date. Check your input.\n", paramType);

@@ -10,6 +10,7 @@ public class ListTasks {
 
     private ArrayList<Task> tasks;
     private int numTasks;
+    private int maxTaskNameLength = 0;
 
     /**
      * Non-parameterized class constructor
@@ -31,6 +32,12 @@ public class ListTasks {
     public int getNumTasks(){
         return this.numTasks;
     }
+
+    public int getMaxTaskNameLength(){
+        return this.maxTaskNameLength;
+    }
+
+
     /**
      * Append new tasks into the list.
      * @param newTask Task that is created beforehand via a separate process.
@@ -41,6 +48,9 @@ public class ListTasks {
         }
         this.tasks.add(newTask);
         this.numTasks++;
+        if (newTask.getTaskName().length() > this.maxTaskNameLength){
+            this.maxTaskNameLength = newTask.getTaskName().length();
+        }
         return Constants.Error.NO_ERROR;
     }
 
@@ -77,6 +87,18 @@ public class ListTasks {
         String output = "";
         for (int i = 0; i < this.numTasks; i++){
             output += String.format("%d.%s\n", i+1, this.tasks.get(i));
+        }
+        return output;
+    }
+
+    /**
+     * Prints the contents of the list, displaying also its number and whether it is completed.
+     * @return String representing the contents of the list
+     */
+    public String showAllTasksVerbose(){
+        String output = "";
+        for (int i = 0; i < this.numTasks; i++){
+            output += String.format("%s\n", this.tasks.get(i));
         }
         return output;
     }

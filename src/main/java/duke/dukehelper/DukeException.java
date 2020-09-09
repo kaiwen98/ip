@@ -9,6 +9,8 @@ public class DukeException {
     }
     static class TaskCreateFail extends Exception{
     }
+    static class ListSaveLoadFail extends Exception{
+    }
 
     public static void printErrorMessage(Constants.Error error, String customErrorMessage){
         String output = "";

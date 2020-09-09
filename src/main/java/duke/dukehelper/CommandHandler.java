@@ -5,8 +5,11 @@ package duke.dukehelper;
 import duke.taskhelper.*;
 import duke.tasks.*;
 
+import javax.swing.*;
+
 public class CommandHandler {
     private static ListTasks list = new ListTasks();
+    private static SaveManager saveManager = new SaveManager();
 
     /**
      * Validates if the input supplies a description as needed by the command
@@ -127,9 +130,14 @@ public class CommandHandler {
                 }
             }
             break;
-        case SAVE_FILE:
 
-            SaveManager.saveToTxt(saveStateName, list);
+        case SAVE_FILE:
+            err = saveManager.saveToTxt(packet.getParamMap(), list);
+            if (err == Constants.Error.NO_ERROR) {
+                output = UiManager.getMessageListSaved(list);
+            } else {
+                DukeException.printErrorMessage(Constants.Error.FILE_SAVE_FAIL);
+            }
             break;
 
         case SHOW_COMMANDS:

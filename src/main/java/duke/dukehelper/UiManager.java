@@ -68,9 +68,23 @@ public class UiManager {
     public static String getMessageTaskRemove(Task outputTask){
         return String.format("Noted! I've removed this task:\n  %s\n", outputTask);
     }
+    public static String getMessageListSaved(ListTasks list){
+        return String.format("Noted! I've saved the list to the following directory:\n  %s\n\n", Constants.DEFAULT_SAVE_PATH)
+                + list.showAllTasks();
+    }
+    public static String getMessageListLoaded(ListTasks list){
+        return String.format("Noted! I've loaded the list from the following directory:\n  %s\n\n", Constants.DEFAULT_SAVE_PATH)
+                + list.showAllTasks();
+    }
+
+    public static String returnLineWithSymbol(int width, String symbol){
+        return new String(new char[width]).replace("\0", symbol);
+    }
+    public static void printLineWithSymbol(int width, String symbol){
+        System.out.println(returnLineWithSymbol(width, symbol));
+    }
 
     public static void drawPartition(){
-        String partitionLine = new String(new char[Constants.MAX_PARTITION_LINE_LEN]).replace("\0", "_");
-        System.out.println(partitionLine);
+        printLineWithSymbol(Constants.MAX_PARTITION_LINE_LEN, "_");
     }
 }

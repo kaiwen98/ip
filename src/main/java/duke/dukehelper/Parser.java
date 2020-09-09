@@ -28,6 +28,7 @@ public class Parser {
         // Initialize packet with known parameters: command and command payload
         packet = new Packet(buffer[0]);
         packet.setPacketPayload(buffer[1]);
+        System.out.println(String.format("0: %s, 1: %s", buffer[0], buffer[1]));
 
         // Implemented in case future commands with multiple param types are to be implemented
         do {
@@ -43,6 +44,7 @@ public class Parser {
             matcher.find();
             buffer[3] = (input.substring(0, matcher.start())).trim();
             packet.addParamToMap(buffer[2], buffer[3]);
+            System.out.println(String.format("2: %s, 3: %s", buffer[2], buffer[3]));
         } while (true);
 
         return packet;

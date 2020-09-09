@@ -4,7 +4,7 @@
 package duke.dukehelper;
 
 public class Constants {
-    public static final String SAVE_PATH = System.getProperty("user.dir") + "\\savestates";
+    public static final String DEFAULT_SAVE_PATH = System.getProperty("user.dir") + "\\savestates";
     public static final int MAX_ARRAY_LEN = 10;
     public static final int MAX_PARTITION_LINE_LEN = 60;
     public static final int MAX_LIST_LEN = 10;
@@ -26,6 +26,8 @@ public class Constants {
         BYE,
         ECHO,
         PROMPT_INPUT,
+        PROMPT_SAVE,
+        PROMPT_LOAD,
         INSERT_TASK_DEADLINE,
         INSERT_TASK_TODO,
         INSERT_TASK_EVENT,
