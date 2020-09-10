@@ -10,7 +10,6 @@ import duke.taskhelper.TaskException;
 import duke.tasks.Task;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
@@ -138,7 +137,6 @@ public class SaveManager extends Command {
      * @return error code where applicable.
      */
     public Constants.Error saveToTxt(ListTasks list) {
-        this.setParamMap(this.paramMap);
         try {
             if (this.error != Constants.Error.NO_ERROR){
                 throw new DukeException.ListSaveLoadFail();
@@ -254,7 +252,7 @@ public class SaveManager extends Command {
                         (buffer[0].equals("T")) ? "todo" :
                         (buffer[0].equals("E")) ? "event" : "";
 
-            packet = new Packet(buffer[0], buffer[2].strip());
+            packet = new Packet(buffer[0], buffer[2].strip(), "From load");
             packet.addParamToMap("/done", buffer[1]);
 
             if (buffer.length == 4) {

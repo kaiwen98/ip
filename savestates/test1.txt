@@ -1,5 +1,5 @@
-| T | ✗ | hello                      
-| D | ✓ | walk the dog                | by: monday 2-6pm         
-| T | ✗ | goodbye                    
-| E | ✗ | party                       | at: Monday 6-9pm         
-| T | ✗ | Eat the hotdog at the beach
+| T | X | hello                      
+| D | O | walk the dog                | by: monday 2-6pm         
+| T | X | goodbye                    
+| E | X | party                       | at: Monday 6-9pm         
+| T | X | Eat the hotdog at the beach

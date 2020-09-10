@@ -9,24 +9,24 @@ import java.util.regex.Pattern;
 public class Parser {
     /**
      * Process input string, tokenising it by a space seperator and removing trailing spaces per token.
-     * @param input Input string from users
+     * @param rawInput Input string from users
      * @return A packet instance with different categories of information sorted out.
      */
-    public static Packet parseInput(String input){
+    public static Packet parseInput(String rawInput){
         String regex = "(\\s+)(/\\w+)(\\s+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = null;
         // A String buffer is used as placeholder for extracted string fragments from parsing input string.
         String[] buffer = new String[]{"", "", "", ""};
         Packet packet = null;
-        input += " /end ";
+        String input = rawInput + " /end ";
         // Extract command type
         buffer[0] = input.substring(0, input.indexOf(" ")).toLowerCase();
         // Extract task name
         buffer[1] = (input.substring(input.indexOf(" "), input.indexOf(" /", 1))).replace(" ", " ").trim();
 
         // Initialize packet with known parameters: command and command payload
-        packet = new Packet(buffer[0]);
+        packet = new Packet(buffer[0], rawInput);
         packet.setPacketPayload(buffer[1]);
 //        System.out.println(String.format("0: %s, 1: %s", buffer[0], buffer[1]));
 
@@ -44,7 +44,6 @@ public class Parser {
             matcher.find();
             buffer[3] = (input.substring(0, matcher.start())).trim();
             packet.addParamToMap(buffer[2], buffer[3]);
-//            System.out.println(String.format("2: %s, 3: %s", buffer[2], buffer[3]));
         } while (true);
 
         return packet;

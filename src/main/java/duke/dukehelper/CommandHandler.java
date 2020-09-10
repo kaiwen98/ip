@@ -8,6 +8,7 @@ import duke.tasks.Deadline;
 import duke.tasks.Event;
 import duke.tasks.Task;
 import duke.tasks.ToDo;
+import static duke.dukehelper.Routine.replyRoutine;
 
 public class CommandHandler {
     public static ListTasks list = new ListTasks();
@@ -44,12 +45,14 @@ public class CommandHandler {
         String customErrorMessage = "";
         boolean isDrawPartition = true;
         // If true, data will not be overwritten, and user will be prompted to input to respond to the command requirements.
-        boolean isRestartQuery = false;
+        boolean exit = false;
         // If a command demands a response from the user, this variable will relay to Duke the command to reply to.
         // If no reply is needed, this variable stays at null.
         Constants.Command commandToReply = null;
         // Error code where applicable.
         Constants.Error err = null;
+
+        //System.out.println(String.format("[%s] %s", command, packet));
         switch(command){
         case HELLO:
             output = UiManager.MESSAGE_LOGO;
@@ -63,6 +66,10 @@ public class CommandHandler {
         case PROMPT_INPUT:
             output = ">>> ";
             isDrawPartition = false;
+            break;
+
+        case ECHO:
+            output = "<ECHO> " + packet.getRawInput() + "\n";
             break;
 
         case INSERT_TASK_DEADLINE:
@@ -168,31 +175,32 @@ public class CommandHandler {
                 saveManager.setParamMap(packet.getParamMap());
                 if (saveManager.isExistingFileName(saveManager.getFileName())){
                     DukeException.printErrorMessage(Constants.Error.FILE_EXISTS);
-                    commandToReply = command;
+                    commandToReply = Constants.Command.SAVE_FILE;
                     break;
                 }
             } else {
-                switch(packet.getPacketPayload()) {
+                switch(packet.getPacketType()) {
                 case "y":
                     customErrorMessage  = String.format("Alright, save state below will be overwritten:\t[%s]\n", saveManager.getFilePath());
                     DukeException.printErrorMessage(Constants.Error.NO_ERROR, customErrorMessage);
-                    commandToReply = null;
                     break;
+
                 case "n":
                     customErrorMessage = "Got it. Enter some other commands then!\n";
                     DukeException.printErrorMessage(Constants.Error.NO_ERROR, customErrorMessage);
                     commandToReply = null;
+                    exit = true;
                     break;
+
                 default:
                     customErrorMessage = "Input not recognised. Enter either \"Y\" or \"N\".\n";
                     DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
-                    isRestartQuery = true;
                     commandToReply = Constants.Command.SAVE_FILE;
                     break;
                 }
             }
 
-            if (!isRestartQuery) {
+            if (!exit) {
                 err = saveManager.saveToTxt(list);
                 if (err == Constants.Error.NO_ERROR) {
                     output = UiManager.getMessageListSaved(list);
@@ -201,7 +209,6 @@ public class CommandHandler {
                 }
             }
             break;
-
 
         case LOAD_FILE:
             /**
@@ -212,56 +219,43 @@ public class CommandHandler {
              * prompt user to either save existing work via recursive call of handleCommand()
              * or to discard current changes.
              */
-
             if (!isReply) {
                 saveManager = new SaveManager();
                 saveManager.setParamMap(packet.getParamMap());
-                if (list.getNumTasks() > 0){
+                if (saveManager.error != Constants.Error.NO_ERROR) {
+                    // Fall-through
+                }
+                else if (list.getNumTasks() > 0){
                     DukeException.printErrorMessage(Constants.Error.LIST_EXISTS);
-                    commandToReply = command;
+                    commandToReply = Constants.Command.LOAD_FILE;
                     break;
                 }
             } else {
-                switch(packet.getPacketPayload()) {
+                switch(packet.getPacketType()) {
                 case "y":
                     customErrorMessage  = String.format("Alright, Enter the save command now:\n");
                     DukeException.printErrorMessage(Constants.Error.NO_ERROR, customErrorMessage);
-                    isRestartQuery = true;
-                    commandToReply = Constants.Command.LOAD_FILE;
-                    conversationCounter++;
+                    // Switch context to save command, then return back to this point when done.
+                    replyRoutine(Constants.Command.SAVE_FILE, false);
                     break;
 
                 case "n":
                     customErrorMessage = "Got it. I will discard the current list and load in the save state.\n";
                     list.removeAllTasks();
                     DukeException.printErrorMessage(Constants.Error.NO_ERROR, customErrorMessage);
-                    commandToReply = null;
+                    exit = true;
                     break;
 
                 default:
-                    if (conversationCounter > 0) {
-                        packet = Parser.parseInput(packet.getPacketPayload());
-                        handleCommand(Constants.Command.SAVE_FILE, packet);
-                        if (saveManager.isExistingFileName(packet.getParam("/name") + ".txt")) {
-                            conversationCounter = 0;
-                            commandToReply = null;
-                        }
-                        else {
-                            output = "Try again! Check your previous command.\n";
-                            isRestartQuery = true;
-                            commandToReply = Constants.Command.LOAD_FILE;
-                        }
-                    } else {
-                        customErrorMessage = "Input not recognised. Enter either \"Y\" or \"N\".\n";
-                        DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
-                        isRestartQuery = true;
-                        commandToReply = Constants.Command.SAVE_FILE;
-                    }
+                    customErrorMessage = "Input not recognised. Enter either \"Y\" or \"N\".\n";
+                    DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+                    commandToReply = Constants.Command.LOAD_FILE;
                     break;
                 }
             }
 
-            if (!isRestartQuery) {
+            if (!exit) {
+                list.removeAllTasks();
                 err = saveManager.loadFromTxt(list);
                 if (err == Constants.Error.NO_ERROR) {
                     output = UiManager.getMessageListLoaded(list);

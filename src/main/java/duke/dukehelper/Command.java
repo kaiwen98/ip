@@ -1,3 +1,9 @@
+/**
+ * Abstract class that all classes that are commands in nature inherits from.
+ * This abstracts the ability to capture params from packet and evaluate with their local requirements.
+ * The evaluation function is handleParams, which must be overwritten by the subclasses.
+ */
+
 package duke.dukehelper;
 
 import java.util.Hashtable;

@@ -12,14 +12,14 @@ public class UiManager {
             + "| | | | | | | |/ / _ \\\n"
             + "| |_| | |_| |   <  __/\n"
             + "|____/ \\__,_|_|\\_\\___|\n\n\n"
-            + "ROFL:ROFL:ROFL:ROFL:ROFL:ROFL\n"
-            + "..........___|___.........\n"
-            + "...L..../.......[`\\........\n"
-            + "..LOL===........[__|.......\n"
-            + "...L....\\..........|.......\n"
-            + ".........\\_________/.......\n"
-            + "...........|...|...........\n"
-            + "..........————————/........\n\n\n";
+            + "........................................ROFL:ROFL:ROFL:ROFL:ROFL:ROFL\n"
+            + "..................................................___|___.........\n"
+            + "...........................................L..../.......[`\\........\n"
+            + "..........................................LOL===........[__|.......\n"
+            + "...........................................L....\\.8======D..|.......\n"
+            + ".................................................\\=========/.......\n"
+            + "...................................................|...|...........\n"
+            + "..................................................==========/........\n\n\n";
 
     public static final String MESSAGE_HELLO = "Hello! I'm Duke."
             + "\nType \"command\" to check available commands to try out!"
@@ -97,11 +97,11 @@ public class UiManager {
         return String.format("Noted! I've removed this task:\n  %s\n", outputTask);
     }
     public static String getMessageListSaved(ListTasks list){
-        return String.format("Noted! I've saved the list to the following directory:\n  %s\n\n", Constants.DEFAULT_SAVE_PATH)
+        return String.format("Noted! I've saved the list to the following directory: [%s]\n\n", Constants.DEFAULT_SAVE_PATH)
                 + list.showAllTasks();
     }
     public static String getMessageListLoaded(ListTasks list){
-        return String.format("Noted! I've loaded the list from the following directory:\n  %s\n\n", Constants.DEFAULT_SAVE_PATH)
+        return String.format("Noted! I've loaded the list from the following directory: [%s]\n\n", Constants.DEFAULT_SAVE_PATH)
                 + list.showAllTasks();
     }
 

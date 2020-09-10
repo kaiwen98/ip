@@ -34,8 +34,8 @@ public abstract class Task extends Command {
     }
 
     enum IsDone {
-        DONE("✓", true),
-        NOT_DONE("✗", false);
+        DONE(Constants.DONE_SYMBOL, true),
+        NOT_DONE(Constants.NOT_DONE_SYMBOL, false);
 
         private String literal;
         private boolean bool;

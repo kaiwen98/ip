@@ -18,9 +18,9 @@ public class ToDo extends Task{
         switch(paramType){
         case "/done":
             boolean isDone;
-            if (((String)this.paramMap.get(paramType)).equals("✓")){
+            if (((String)this.paramMap.get(paramType)).equals(Constants.DONE_SYMBOL)){
                 isDone = true;
-            } else if (((String)this.paramMap.get(paramType)).equals("✓")){
+            } else if (((String)this.paramMap.get(paramType)).equals(Constants.NOT_DONE_SYMBOL)){
                 isDone = false;
             } else {
                 customErrorMessage = "Done symbol is not recognised from source file!\n";
