@@ -10,12 +10,19 @@ done 2
 done 100
 done -1
 list
+save /box
 save /name test1
+n
 done 1
 done 2
 remove 4
 list
+load /donkey
 load /name test1
+y
+save /name test2
+y
+saves
 list
 command
 bye
