@@ -2,7 +2,7 @@
  * Class to parse inputs and classify the various segments into relevant data types and structures.
  */
 package duke.dukehelper;
-import duke.taskhelper.*;
+import duke.taskhelper.Packet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
