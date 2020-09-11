@@ -12,7 +12,7 @@ public class Parser {
      * @param rawInput Input string from users
      * @return A packet instance with different categories of information sorted out.
      */
-    public static Packet parseInput(String rawInput){
+    public Packet parseInput(String rawInput){
         String regex = "(\\s+)(/\\w+)(\\s+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = null;

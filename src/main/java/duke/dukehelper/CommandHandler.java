@@ -8,6 +8,9 @@ import duke.tasks.Deadline;
 import duke.tasks.Event;
 import duke.tasks.Task;
 import duke.tasks.ToDo;
+
+import javax.swing.*;
+
 import static duke.dukehelper.Routine.replyRoutine;
 
 public class CommandHandler {

@@ -11,6 +11,7 @@ public class Routine {
     public static boolean echoCommand = false;
     public static Scanner in = new Scanner(System.in);
     public static String input;
+    private static Parser parser = new Parser();
 
     /**
      * Subroutine to handle nested command handling.
@@ -25,7 +26,7 @@ public class Routine {
         while (commandToReply != null) {
             CommandHandler.handleCommand(Constants.Command.PROMPT_INPUT);
             input = in.nextLine();
-            packet = Parser.parseInput(input);
+            packet = parser.parseInput(input);
             if (echoCommand) {
                 CommandHandler.handleCommand(Constants.Command.ECHO, packet);
             }
@@ -55,7 +56,7 @@ public class Routine {
             } else {
                 CommandHandler.handleCommand(Constants.Command.PROMPT_INPUT);
                 input = in.nextLine();
-                packet = Parser.parseInput(input);
+                packet = parser.parseInput(input);
 
                 if (echoCommand) {
                     CommandHandler.handleCommand(Constants.Command.ECHO, packet);
