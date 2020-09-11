@@ -21,6 +21,10 @@ load /donkey
 load /name test1
 y
 save /name test2
+d
+d
+d
+d
 y
 saves
 list

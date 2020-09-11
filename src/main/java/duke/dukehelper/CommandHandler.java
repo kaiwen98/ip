@@ -196,6 +196,7 @@ public class CommandHandler {
                     customErrorMessage = "Input not recognised. Enter either \"Y\" or \"N\".\n";
                     DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                     commandToReply = Constants.Command.SAVE_FILE;
+                    exit = true;
                     break;
                 }
             }
