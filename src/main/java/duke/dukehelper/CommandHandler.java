@@ -1,6 +1,13 @@
 package duke.dukehelper;
-import duke.taskhelper.*;
-import duke.tasks.*;
+
+import duke.taskhelper.ListTasks;
+import duke.taskhelper.Packet;
+import duke.tasks.Deadline;
+import duke.tasks.Event;
+import duke.tasks.Task;
+import duke.tasks.ToDo;
+import static duke.dukehelper.Routine.replyRoutine;
+
 public class CommandHandler {
     /**
      * Handles command and prints messages, if any onto console depending on input parameter.

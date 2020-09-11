@@ -7,7 +7,11 @@ public class Parser {
      * @param input Input string from users
      * @return A packet instance with different categories of information sorted out.
      */
-    public static Packet parseInput(String input){
+
+    public static Packet parseInput(String rawInput){
+        String regex = "(\\s+)(/\\w+)(\\s+)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = null;
         // A String buffer is used as placeholder for extracted string fragments from parsing input string.
         input += "  /";
         String[] buffer = new String[]{"", "", "", ""};
