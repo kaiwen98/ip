@@ -7,18 +7,24 @@ import duke.dukehelper.*;
 import java.util.Hashtable;
 import java.util.Set;
 
-
 public class Packet {
     private String packetType;
     private String packetPayload;
     private Hashtable paramMap;
+    private String rawInput;
     // Constructors
-    public Packet(String taskType, String taskName){
+    public Packet(String taskType, String taskName, String rawInput){
         this.packetType = taskType;
         this.packetPayload = taskName;
+        this.rawInput = rawInput;
+        this.paramMap = new Hashtable();
     }
-    public Packet(String taskType){
-        this(taskType, null);
+    public Packet(String taskType, String rawInput){
+        this(taskType, null, rawInput);
+    }
+
+    public String getRawInput(){
+        return this.rawInput;
     }
 
     // Param type refers to /.* (eg. /a)
@@ -46,10 +52,13 @@ public class Packet {
         this.packetPayload = (payload.equals("") ? null : payload);
     }
     public Constants.Error addParamToMap(String paramType, String paramString){
-        if (this.paramMap == null){
-            this.paramMap = new Hashtable();
-        }
         this.paramMap.put(paramType, paramString);
         return Constants.Error.NO_ERROR;
     }
+
+    @Override
+    public String toString(){
+        return String.format("[Packet for <%s>: %s, %s, %s", this.rawInput, this.getPacketType(), this.getPacketPayload(), this.getParamMap());
+    }
+
 }

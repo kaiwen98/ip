@@ -5,9 +5,28 @@ deadline walk the cat /at monday
 event
 event party /at Monday
 event party /at Monday 6-9pm
+todo Eat the hotdog at the beach /pp
 done 2
 done 100
 done -1
+list
+save /box
+save /name test1
+n
+done 1
+done 2
+remove 4
+list
+load /donkey
+load /name test1
+y
+save /name test2
+d
+d
+d
+d
+y
+saves
 list
 command
 bye
