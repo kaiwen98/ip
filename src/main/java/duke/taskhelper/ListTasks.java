@@ -3,13 +3,14 @@
  */
 
 package duke.taskhelper;
+import duke.dukehelper.Command;
 import duke.dukehelper.Constants;
 import duke.dukehelper.DukeException;
 import duke.tasks.Task;
 
 import java.util.ArrayList;
 
-public class ListTasks {
+public class ListTasks extends Command {
 
     private ArrayList<Task> tasks;
     private int numTasks;
@@ -133,7 +134,6 @@ public class ListTasks {
         }
     }
 
-
     /**
      * Prints the contents of the list, displaying also its number and whether it is completed.
      * @return String representing the contents of the list
@@ -146,5 +146,10 @@ public class ListTasks {
             output += String.format("%s.%s\n", index, this.tasks.get(i));
         }
         return output;
+    }
+
+    @Override
+    protected Constants.Error handleParams(String paramType){
+        return Constants.Error.NO_ERROR;
     }
 }

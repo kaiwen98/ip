@@ -7,7 +7,7 @@ package duke.tasks;
 import duke.dukehelper.Command;
 import duke.dukehelper.Constants;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Arrays;
 
 public abstract class Task extends Command {
@@ -56,7 +56,7 @@ public abstract class Task extends Command {
     }
 
     // Constructor
-    public Task(String taskName, boolean isDone, Hashtable paramMap) {
+    public Task(String taskName, boolean isDone, HashMap paramMap) {
         this.taskName = taskName;
         this.setIsDone(isDone);
         this.taskMessage = new String[Constants.MAX_ARRAY_LEN];

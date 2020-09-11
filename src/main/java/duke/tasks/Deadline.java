@@ -2,14 +2,16 @@
  * Sub-class of Task that takes in a date as deadline of task
  */
 package duke.tasks;
-import java.util.Hashtable;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+
 import duke.dukehelper.*;
 import duke.taskhelper.TaskException;
 
 public class Deadline extends Task{
-    private String deadline;
+    private DateTimeManager deadline;
 
-    public Deadline(String taskName, Hashtable paramMap){
+    public Deadline(String taskName, HashMap paramMap){
         super(taskName, false, paramMap);
         this.taskType = Task.TaskType.DEADLINE;
     }
@@ -25,8 +27,8 @@ public class Deadline extends Task{
                     throw new TaskException.IllegalParam();
                 }
                 token = (String) this.paramMap.get(paramType);
-                this.deadline = token;
-                this.taskMessage[0] = String.format("by: %s", this.deadline);
+                this.deadline = new DateTimeManager(token);
+                taskMessage[0] = deadline.getDateFormatted("verbose");
             } catch (TaskException.IllegalParam exception){
                 customErrorMessage = String.format("Param %s is expecting 1 string argument: "
                         + "Deadline date. Check your input.\n", paramType);
