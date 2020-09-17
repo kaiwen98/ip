@@ -5,7 +5,10 @@ package duke.tasks;
 import duke.dukehelper.Constants;
 import duke.dukehelper.DateTimeManager;
 import duke.dukehelper.DukeException;
+import duke.dukehelper.Parser;
 import duke.taskhelper.TaskException;
+
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 
 public class Event extends Task{
@@ -17,29 +20,6 @@ public class Event extends Task{
     public Event(String taskName, HashMap paramMap){
         super(taskName, false, paramMap);
         this.taskType = TaskType.EVENT;
-    }
-
-    private String dateTimeFormat(String whichDate){
-        String startDTString =  startDateTime.getDateFormatted(whichDate);
-        String endDTString = endDateTime.getDateFormatted(whichDate);
-        String[] output = new String[2];
-        switch(whichDate){
-        case "verbose":
-            output[0] = startDateTime.getDateFormatted("date") + " " + startDateTime.getDateFormatted("time");
-            if (!startDateTime.getDateFormatted("date").equals(endDateTime.getDateFormatted("date"))){
-                output[1] = endDateTime.getDateFormatted("date") + " " + endDateTime.getDateFormatted("time");
-            } else {
-                output[1] = endDateTime.getDateFormatted("time");
-            }
-            return String.join(" to ", output).trim();
-
-        default:
-            if(startDTString.equals(endDTString)){
-                return startDTString;
-            } else {
-                return startDTString + " to " + endDTString;
-            }
-        }
     }
 
     // Checks for param type and corresponding param, and returns error if
@@ -56,13 +36,16 @@ public class Event extends Task{
                 if (((String) this.paramMap.get(paramType)).length() == 0){
                     throw new TaskException.IllegalParam();
                 }
-                token = param.split(" ");
+                token = Parser.parseRawDateTime(param).split(",");
                 this.startDateTime = new DateTimeManager(token[0]);
                 this.endDateTime = new DateTimeManager(token[1]);
-                this.taskMessage[0] = "at: " + this.dateTimeFormat(param);
             } catch (ArrayIndexOutOfBoundsException | TaskException.IllegalParam exception){
-                customErrorMessage = String.format("Param %s is expecting 2 string arguments: "
-                        + "Date and Time. Check your input.\n", paramType);
+                customErrorMessage = String.format("Param %s is expecting at least 3 string arguments: "
+                        + "Date, start time and end time. Check your input.\n", paramType);
+                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+                return Constants.Error.WRONG_ARGUMENTS;
+            } catch (DateTimeParseException exception) {
+                customErrorMessage = "Your input param for date and time cannot be parsed!\n";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 return Constants.Error.WRONG_ARGUMENTS;
             }
@@ -93,5 +76,11 @@ public class Event extends Task{
             return Constants.Error.WRONG_ARGUMENTS;
         }
         return Constants.Error.NO_ERROR;
+    }
+
+    @Override
+    public String getTypeMessage(String[] args){
+        String output = "";
+        return String.format("(at: %s to %s)", startDateTime.getDateFormatted(args), endDateTime.getDateFormatted(args));
     }
 }

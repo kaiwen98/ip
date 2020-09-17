@@ -2,14 +2,14 @@
  * Sub-class of Task that takes in a date as deadline of task
  */
 package duke.tasks;
-import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 
 import duke.dukehelper.*;
 import duke.taskhelper.TaskException;
 
 public class Deadline extends Task{
-    private DateTimeManager deadline;
+    private DateTimeManager deadlineDateTime;
 
     public Deadline(String taskName, HashMap paramMap){
         super(taskName, false, paramMap);
@@ -26,12 +26,15 @@ public class Deadline extends Task{
                 if (((String) this.paramMap.get(paramType)).length() == 0){
                     throw new TaskException.IllegalParam();
                 }
-                token = (String) this.paramMap.get(paramType);
-                this.deadline = new DateTimeManager(token);
-                taskMessage[0] = deadline.getDateFormatted("verbose");
+                token = Parser.parseRawDateTime(this.getParam(paramType)).replace(",", "");
+                this.deadlineDateTime = new DateTimeManager(token);
             } catch (TaskException.IllegalParam exception){
-                customErrorMessage = String.format("Param %s is expecting 1 string argument: "
-                        + "Deadline date. Check your input.\n", paramType);
+                customErrorMessage = String.format("Param %s is expecting 2 string arguments: "
+                        + "Deadline date and time. Check your input.\n", paramType);
+                DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+                return Constants.Error.WRONG_ARGUMENTS;
+            } catch (DateTimeParseException exception) {
+                customErrorMessage = "Your input param for date and time cannot be parsed!\n";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                 return Constants.Error.WRONG_ARGUMENTS;
             }
@@ -61,6 +64,12 @@ public class Deadline extends Task{
             return Constants.Error.WRONG_ARGUMENTS;
         }
         return Constants.Error.NO_ERROR;
+    }
+
+    @Override
+    public String getTypeMessage(String[] args){
+        String output = "";
+        return String.format("(by: %s)", deadlineDateTime.getDateFormatted(args));
     }
 }
 

@@ -55,7 +55,6 @@ public class CommandHandler {
         // Error code where applicable.
         Constants.Error err = null;
 
-        //System.out.println(String.format("[%s] %s", command, packet));
         switch(command){
         case HELLO:
             output = UiManager.MESSAGE_LOGO;
@@ -112,6 +111,7 @@ public class CommandHandler {
                 customErrorMessage = "Begin by adding some tasks!\n";
                 DukeException.printErrorMessage(Constants.Error.NO_LIST, customErrorMessage);
             } else {
+                list.setParamMap(packet.getParamMap());
                 output = list.showAllTasks();
             }
             break;
@@ -282,6 +282,11 @@ public class CommandHandler {
                 output = saveManager.getSaveStates();
             }
 
+            break;
+
+        case REFRESH_FILE:
+            saveManager = new SaveManager();
+            saveManager.deleteDefaultSaveFile();
             break;
 
         default:

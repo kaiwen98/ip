@@ -16,6 +16,7 @@ public class ListTasks extends Command {
     private int numTasks;
     private int maxTaskNameLength = 0;
     private Task deletedTask = null;
+    private String[] outputFormat;
 
     /**
      * Non-parameterized class constructor
@@ -23,6 +24,7 @@ public class ListTasks extends Command {
     public ListTasks(){
         this.tasks = new ArrayList<Task>();
         this.numTasks = 0;
+        this.setAcceptEmptyParams(true);
     }
 
     /**
@@ -143,13 +145,21 @@ public class ListTasks extends Command {
         String index = "";
         for (int i = 0; i < this.numTasks; i++){
             index = Integer.toString(i+1);
-            output += String.format("%s.%s\n", index, this.tasks.get(i));
+            output += String.format("%s.%s %s\n", index, this.tasks.get(i), this.tasks.get(i).getTypeMessage(this.outputFormat));
         }
         return output;
     }
 
     @Override
     protected Constants.Error handleParams(String paramType){
+        switch(paramType){
+        case "/format":
+            this.outputFormat = this.getParam(paramType).split(" ");
+            break;
+        default:
+            // Flow through
+            break;
+        }
         return Constants.Error.NO_ERROR;
     }
 }
