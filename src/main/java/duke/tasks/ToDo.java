@@ -6,8 +6,8 @@ import duke.dukehelper.Constants;
 import duke.dukehelper.DukeException;
 
 public class ToDo extends Task{
-    public ToDo(String taskName, int id){
-        super(taskName, id);
+    public ToDo(String taskName){
+        super(taskName);
         super.taskType = Task.TaskType.TODO;
         this.error = Constants.Error.NO_ERROR;
     }
@@ -35,10 +35,5 @@ public class ToDo extends Task{
             return Constants.Error.WRONG_ARGUMENTS;
         }
         return Constants.Error.NO_ERROR;
-    }
-
-    @Override
-    public String getTypeMessage(String[] args){
-        return "";
     }
 }

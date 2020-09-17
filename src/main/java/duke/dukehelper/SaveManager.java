@@ -13,8 +13,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class SaveManager extends Command {
@@ -26,16 +24,10 @@ public class SaveManager extends Command {
 
     /**
      * Use Stream method to evaluate existence of file in directory.
-     * Makes a folder in working directory if a savestates folder is not found.
      * @param fileName file name input by users
      * @return true if file exists in directory
      */
     public boolean isExistingFileName(String fileName){
-        if (!Files.exists(Paths.get(this.saveFolderPath))){
-            File file = new File(this.saveFolderPath);
-            file.mkdir();
-            return false;
-        }
         return Arrays.stream(getSaveStateNames()).anyMatch(fileName::equals);
     }
 
@@ -116,7 +108,7 @@ public class SaveManager extends Command {
                     task.getTaskType(),
                     task.getIsDone(),
                     getTaskNameFormatted(task.getTaskName(), list.getMaxTaskNameLength()),
-                    getTypeMessageFormatted(task.getTypeMessage("datetime")));
+                    getTypeMessageFormatted(task.getTypeMessage()));
             output += System.lineSeparator();
         }
         return output;
@@ -148,10 +140,6 @@ public class SaveManager extends Command {
         try {
             if (this.error != Constants.Error.NO_ERROR){
                 throw new DukeException.ListSaveLoadFail();
-            }
-            if (!Files.exists(Paths.get(this.saveFolderPath))){
-                File file = new File(this.saveFolderPath);
-                file.mkdir();
             }
             FileWriter fileWriter = new FileWriter(this.saveFolderPath + this.name);
             fileWriter.write(getAllTasksSaveToString(list));
@@ -191,10 +179,6 @@ public class SaveManager extends Command {
             customErrorMessage = this.getFilePath() + "\n";
             DukeException.printErrorMessage(Constants.Error.FILE_NOT_FOUND, customErrorMessage);
             this.printSaveStates();
-            return Constants.Error.FILE_LOAD_FAIL;
-        } catch (NullPointerException exception) {
-            customErrorMessage = "The file chosen is not compatible with the current version of Duke!\n";
-            DukeException.printErrorMessage(Constants.Error.OTHER_ERROR, customErrorMessage);
             return Constants.Error.FILE_LOAD_FAIL;
         }
         return this.error;
@@ -243,10 +227,9 @@ public class SaveManager extends Command {
      * Then, input the packet instance into handleCommand such that each task is added into the local list
      * Note that a boolean value = false is passed into handleCommand. This is to turn off the verbosity of the command,
      * Hence it will not spam the user while the tasks are extracted and added into the list.
-     * Note that NullPointerException is thrown in case an incompatible save state is loaded into the program.
      * @param saveState
      */
-    public void processSaveStateToString(String saveState) throws NullPointerException{
+    public void processSaveStateToString(String saveState){
         Packet packet;
 
         saveState = saveState.trim();
@@ -272,26 +255,11 @@ public class SaveManager extends Command {
             packet = new Packet(buffer[0], buffer[2].strip(), "From load");
             packet.addParamToMap("/done", buffer[1]);
 
-            // If the length is 4, there must be params associated with the particular task.
-            // We will need to break it down into commands and rehandle it to recreate the list.
             if (buffer.length == 4) {
-                buffer[3] = buffer[3].replace("(","").replace(")","");
-                paramBuffer = buffer[3].replaceFirst(":", ";").split(";");
-
-                packet.addParamToMap("/" + paramBuffer[0].replace("(","").trim(), paramBuffer[1].trim());
+                paramBuffer = buffer[3].replace(":", ";").split(";");
+                packet.addParamToMap("/" + paramBuffer[0].trim(), paramBuffer[1].trim());
             }
             CommandHandler.handleCommand(command, packet, false, false);
-        }
-    }
-
-    /**
-     * Deletes the original default save file so that you can load in the current list without requiring overwrite prompt.
-     */
-    public void deleteDefaultSaveFile(){
-        System.out.println(this.saveFolderPath + "lastSave.txt");
-        File file = new File(this.saveFolderPath + "lastSave.txt");
-        if(isExistingFileName("lastSave.txt")) {
-            file.delete();
         }
     }
 }

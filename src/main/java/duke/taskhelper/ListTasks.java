@@ -3,7 +3,6 @@
  */
 
 package duke.taskhelper;
-import duke.dukehelper.Command;
 import duke.dukehelper.Constants;
 import duke.dukehelper.DukeException;
 import duke.tasks.Task;
@@ -15,13 +14,12 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-public class ListTasks extends Command {
+public class ListTasks {
 
     private ArrayList<Task> tasks;
     private int numTasks;
     private int maxTaskNameLength = 0;
     private Task deletedTask = null;
-    private String[] outputFormat;
 
     /**
      * Non-parameterized class constructor
@@ -29,7 +27,6 @@ public class ListTasks extends Command {
     public ListTasks(){
         this.tasks = new ArrayList<Task>();
         this.numTasks = 0;
-        this.setAcceptEmptyParams(true);
     }
 
     /**
@@ -141,6 +138,7 @@ public class ListTasks extends Command {
         }
     }
 
+
     /**
      * Prints the contents of the list, displaying also its number and whether it is completed.
      * @return String representing the contents of the list
@@ -150,34 +148,8 @@ public class ListTasks extends Command {
         String index = "";
         for (int i = 0; i < this.numTasks; i++){
             index = Integer.toString(i+1);
-            output += String.format("%s. %s", index, this.tasks.get(i).getOutputLine(this.outputFormat));
+            output += String.format("%s.%s\n", index, this.tasks.get(i));
         }
         return output;
-    }
-
-    public List<Task> find(String input){
-        List<Task> output = new ArrayList<Task>();
-        List<Integer> matchIds = this.tasks.stream()
-                .filter(t -> Arrays.stream(t.getTaskName().split(" ")).anyMatch(input::equals))
-                .sorted(Comparator.comparing(Task::getId))
-                .map(Task::getId)
-                .collect(toList());
-        for (int id: matchIds) {
-            output.add(this.getTaskByIndex(id));
-        }
-        return output;
-    }
-
-    @Override
-    protected Constants.Error handleParams(String paramType){
-        switch(paramType){
-        case "/format":
-            this.outputFormat = this.getParam(paramType).split(" ");
-            break;
-        default:
-            // Flow through
-            break;
-        }
-        return Constants.Error.NO_ERROR;
     }
 }
