@@ -53,6 +53,8 @@ public class Parser {
     public static String parseRawDateTime(String input){
         int matchCount = 0;
         String[] tokens = input.replaceAll("[\\s]+[\\D]+[\\s]+|,", " ").split("[\\s]+");
+
+        // If input matches the required pattern, no need to continue processing
         for (String token : tokens){
             if (token.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}")) {
                 matchCount++;
