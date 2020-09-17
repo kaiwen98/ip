@@ -48,4 +48,45 @@ public class Parser {
 
         return packet;
     }
+    // 030420 8 to 9 pm
+    // 03/04/20 8 am to 10 pm
+
+    public static String[] parseRawDateTime(String input){
+        input = input.replace("to", " ");
+        String[] token = input.split("[\\s+] | [\\sto\\s]");
+        String[] output = new String[2];
+        String date = parseDateTime(token[0], "date");
+        String[] time = new String[2];
+        for (int i = 0; i < 2; i++) {
+            if (token[i+1] != null){
+                time[i] = parseDateTime(token[i], "time");
+                output[i] = date+"T"+time[i];
+            }
+        }
+        return output;
+    }
+
+    public static String parseDateTime(String input, final String mode) {
+        String partition = mode.equals("time") ? ":":
+                mode.equals("date") ? "/":
+                        "?";
+        String[] output = new String[3];
+        input = input.replaceAll("[\\D]+", "c");
+        System.out.println(input);
+        String[] tokens = input.split("c");
+        for(int i = 0; i < output.length; i++) {
+            System.out.println(tokens[i]);
+            if (tokens[i] == null) {
+                output[i] = "00";
+            } else if (tokens[i].length() < 2) {
+                output[i] = "0" + tokens[i];
+            } else if(i == 0 && tokens[i].matches("[0-9]{2}") && mode.equals("date")) {
+                output[i] = "20" + tokens[i].substring(2,4);
+            } else {
+                output[i] = tokens[i];
+            }
+        }
+        System.out.println(String.join(partition, output));
+        return String.join(partition, output);
+    }
 }

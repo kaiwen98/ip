@@ -48,16 +48,18 @@ public class Event extends Task{
     protected Constants.Error handleParams(String paramType) {
         String[] token = null;
         String customErrorMessage = "";
+        String param = "";
         switch(paramType){
         case "/at":
+            param = this.getParam(paramType);
             try {
                 if (((String) this.paramMap.get(paramType)).length() == 0){
                     throw new TaskException.IllegalParam();
                 }
-                token = ((String) this.paramMap.get(paramType)).split(" ");
+                token = param.split(" ");
                 this.startDateTime = new DateTimeManager(token[0]);
                 this.endDateTime = new DateTimeManager(token[1]);
-                this.taskMessage[0] = "at: ";
+                this.taskMessage[0] = "at: " + this.dateTimeFormat(param);
             } catch (ArrayIndexOutOfBoundsException | TaskException.IllegalParam exception){
                 customErrorMessage = String.format("Param %s is expecting 2 string arguments: "
                         + "Date and Time. Check your input.\n", paramType);
@@ -71,10 +73,11 @@ public class Event extends Task{
             break;
 
         case "/done":
+            param = this.getParam(paramType);
             boolean isDone;
-            if (((String)this.paramMap.get(paramType)).equals(Constants.DONE_SYMBOL)){
+            if (param.equals(Constants.DONE_SYMBOL)){
                 isDone = true;
-            } else if (((String)this.paramMap.get(paramType)).equals(Constants.NOT_DONE_SYMBOL)){
+            } else if (param.equals(Constants.NOT_DONE_SYMBOL)){
                 isDone = false;
             } else {
                 customErrorMessage = "Done symbol is not recognised from source file!\n";
@@ -82,10 +85,6 @@ public class Event extends Task{
                 return Constants.Error.WRONG_ARGUMENTS;
             }
             this.setIsDone(isDone);
-            break;
-            
-        case "/datetime":
-            this.taskMessage[1] = dateTimeFormat((String)this.paramMap.get(paramType));
             break;
 
         default:

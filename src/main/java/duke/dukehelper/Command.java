@@ -37,6 +37,9 @@ public abstract class Command {
         processParamMap();
     }
     public Set getParamTypes() {
-        return paramMap.keySet();
+        return this.paramMap.keySet();
+    }
+    public String getParam(String key){
+        return (String)this.paramMap.get(key);
     }
 }
