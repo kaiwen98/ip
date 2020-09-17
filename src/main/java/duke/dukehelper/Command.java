@@ -6,12 +6,13 @@
 
 package duke.dukehelper;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Set;
 
 public abstract class Command {
-    protected Hashtable paramMap;
+    protected HashMap paramMap;
     public Constants.Error error = Constants.Error.OTHER_ERROR;
+    private boolean acceptEmptyParams = false;
 
     protected abstract Constants.Error handleParams(String paramType);
     /**
@@ -26,17 +27,27 @@ public abstract class Command {
                     this.error = Constants.Error.NO_ERROR;
                 }
             }
-        } else {
+        } else if(this.acceptEmptyParams == false){
             customErrorMessage = "This command expects a param type-param input, eg. /by Monday etc.\n";
             DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
+        } else {
+            this.error = Constants.Error.NO_ERROR;
         }
     }
-    public void setParamMap(Hashtable paramMap){
-        this.paramMap = new Hashtable();
-        this.paramMap = (Hashtable) paramMap.clone();
+    public void setParamMap(HashMap paramMap){
+        this.paramMap = new HashMap();
+        this.paramMap = (HashMap) paramMap.clone();
         processParamMap();
     }
+
+    public void setAcceptEmptyParams(boolean bool){
+        this.acceptEmptyParams = bool;
+    }
+
     public Set getParamTypes() {
-        return paramMap.keySet();
+        return this.paramMap.keySet();
+    }
+    public String getParam(String key){
+        return (String)this.paramMap.get(key);
     }
 }

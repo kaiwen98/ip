@@ -7,14 +7,14 @@ package duke.tasks;
 import duke.dukehelper.Command;
 import duke.dukehelper.Constants;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Arrays;
 
 public abstract class Task extends Command {
     protected String taskName;
     protected IsDone isDone;
     protected TaskType taskType;
-    protected String[] taskMessage;
+    protected String[] taskMessage = {"none"};
 
     enum TaskType {
         TODO("T"),
@@ -56,7 +56,7 @@ public abstract class Task extends Command {
     }
 
     // Constructor
-    public Task(String taskName, boolean isDone, Hashtable paramMap) {
+    public Task(String taskName, boolean isDone, HashMap paramMap) {
         this.taskName = taskName;
         this.setIsDone(isDone);
         this.taskMessage = new String[Constants.MAX_ARRAY_LEN];
@@ -86,10 +86,15 @@ public abstract class Task extends Command {
         return this.isDone.toBoolean();
     }
 
+    public abstract String getTypeMessage(String[] args) ;
 
+    public String getTypeMessage(String format){
+        String[] arg = {format};
+        return getTypeMessage(arg);
+    }
 
-    public String getTypeMessage() {
-        return String.join(" ", this.taskMessage);
+    public String getTypeMessage(){ ;
+        return getTypeMessage("");
     }
 
     public void setIsDone(boolean isDone) {
@@ -100,9 +105,6 @@ public abstract class Task extends Command {
     public String toString(){
         String output = "";
         output = String.format("[%s][%s] %s", this.taskType, this.isDone, this.taskName);
-        if ((this.getTypeMessage().strip()).length() != 0){
-            output += String.format(" (%s)", this.getTypeMessage().strip());
-        }
         return output;
     }
 }

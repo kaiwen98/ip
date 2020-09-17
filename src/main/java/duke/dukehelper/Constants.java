@@ -43,16 +43,17 @@ public class Constants {
         MARK_TASK_DONE,
         REMOVE_TASK,
         SAVE_FILE,
-        LOAD_FILE
+        LOAD_FILE,
+        REFRESH_FILE
     }
 
     public static String getWorkingDirectory(){
         Path rootPath = Paths.get(System.getProperty("user.dir"));
         System.out.println(rootPath.getFileName());
-        while (!(rootPath.getFileName().toString()).equals("ip")){
+/*        while (!(rootPath.getFileName().toString()).equals("ip")){
             rootPath = Paths.get(rootPath.getParent().toString());
             System.out.println(rootPath.getFileName());
-        }
+        }*/
         return rootPath.toString();
     }
 
