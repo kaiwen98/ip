@@ -17,8 +17,8 @@ public class Event extends Task{
     private String test;
 
     // Constructor
-    public Event(String taskName, HashMap paramMap){
-        super(taskName, false, paramMap);
+    public Event(String taskName, int id, HashMap paramMap){
+        super(taskName, id, false, paramMap);
         this.taskType = TaskType.EVENT;
     }
 

@@ -112,6 +112,9 @@ public class Routine {
                 case "saves":
                     commandToReply = CommandHandler.handleCommand(Constants.Command.SHOW_SAVE_STATES);
                     break;
+                case "find":
+                    commandToReply = CommandHandler.handleCommand(Constants.Command.FIND, packet);
+                    break;
                 default:
                     DukeException.printErrorMessage(Constants.Error.INVALID_COMMAND);
                     break;
