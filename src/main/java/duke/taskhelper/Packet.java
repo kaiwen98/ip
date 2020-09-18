@@ -4,21 +4,20 @@
  */
 package duke.taskhelper;
 import duke.dukehelper.*;
-
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Set;
 
 public class Packet {
     private String packetType;
     private String packetPayload;
-    private HashMap paramMap;
+    private Hashtable paramMap;
     private String rawInput;
     // Constructors
     public Packet(String taskType, String taskName, String rawInput){
         this.packetType = taskType;
         this.packetPayload = taskName;
         this.rawInput = rawInput;
-        this.paramMap = new HashMap();
+        this.paramMap = new Hashtable();
     }
     public Packet(String taskType, String rawInput){
         this(taskType, null, rawInput);
@@ -46,8 +45,8 @@ public class Packet {
     public String getPacketPayload(){
         return this.packetPayload;
     }
-    public HashMap getParamMap(){
-        return (HashMap)this.paramMap.clone();
+    public Hashtable getParamMap(){
+        return (Hashtable)this.paramMap.clone();
     }
     public void setPacketPayload(String payload){
         this.packetPayload = (payload.equals("") ? null : payload);

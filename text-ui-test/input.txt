@@ -1,15 +1,15 @@
 todo hello
-deadline walk the dog /by 2020-12-04 20:00:05
+deadline walk the dog /by monday 2-6pm
 todo goodbye
-deadline walk the cat /at 201205 2000
+deadline walk the cat /at monday
 event
-event party /at 201206
-event party /at 201206 2000 to 2300
+event party /at Monday
+event party /at Monday 6-9pm
 todo Eat the hotdog at the beach /pp
 done 2
 done 100
 done -1
-list /format datetime
+list
 save /box
 save /name test1
 n
@@ -26,16 +26,7 @@ d
 d
 d
 y
-todo hello
-deadline walk the dog /by 2020-12-04 20:00:05
-todo goodbye
-event party /at 201206 2000 to 2300
-save /name test2
-y
 saves
-list
-load /name test2
-n
 list
 command
 bye

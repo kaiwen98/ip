@@ -1,5 +1,0 @@
-| T | X | hello                      
-| D | O | walk the dog                | (by: FRIDAY DECEMBER 2020 20:00:05)
-| T | X | goodbye                    
-| E | X | party                       | (at: SUNDAY DECEMBER 2020 20:00 to SUNDAY DECEMBER 2020 23:00)
-| T | X | Eat the hotdog at the beach

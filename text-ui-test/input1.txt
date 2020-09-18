@@ -1,6 +1,0 @@
-list
-load /name test2
-n
-list
-command
-bye

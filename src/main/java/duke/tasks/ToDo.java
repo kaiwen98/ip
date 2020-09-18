@@ -36,9 +36,4 @@ public class ToDo extends Task{
         }
         return Constants.Error.NO_ERROR;
     }
-
-    @Override
-    public String getTypeMessage(String[] args){
-        return "";
-    }
 }

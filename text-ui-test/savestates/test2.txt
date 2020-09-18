@@ -1,7 +1,0 @@
-| T | O | hello                      
-| T | X | hello                      
-| T | X | Eat the hotdog at the beach
-| T | X | hello                      
-| D | X | walk the dog                | (by: 2020/12/04 20:00:05)
-| T | X | goodbye                    
-| E | X | party                       | (at: 2020/12/06 20:00:00 to 2020/12/06 23:00:00)
