@@ -9,8 +9,11 @@ import java.util.Scanner;
 public class Routine {
     public static Constants.Command commandToReply = null;
     public static boolean echoCommand = false;
+    public static boolean autoSave = true;
     public static Scanner in = new Scanner(System.in);
     public static String input;
+    private static Parser parser = new Parser();
+    private static Packet helperPacket;
 
     /**
      * Subroutine to handle nested command handling.
@@ -25,7 +28,7 @@ public class Routine {
         while (commandToReply != null) {
             CommandHandler.handleCommand(Constants.Command.PROMPT_INPUT);
             input = in.nextLine();
-            packet = Parser.parseInput(input);
+            packet = parser.parseInput(input);
             if (echoCommand) {
                 CommandHandler.handleCommand(Constants.Command.ECHO, packet);
             }
@@ -43,19 +46,24 @@ public class Routine {
         // If true, command inputs will be echoed to console.
         // Mainly cosmetic in purpose for printing output from script.
         echoCommand = (args.length > 0) && Boolean.parseBoolean(args[0]);
+
         System.out.println(Constants.DEFAULT_SAVE_PATH);
         Packet packet = null;
         boolean continueQuery = true;
 
         UiManager.drawPartition();
         CommandHandler.handleCommand(Constants.Command.HELLO);
+        if (autoSave) {
+            helperPacket = Parser.parseInput("load /name lastSave");
+            CommandHandler.handleCommand(Constants.Command.LOAD_FILE, helperPacket);
+        }
         while (continueQuery){
             if (commandToReply != null) {
                 replyRoutine(commandToReply, true);
             } else {
                 CommandHandler.handleCommand(Constants.Command.PROMPT_INPUT);
                 input = in.nextLine();
-                packet = Parser.parseInput(input);
+                packet = parser.parseInput(input);
 
                 if (echoCommand) {
                     CommandHandler.handleCommand(Constants.Command.ECHO, packet);
@@ -63,11 +71,16 @@ public class Routine {
 
                 switch (packet.getPacketType()) {
                 case "bye":
+                    if (autoSave) {
+                        CommandHandler.handleCommand(Constants.Command.REFRESH_FILE);
+                        helperPacket = Parser.parseInput("save /name lastSave");
+                        CommandHandler.handleCommand(Constants.Command.SAVE_FILE, helperPacket);
+                    }
                     commandToReply = CommandHandler.handleCommand(Constants.Command.BYE);
                     continueQuery = false;
                     break;
                 case "list":
-                    commandToReply = CommandHandler.handleCommand(Constants.Command.SHOW_LIST);
+                    commandToReply = CommandHandler.handleCommand(Constants.Command.SHOW_LIST, packet);
                     break;
                 case "commands":
                     // Flow through
