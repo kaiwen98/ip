@@ -95,9 +95,6 @@ public class UiManager {
             + "\n12. find <string>\n"
             + "\t< Conducts 1-to-1 search over all tasks for the string match. >\n";
 
-
-
-
     public static String getMessageTaskAdded(Task task){
         return String.format("Got it! I've added this task:\n  %s %s\n", task, task.getTypeMessage());
     }

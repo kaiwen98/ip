@@ -25,6 +25,14 @@ public class SaveManager extends Command {
     }
 
     /**
+     * Test if a valid load path is supplied, and if the given document is empty.
+     */
+    public void testLoadPath(){
+        File load = new File(this.getFilePath());
+        this.error = (isExistingFileName(this.name) && (load.length() > 0)) ? this.error : Constants.Error.WRONG_ARGUMENTS;
+    }
+
+    /**
      * Use Stream method to evaluate existence of file in directory.
      * Makes a folder in working directory if a savestates folder is not found.
      * @param fileName file name input by users
@@ -180,6 +188,10 @@ public class SaveManager extends Command {
             if (!isExistingFileName(this.name)) {
                 throw new DukeException.FileNotFound();
             }
+            this.testLoadPath();
+            if(this.error != Constants.Error.NO_ERROR){
+                return Constants.Error.OTHER_ERROR;
+            }
             FileReader fileReader = new FileReader(this.getFilePath());
             fileReader.read(inputArray, 0, inputArray.length);
             fileReader.close();
@@ -213,7 +225,7 @@ public class SaveManager extends Command {
         switch(paramType){
         case "/name":
             try {
-                if (((String) this.paramMap.get(paramType)).length() == 0) {
+                if ((this.getParam(paramType)).length() == 0) {
                     throw new TaskException.IllegalParam();
                 }
                 token = ((String) this.paramMap.get(paramType)).replace(".txt", "");

@@ -9,11 +9,13 @@ import duke.tasks.Event;
 import duke.tasks.Task;
 import duke.tasks.ToDo;
 
+import static duke.dukehelper.Constants.Error.NO_ERROR;
 import static duke.dukehelper.Routine.replyRoutine;
 
 public class CommandHandler {
     public static ListTasks list = new ListTasks();
     private static SaveManager saveManager = null;
+    private static SaveManager loadManager = null;
     private static int conversationCounter = 0;
     /**
      * Validates if the input supplies a description as needed by the command
@@ -89,7 +91,7 @@ public class CommandHandler {
                 validatePayload(packet);
                 Task inputEvent = generateTask(command, packet, list.getNumTasks());
                 err = list.addTask(inputEvent);
-                if (err != Constants.Error.NO_ERROR) {
+                if (err != NO_ERROR) {
                     break label;
                 }
                 output = UiManager.getMessageTaskAdded(inputEvent);
@@ -98,7 +100,7 @@ public class CommandHandler {
                 customErrorMessage = "You have not entered a valid description!\n";
                 DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
             } finally {
-                if (err != Constants.Error.NO_ERROR ) {
+                if (err != NO_ERROR ) {
                     DukeException.printErrorMessage(Constants.Error.TASK_NOT_CREATED);
                 }
             }
@@ -121,7 +123,7 @@ public class CommandHandler {
                 // We offset index by negative 1 to correspond with array index sequence.
                 int index = Integer.parseInt(packet.getPacketPayload().trim()) - 1;
                 err = list.removeTask(index);
-                if (err != Constants.Error.NO_ERROR) {
+                if (err != NO_ERROR) {
                     break label;
                 }
                 Task outputTask = list.getDeletedTask();
@@ -132,11 +134,11 @@ public class CommandHandler {
             } catch (DukeException.NoList exception) {
                 DukeException.printErrorMessage(Constants.Error.NO_LIST);
             } finally {
-                if (err != Constants.Error.NO_ERROR){
+                if (err != NO_ERROR){
                     DukeException.printErrorMessage(Constants.Error.TASK_COMMAND_FAIL);
                 } else {
                     customErrorMessage = String.format("You have %d task/s left.\n", list.getNumTasks());
-                    DukeException.printErrorMessage(Constants.Error.NO_ERROR, customErrorMessage);
+                    DukeException.printErrorMessage(NO_ERROR, customErrorMessage);
                 }
             }
             break;
@@ -148,7 +150,7 @@ public class CommandHandler {
                 // We offset index by negative 1 to correspond with array index sequence.
                 int index = Integer.parseInt(packet.getPacketPayload().trim()) - 1;
                 err = list.markTaskAsDone(index);
-                if (err != Constants.Error.NO_ERROR) {
+                if (err != NO_ERROR) {
                     break label;
                 }
                 Task outputTask = list.getTaskByIndex(index);
@@ -159,7 +161,7 @@ public class CommandHandler {
             } catch (DukeException.NoList exception) {
                 DukeException.printErrorMessage(Constants.Error.NO_LIST);
             } finally {
-                if (err != Constants.Error.NO_ERROR){
+                if (err != NO_ERROR){
                     DukeException.printErrorMessage(Constants.Error.TASK_COMMAND_FAIL);
                 }
             }
@@ -183,12 +185,12 @@ public class CommandHandler {
                 switch(packet.getPacketType()) {
                 case "y":
                     customErrorMessage  = String.format("Alright, save state below will be overwritten:\t[%s]\n", saveManager.getFilePath());
-                    DukeException.printErrorMessage(Constants.Error.NO_ERROR, customErrorMessage);
+                    DukeException.printErrorMessage(NO_ERROR, customErrorMessage);
                     break;
 
                 case "n":
                     customErrorMessage = "Got it. Enter some other commands then!\n";
-                    DukeException.printErrorMessage(Constants.Error.NO_ERROR, customErrorMessage);
+                    DukeException.printErrorMessage(NO_ERROR, customErrorMessage);
                     commandToReply = null;
                     exit = true;
                     break;
@@ -204,7 +206,7 @@ public class CommandHandler {
 
             if (!exit) {
                 err = saveManager.saveToTxt(list);
-                if (err == Constants.Error.NO_ERROR) {
+                if (err == NO_ERROR) {
                     output = UiManager.getMessageListSaved(list);
                 } else {
                     DukeException.printErrorMessage(Constants.Error.FILE_SAVE_FAIL);
@@ -222,9 +224,10 @@ public class CommandHandler {
              * or to discard current changes.
              */
             if (!isReply) {
-                saveManager = new SaveManager();
-                saveManager.setParamMap(packet.getParamMap());
-                if (saveManager.error != Constants.Error.NO_ERROR) {
+                loadManager = new SaveManager();
+                loadManager.setParamMap(packet.getParamMap());
+                loadManager.testLoadPath();
+                if (loadManager.error != NO_ERROR) {
                     // Fall-through
                 }
                 else if (list.getNumTasks() > 0){
@@ -236,14 +239,14 @@ public class CommandHandler {
                 switch(packet.getPacketType()) {
                 case "y":
                     customErrorMessage  = String.format("Alright, Enter the save command now:\n");
-                    DukeException.printErrorMessage(Constants.Error.NO_ERROR, customErrorMessage);
+                    DukeException.printErrorMessage(NO_ERROR, customErrorMessage);
                     // Switch context to save command, then return back to this point when done.
                     replyRoutine(Constants.Command.SAVE_FILE, false);
                     break;
 
                 case "n":
                     customErrorMessage = "Got it. I will discard the current list and load in the save state.\n";
-                    DukeException.printErrorMessage(Constants.Error.NO_ERROR, customErrorMessage);
+                    DukeException.printErrorMessage(NO_ERROR, customErrorMessage);
                     break;
 
                 default:
@@ -256,9 +259,11 @@ public class CommandHandler {
             }
 
             if (!exit) {
-                list.removeAllTasks();
-                err = saveManager.loadFromTxt(list);
-                if (err == Constants.Error.NO_ERROR) {
+                if(loadManager.error == Constants.Error.NO_ERROR) {
+                    list.removeAllTasks();
+                }
+                err = loadManager.loadFromTxt(list);
+                if (err == NO_ERROR) {
                     output = UiManager.getMessageListLoaded(list);
                 } else {
                     DukeException.printErrorMessage(Constants.Error.FILE_LOAD_FAIL);

@@ -1,3 +1,7 @@
+/**
+ * Class that stores and manages the output of Datetime classes
+ */
+
 package duke.dukehelper;
 
 import java.time.LocalDateTime;
@@ -5,10 +9,6 @@ import java.time.format.DateTimeFormatter;
 
 public class DateTimeManager {
     private LocalDateTime dateTime;
-
-    public DateTimeManager(){
-    }
-
 
     public DateTimeManager(String startDate){
         this.setDateTime(startDate);
@@ -18,7 +18,11 @@ public class DateTimeManager {
         this.dateTime = this.dateTime.parse(dateTime);
     }
 
-
+    /**
+     * Takes in one format specifier string and outputs datetime string with the corresponding format
+     * @param whichFormat
+     * @return Formatted dateTime string
+     */
     public String getDateFormatted(String whichFormat){
         String output = "";
 
@@ -55,6 +59,11 @@ public class DateTimeManager {
         return output;
     }
 
+    /**
+     * Handles a String array of format specifiers and arranges the tokens of formatted datetime substrings in a proper order
+     * @param whichFormat
+     * @return Formatted dateTime string
+     */
     public String getDateFormatted(String[] whichFormat){
         String[] token = new String[Constants.MAX_ARRAY_LEN];
         String dateTime;
