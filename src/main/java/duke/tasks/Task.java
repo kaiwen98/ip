@@ -107,6 +107,11 @@ public abstract class Task extends Command {
         this.isDone = (isDone) ? IsDone.DONE : IsDone.NOT_DONE;
     }
 
+    /**
+     * Get output message that is associated with the task, particularly datetime outputs
+     * @param outputFormat
+     * @return String
+     */
     public String getOutputLine(String[] outputFormat){
         return String.format("%s %s\n", this, this.getTypeMessage(outputFormat));
     }
@@ -115,6 +120,10 @@ public abstract class Task extends Command {
         return String.format("%s %s\n", this, this.getTypeMessage());
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString(){
         String output = "";

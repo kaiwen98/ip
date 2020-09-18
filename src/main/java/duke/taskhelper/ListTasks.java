@@ -17,7 +17,7 @@ import static java.util.stream.Collectors.toList;
 
 public class ListTasks extends Command {
 
-    private ArrayList<Task> tasks;
+    private ArrayList<Task> tasks = new ArrayList<Task>();
     private int numTasks;
     private int maxTaskNameLength = 0;
     private Task deletedTask = null;
@@ -27,8 +27,6 @@ public class ListTasks extends Command {
      * Non-parameterized class constructor
      */
     public ListTasks(){
-        this.tasks = new ArrayList<Task>();
-        this.numTasks = 0;
         this.setAcceptEmptyParams(true);
     }
 
@@ -155,9 +153,15 @@ public class ListTasks extends Command {
         return output;
     }
 
+    /**
+     * Stream implementation of keyword finding algorithm
+     * @param input
+     * @return List of tasks which have the matching keyword
+     */
     public List<Task> find(String input){
         List<Task> output = new ArrayList<Task>();
         List<Integer> matchIds = this.tasks.stream()
+                // If there is a one-to-one word existing in the description
                 .filter(t -> Arrays.stream(t.getTaskName().split(" ")).anyMatch(input::equals))
                 .sorted(Comparator.comparing(Task::getId))
                 .map(Task::getId)
@@ -172,6 +176,7 @@ public class ListTasks extends Command {
     protected Constants.Error handleParams(String paramType){
         switch(paramType){
         case "/format":
+            // Stores the input as an array of string parameters that determines the datetime format in list.
             this.outputFormat = this.getParam(paramType).split(" ");
             break;
         default:
