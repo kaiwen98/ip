@@ -3,23 +3,20 @@
  */
 
 package duke.taskhelper;
+import duke.dukehelper.Command;
 import duke.dukehelper.Constants;
 import duke.dukehelper.DukeException;
 import duke.tasks.Task;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-
-public class ListTasks {
+public class ListTasks extends Command {
 
     private ArrayList<Task> tasks;
     private int numTasks;
     private int maxTaskNameLength = 0;
     private Task deletedTask = null;
+    private String[] outputFormat;
 
     /**
      * Non-parameterized class constructor
@@ -27,6 +24,7 @@ public class ListTasks {
     public ListTasks(){
         this.tasks = new ArrayList<Task>();
         this.numTasks = 0;
+        this.setAcceptEmptyParams(true);
     }
 
     /**
@@ -138,7 +136,6 @@ public class ListTasks {
         }
     }
 
-
     /**
      * Prints the contents of the list, displaying also its number and whether it is completed.
      * @return String representing the contents of the list
@@ -148,8 +145,21 @@ public class ListTasks {
         String index = "";
         for (int i = 0; i < this.numTasks; i++){
             index = Integer.toString(i+1);
-            output += String.format("%s.%s\n", index, this.tasks.get(i));
+            output += String.format("%s.%s %s\n", index, this.tasks.get(i), this.tasks.get(i).getTypeMessage(this.outputFormat));
         }
         return output;
+    }
+
+    @Override
+    protected Constants.Error handleParams(String paramType){
+        switch(paramType){
+        case "/format":
+            this.outputFormat = this.getParam(paramType).split(" ");
+            break;
+        default:
+            // Flow through
+            break;
+        }
+        return Constants.Error.NO_ERROR;
     }
 }
