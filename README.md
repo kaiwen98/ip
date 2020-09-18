@@ -34,10 +34,10 @@ Prerequisites: JDK 11, update Intellij to the most recent version.
    ..................................................==========/........
    ```
    
-#Features
+# Features
 These are implemented commands that you can use.
 
-##1. Bye
+## 1. Bye
 Exits from the program. If you have an outstanding list, it will be saved automatically as lastSave.txt in
 the saveStates folder. This folder will be automatically created when you first run the program.
 >Syntax
@@ -82,7 +82,7 @@ Bye. Hope to see you again soon!
 ____________________________________________________________________________________________________
    ```
 
-##2. List
+## 2. List
 Shows full list of appended tasks. You may modify the output format for each task with the appropriate arguements. 
 >Syntax
 
@@ -114,7 +114,7 @@ ________________________________________________________________________________
 ```
 
 
-##3. Commands/ Command
+## 3. Commands/ Command
 Displays all outstanding commands executable by the user, with guidance on acceptable syntaxes.
 >Syntax
 
@@ -195,7 +195,7 @@ These are implemented commands that you can use.
 ```
 
 
-##4. Done
+## 4. Done
 Marks a task with index number specified as done. The index number starts from 1.
 >Syntax
 
@@ -214,7 +214,7 @@ Nice! I've marked this task as done:
   [T][O] run the dog
 ____________________________________________________________________________________________________
 ```
-##5. Todo
+## 5. Todo
 Adds a Todo task to the list. 
 * Contains only the task name. 
 * Does not take in datetime inputs.   
@@ -347,7 +347,7 @@ Noted! I've saved the list to the following directory: [~\savestates\]
 ____________________________________________________________________________________________________
 ```
 
-##10. Manual load
+## 10. Manual load
 Loads an existing save state from local disk into the program as a list of tasks. 
 * Users can specify the save directory, and the name of the save state.
 * Should there be an open list in the program, the user will be prompted on whether they wish for the list to be overwritten or save onto local disk first.
@@ -389,7 +389,7 @@ Noted! I've loaded the list from the following directory: [~\savestates\]
 ____________________________________________________________________________________________________
 ```
 
-##11. Show save states
+## 11. Show save states
 Show full list of save states in the default directory.
 >Syntax
 
@@ -405,7 +405,7 @@ Save states in [C:\Users\Looi Kai Wen\Desktop\NUS\Year2Sem1\CS2113\testjar\saves
 ____________________________________________________________________________________________________
 ```
 
-##12. Find 
+## 12. Find 
 Conducts 1-to-1 word search over all tasks in their task name.
   >Syntax
 
