@@ -12,8 +12,9 @@ public class Routine {
     public static boolean autoSave = true;
     public static Scanner in = new Scanner(System.in);
     public static String input;
-    private static Parser parser = new Parser();
+
     private static Packet helperPacket;
+
 
     /**
      * Subroutine to handle nested command handling.
@@ -28,7 +29,7 @@ public class Routine {
         while (commandToReply != null) {
             CommandHandler.handleCommand(Constants.Command.PROMPT_INPUT);
             input = in.nextLine();
-            packet = parser.parseInput(input);
+            packet = Parser.parseInput(input);
             if (echoCommand) {
                 CommandHandler.handleCommand(Constants.Command.ECHO, packet);
             }
@@ -63,7 +64,7 @@ public class Routine {
             } else {
                 CommandHandler.handleCommand(Constants.Command.PROMPT_INPUT);
                 input = in.nextLine();
-                packet = parser.parseInput(input);
+                packet = Parser.parseInput(input);
 
                 if (echoCommand) {
                     CommandHandler.handleCommand(Constants.Command.ECHO, packet);
@@ -110,6 +111,9 @@ public class Routine {
                     break;
                 case "saves":
                     commandToReply = CommandHandler.handleCommand(Constants.Command.SHOW_SAVE_STATES);
+                    break;
+                case "find":
+                    commandToReply = CommandHandler.handleCommand(Constants.Command.FIND, packet);
                     break;
                 default:
                     DukeException.printErrorMessage(Constants.Error.INVALID_COMMAND);
