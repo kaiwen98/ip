@@ -432,14 +432,14 @@ Conducts 1-to-1 word search over all tasks in their task name.
 No. | Command | Purpose | Syntax
 ----|---------|---------|-------
 1|bye|Exit the program|_bye_ 
-2|list | Lists all tasks|_list /format <format>_
+2|list | Lists all tasks|_list /format \<format\>_
 3|command/s|Lists all commands|_command_, _commands_
-4|done|Mark task as done|_done <index>_
-5|todo|Add todo to list|_todo <task name>_
-6|event|Add event to list|_event <task name> /at <start datetime> to <end datetime>_
-7|deadline|Add deadline to list|_deadline <taskname> by <deadline datetime>_  
-8|remove|Remove task from list|_remove <index>_
-9|save|Manually saves list to save state|_save /name <name> /dir <path>_
-10|load|Manually loads save state to list|_load /name <name> /dir <path>_
+4|done|Mark task as done|_done \<index\>_
+5|todo|Add todo to list|_todo \<task name\>_
+6|event|Add event to list|_event \<task name\> /at \<start datetime\> to \<end datetime\>_
+7|deadline|Add deadline to list|_deadline \<taskname\> /by \<deadline datetime\>_  
+8|remove|Remove task from list|_remove \<index\>_
+9|save|Manually saves list to save state|_save /name \<name\> /dir \<path\>_
+10|load|Manually loads save state to list|_load /name \<name\> /dir \<path\>_
 11|saves|Shows all save states|_saves_
-12|find|Search task by string|_find <word>_
+12|find|Search task by string|_find \<word\>_
