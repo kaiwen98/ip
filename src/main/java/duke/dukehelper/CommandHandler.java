@@ -9,6 +9,8 @@ import duke.tasks.Event;
 import duke.tasks.Task;
 import duke.tasks.ToDo;
 
+import javax.swing.*;
+
 import static duke.dukehelper.Routine.replyRoutine;
 
 public class CommandHandler {
@@ -87,7 +89,7 @@ public class CommandHandler {
              */
             label: try {
                 validatePayload(packet);
-                Task inputEvent = generateTask(command, packet, list.getNumTasks());
+                Task inputEvent = generateTask(command, packet);
                 err = list.addTask(inputEvent);
                 if (err != Constants.Error.NO_ERROR) {
                     break label;
@@ -287,20 +289,6 @@ public class CommandHandler {
             saveManager.deleteDefaultSaveFile();
             break;
 
-        case FIND:
-            int count = 0;
-            if (list.getNumTasks() == 0){
-                customErrorMessage = "No task to search!\n";
-                DukeException.printErrorMessage(Constants.Error.NO_LIST, customErrorMessage);
-            } else {
-                for (Task task : list.find(packet.getPacketPayload())){
-                    output += task.getId() + ". " + task.getOutputLine();
-                    count++;
-                }
-            }
-            output += "Total number of results: " + count + "!\n";
-            break;
-
         default:
             DukeException.printErrorMessage(Constants.Error.INVALID_COMMAND);
             break;
@@ -345,14 +333,14 @@ public class CommandHandler {
      * @param packet packet that are supplying params and payload of data
      * @return task with corresponding type
      */
-    private static Task generateTask(Constants.Command command, Packet packet, int id){
+    private static Task generateTask(Constants.Command command, Packet packet){
         switch (command) {
         case INSERT_TASK_DEADLINE:
-            return new Deadline(packet.getPacketPayload(), id, packet.getParamMap());
+            return new Deadline(packet.getPacketPayload(), packet.getParamMap());
         case INSERT_TASK_EVENT:
-            return new Event(packet.getPacketPayload(), id, packet.getParamMap());
+            return new Event(packet.getPacketPayload(), packet.getParamMap());
         case INSERT_TASK_TODO:
-            return new ToDo(packet.getPacketPayload(), id);
+            return new ToDo(packet.getPacketPayload());
         default:
             return null;
         }

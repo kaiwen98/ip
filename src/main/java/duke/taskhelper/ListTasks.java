@@ -9,11 +9,6 @@ import duke.dukehelper.DukeException;
 import duke.tasks.Task;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 public class ListTasks extends Command {
 
@@ -150,20 +145,7 @@ public class ListTasks extends Command {
         String index = "";
         for (int i = 0; i < this.numTasks; i++){
             index = Integer.toString(i+1);
-            output += String.format("%s. %s", index, this.tasks.get(i).getOutputLine(this.outputFormat));
-        }
-        return output;
-    }
-
-    public List<Task> find(String input){
-        List<Task> output = new ArrayList<Task>();
-        List<Integer> matchIds = this.tasks.stream()
-                .filter(t -> Arrays.stream(t.getTaskName().split(" ")).anyMatch(input::equals))
-                .sorted(Comparator.comparing(Task::getId))
-                .map(Task::getId)
-                .collect(toList());
-        for (int id: matchIds) {
-            output.add(this.getTaskByIndex(id));
+            output += String.format("%s.%s %s\n", index, this.tasks.get(i), this.tasks.get(i).getTypeMessage(this.outputFormat));
         }
         return output;
     }

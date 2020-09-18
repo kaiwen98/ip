@@ -2,7 +2,7 @@
  * Class to parse inputs and classify the various segments into relevant data types and structures.
  */
 package duke.dukehelper;
-import duke.taskhelper.Packet;
+import duke.taskhelper.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +12,6 @@ public class Parser {
      * @param rawInput Input string from users
      * @return A packet instance with different categories of information sorted out.
      */
-
     public static Packet parseInput(String rawInput){
         String regex = "(\\s+)(/\\w+)(\\s+)";
         Pattern pattern = Pattern.compile(regex);
