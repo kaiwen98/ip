@@ -134,8 +134,8 @@ public class ListTasks extends Command {
     }
 
     public void removeAllTasks(){
-        for (int i = 0; i < this.getNumTasks(); i++) {
-            this.removeTask(1);
+        while (this.getNumTasks() != 0) {
+            this.removeTask(0);
         }
     }
 

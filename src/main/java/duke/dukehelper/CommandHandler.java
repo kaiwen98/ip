@@ -243,15 +243,14 @@ public class CommandHandler {
 
                 case "n":
                     customErrorMessage = "Got it. I will discard the current list and load in the save state.\n";
-                    list.removeAllTasks();
                     DukeException.printErrorMessage(Constants.Error.NO_ERROR, customErrorMessage);
-                    exit = true;
                     break;
 
                 default:
                     customErrorMessage = "Input not recognised. Enter either \"Y\" or \"N\".\n";
                     DukeException.printErrorMessage(Constants.Error.WRONG_ARGUMENTS, customErrorMessage);
                     commandToReply = Constants.Command.LOAD_FILE;
+                    exit = true;
                     break;
                 }
             }

@@ -56,7 +56,6 @@ public abstract class Task extends Command {
         }
     }
 
-    // Constructor
     public Task(String taskName, int id, boolean isDone, HashMap paramMap) {
         this.taskName = taskName;
         this.setIsDone(isDone);

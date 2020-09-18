@@ -90,7 +90,11 @@ public class UiManager {
             + "\t\t# <parameter 1>:\t Specify a custom save folder path.\n"
 
             + "\n11. saves\n"
-            + "\t< Show full list of save states in default directory >\n";
+            + "\t< Show full list of save states in default directory >\n"
+
+            + "\n12. find <string>\n"
+            + "\t< Conducts 1-to-1 search over all tasks for the string match. >\n";
+
 
 
 
