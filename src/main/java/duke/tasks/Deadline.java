@@ -11,8 +11,8 @@ import duke.taskhelper.TaskException;
 public class Deadline extends Task{
     private DateTimeManager deadlineDateTime;
 
-    public Deadline(String taskName, HashMap paramMap){
-        super(taskName, false, paramMap);
+    public Deadline(String taskName, int id, HashMap paramMap){
+        super(taskName, id, false, paramMap);
         this.taskType = Task.TaskType.DEADLINE;
     }
 

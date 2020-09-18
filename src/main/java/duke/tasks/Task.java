@@ -15,6 +15,7 @@ public abstract class Task extends Command {
     protected IsDone isDone;
     protected TaskType taskType;
     protected String[] taskMessage = {"none"};
+    protected int id;
 
     enum TaskType {
         TODO("T"),
@@ -56,18 +57,19 @@ public abstract class Task extends Command {
     }
 
     // Constructor
-    public Task(String taskName, boolean isDone, HashMap paramMap) {
+    public Task(String taskName, int id, boolean isDone, HashMap paramMap) {
         this.taskName = taskName;
         this.setIsDone(isDone);
         this.taskMessage = new String[Constants.MAX_ARRAY_LEN];
+        this.id = id;
         Arrays.fill(this.taskMessage, "");
         if (paramMap != null) {
             this.setParamMap(paramMap);
         }
     }
 
-    public Task(String taskName) {
-        this(taskName, false, null);
+    public Task(String taskName, int id) {
+        this(taskName, id, false, null);
     }
 
     public String getTaskName() {
@@ -76,6 +78,10 @@ public abstract class Task extends Command {
 
     public String getTaskType() {
         return String.format("%s", this.taskType);
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public String getIsDone() {
@@ -99,6 +105,14 @@ public abstract class Task extends Command {
 
     public void setIsDone(boolean isDone) {
         this.isDone = (isDone) ? IsDone.DONE : IsDone.NOT_DONE;
+    }
+
+    public String getOutputLine(String[] outputFormat){
+        return String.format("%s %s\n", this, this.getTypeMessage(outputFormat));
+    }
+
+    public String getOutputLine(){
+        return String.format("%s %s\n", this, this.getTypeMessage());
     }
 
     @Override
