@@ -44,7 +44,8 @@ public class Constants {
         REMOVE_TASK,
         SAVE_FILE,
         LOAD_FILE,
-        REFRESH_FILE
+        REFRESH_FILE,
+        FIND
     }
 
     public static String getWorkingDirectory(){
