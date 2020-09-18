@@ -173,7 +173,7 @@ These are implemented commands that you can use.
 
 9. save <parameter type 1> <parameter 1> <parameter type 2> <parameter 1>
         < Saves current task to local disk. A default folder is: >
-        [C:\Users\Looi Kai Wen\Desktop\NUS\Year2Sem1\CS2113\testjar\savestates\]
+        [~\savestates\]
         @ <parameter type 1>:    /name
                 # <parameter 1>:         File name, with or without extension. Only .txt files accepted.
         @ <parameter type 2>:    /dir
@@ -181,7 +181,7 @@ These are implemented commands that you can use.
 
 10. load <parameter type 1> <parameter 1> <parameter type 2> <parameter 1>
         < Loads saved task from local disk. A default folder is: >
-        [C:\Users\Looi Kai Wen\Desktop\NUS\Year2Sem1\CS2113\testjar\savestates\]
+        [~\savestates\]
         @ <parameter type 1>:    /name
                 # <parameter 1>:         File name, with or without extension. Only .txt files accepted.
         @ <parameter type 2>:    /dir
@@ -398,7 +398,7 @@ Show full list of save states in the default directory.
 >Example
 ```
 >>> saves
-Save states in [C:\Users\Looi Kai Wen\Desktop\NUS\Year2Sem1\CS2113\testjar\savestates\]:
+Save states in [~\savestates\]:
 1.      anothersave.txt
 2.      lastSave.txt
 3.      test.txt
