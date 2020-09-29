@@ -233,7 +233,7 @@ Now, you have 1 task  in the list.
 ____________________________________________________________________________________________________
 ```
 
-##6. Event
+## 6. Event
 Adds an Event task to the list. 
 * Contains the task name, the start datetime and the end datetime. 
 * The start and end datetimes can be registered via a myriad of input formats.
@@ -263,7 +263,7 @@ ________________________________________________________________________________
         <br>Note that * represents any non-numeric symbol.
 >
 
-##7. Deadline 
+## 7. Deadline 
 Adds an Event task to the list. 
 * Contains the task name and a deadline datetime. 
 * The deadline datetime can be registered via a myriad of input formats.
@@ -288,7 +288,7 @@ ________________________________________________________________________________
         <br>@Time: HH\*MM\*SS or HH*MM or HHMM or H
         <br>Note that * represents any non-numeric symbol.
 
-##8. Remove task 
+## 8. Remove task 
 Removes a task with index number specified from the list. The index number starts from 1.
 
 >Syntax
@@ -314,7 +314,7 @@ ________________________________________________________________________________
 2. [D][X] this is a deadline (by: SATURDAY 2020)
 ____________________________________________________________________________________________________
 ```
-##9. Manual save 
+## 9. Manual save 
 Saves current list of tasks onto local disk as a save state. 
 * Users can specify the save directory, and the name of the save state.
 * Should a save state with the same input name already exists, the user will be prompted on whether they wish for the save file to be overwritten or not.
