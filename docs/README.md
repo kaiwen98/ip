@@ -45,7 +45,9 @@ the saveStates folder. This folder will be automatically created when you first 
     bye
 
 > Example: 
-   ```
+
+1. Output:
+```
 Hello from
 ____        _
 |  _ \ _   _| | _____
@@ -80,7 +82,7 @@ Noted! I've saved the list to the following directory: [~\savestates\]
 ____________________________________________________________________________________________________
 Bye. Hope to see you again soon!
 ____________________________________________________________________________________________________
-   ```
+```
 
 ## 2. List
 Shows full list of appended tasks. You may modify the output format for each task with the appropriate arguements. 
