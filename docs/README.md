@@ -92,6 +92,7 @@ Shows full list of appended tasks. You may modify the output format for each tas
             # <parameter 1>:        {datetime, day, month, week, year}. 
                                     (You may string these keywords in a single entry for your viewing preferences.)
 >Example:
+
    ```
    >>> list
    1. [T][X] run the dog
@@ -123,6 +124,7 @@ Displays all outstanding commands executable by the user, with guidance on accep
     commands
 
 >Example
+
    ```
    >>> command
 
@@ -203,6 +205,7 @@ Displays all outstanding commands executable by the user, with guidance on accep
        done <integer>
            @ <integer>:     Task number on the list. Out-of-bounds and negative inputs are not allowed.
    >Example
+   
    ```
    >>> list
    1. [T][X] run the dog
@@ -226,6 +229,7 @@ Adds a Todo task to the list.
         <!> Tasks added this way are assumed to not be done and recorded accordingly.
 
 >Example
+
    ```
    >>> todo this is a todo
    Got it! I've added this task:
@@ -251,6 +255,7 @@ Adds an Event task to the list.
 
 
 >Example
+
    ```
    >>> event this is an event /at 200919 1222 thisseperatorcanbeanythingsolongitdoesnotcontainnumbers 1300
    Got it! I've added this task:
@@ -277,6 +282,7 @@ Adds an Event task to the list.
                 # <parameter 1>:         Date in this format: YYMMDD or YYYY/M/D.
                 # <parameter 2>:         Deadline time
 >Example
+
    ```
    >>> deadline this is a deadline /by 200919 1222
    Got it! I've added this task:
@@ -284,6 +290,7 @@ Adds an Event task to the list.
    Now, you have 3 tasks in the list.
    ____________________________________________________________________________________________________
    ```
+   
    >Note that commands 6 and 7 accepts the following date and time formats:
         <br>@Date: YYYY\*MM\*DD or YYMMDD or YY/M/D or YY/MM/D
         <br>@Time: HH\*MM\*SS or HH*MM or HHMM or H
@@ -298,6 +305,7 @@ Removes a task with index number specified from the list. The index number start
         @ <integer>:  Task number on the list. 
                       (Out-of-bounds and negative inputs are not allowed.)
 >Example
+
    ```
    >>> list
    1. [T][X] this is a todo
@@ -315,6 +323,7 @@ Removes a task with index number specified from the list. The index number start
    2. [D][X] this is a deadline (by: SATURDAY 2020)
    ____________________________________________________________________________________________________
    ```
+   
 ## 9. Manual save 
 Saves current list of tasks onto local disk as a save state. 
 * Users can specify the save directory, and the name of the save state.
@@ -329,6 +338,7 @@ Saves current list of tasks onto local disk as a save state.
                 # <parameter 1>:         Specify a custom save folder path.
 
 >Example
+
    ```
    >>> saves
    Save states in [~\savestates\]:
@@ -362,6 +372,7 @@ Loads an existing save state from local disk into the program as a list of tasks
                 # <parameter 1>:         Specify a custom save folder path.
                 
 >Example
+
    ```
    >>> list
    1. [T][X] run the dog
@@ -397,6 +408,7 @@ Show full list of save states in the default directory.
     saves
 
 >Example
+
    ```
    >>> saves
    Save states in [~\savestates\]:
@@ -412,6 +424,7 @@ Conducts 1-to-1 word search over all tasks in their task name.
     find <string>
 
 >Example
+
   ```
   >>> list
   1. [T][X] run the dog
