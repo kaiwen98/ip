@@ -92,27 +92,27 @@ Shows full list of appended tasks. You may modify the output format for each tas
             # <parameter 1>:        {datetime, day, month, week, year}. 
                                     (You may string these keywords in a single entry for your viewing preferences.)
 >Example:
-```
->>> list
-1. [T][X] run the dog
-2. [D][O] walk the park (by: FRIDAY SEPTEMBER 2020)
-3. [E][X] run the cat (at: FRIDAY SEPTEMBER 2020 to FRIDAY SEPTEMBER 2020)
-4. [T][X] asad
-____________________________________________________________________________________________________
->>> list /format datetime
-1. [T][X] run the dog
-2. [D][O] walk the park (by: 2020/09/18 20:00:00)
-3. [E][X] run the cat (at: 2020/09/18 15:00:00 to 2020/09/18 16:00:00)
-4. [T][X] asad
-____________________________________________________________________________________________________
->>> list /format day year
-1. [T][X] run the dog
-2. [D][O] walk the park (by: FRIDAY 2020)
-3. [E][X] run the cat (at: FRIDAY 2020 to FRIDAY 2020)
-4. [T][X] asad
-____________________________________________________________________________________________________
->>>
-```
+   ```
+   >>> list
+   1. [T][X] run the dog
+   2. [D][O] walk the park (by: FRIDAY SEPTEMBER 2020)
+   3. [E][X] run the cat (at: FRIDAY SEPTEMBER 2020 to FRIDAY SEPTEMBER 2020)
+   4. [T][X] asad
+   ____________________________________________________________________________________________________
+   >>> list /format datetime
+   1. [T][X] run the dog
+   2. [D][O] walk the park (by: 2020/09/18 20:00:00)
+   3. [E][X] run the cat (at: 2020/09/18 15:00:00 to 2020/09/18 16:00:00)
+   4. [T][X] asad
+   ____________________________________________________________________________________________________
+   >>> list /format day year
+   1. [T][X] run the dog
+   2. [D][O] walk the park (by: FRIDAY 2020)
+   3. [E][X] run the cat (at: FRIDAY 2020 to FRIDAY 2020)
+   4. [T][X] asad
+   ____________________________________________________________________________________________________
+   >>>
+   ```
 
 
 ## 3. Commands/ Command
@@ -123,98 +123,98 @@ Displays all outstanding commands executable by the user, with guidance on accep
     commands
 
 >Example
-```
->>> command
+   ```
+   >>> command
 
-These are implemented commands that you can use.
+   These are implemented commands that you can use.
 
-1. bye
-        < Exit the program >
+   1. bye
+           < Exit the program >
 
-2. list <parameter type> <parameter 1>
-        < Show full list of appended tasks. >
-        @ <parameter type>:      /format , this parameter is optional.
-                # <parameter 1>:         {datetime, day, month, week, year}. You may string these keywords in a single entry for your viewing preferences.
+   2. list <parameter type> <parameter 1>
+           < Show full list of appended tasks. >
+           @ <parameter type>:      /format , this parameter is optional.
+                   # <parameter 1>:         {datetime, day, month, week, year}. You may string these keywords in a single entry for your viewing preferences.
 
-3. commands
-        < Show full list of commands >
+   3. commands
+           < Show full list of commands >
 
-4. done <integer>
-        < Mark a task by number <integer> as done. >
-        @ <integer>:     Task number on the list. Out-of-bounds and negative inputs are not allowed.
+   4. done <integer>
+           < Mark a task by number <integer> as done. >
+           @ <integer>:     Task number on the list. Out-of-bounds and negative inputs are not allowed.
 
-5. todo <string>
-        < Will be interpreted as input tasks. Input task will then be added to the list. >
-        <!> Tasks added this way are assumed to not be done and recorded accordingly.
+   5. todo <string>
+           < Will be interpreted as input tasks. Input task will then be added to the list. >
+           <!> Tasks added this way are assumed to not be done and recorded accordingly.
 
-6. event <string> <parameter type> <parameter 1> <parameter 2> to <parameter 3> <parameter 4>
-        < Add a task which is happening in the future with specific date and time >
-        @ <string>:      Task name.
-        @ <parameter type>:      /at
-                # <parameter 1>:         Date in this format: YYMMDD or YYYY/M/D.
-                # <parameter 2>:         Start time
-                # <parameter 3>:         Date in this format: YYMMDD or YYYY/M/D. Feel free to omit this if the event starts and ends on the same day.
-                # <parameter 4>:         End time
+   6. event <string> <parameter type> <parameter 1> <parameter 2> to <parameter 3> <parameter 4>
+           < Add a task which is happening in the future with specific date and time >
+           @ <string>:      Task name.
+           @ <parameter type>:      /at
+                   # <parameter 1>:         Date in this format: YYMMDD or YYYY/M/D.
+                   # <parameter 2>:         Start time
+                   # <parameter 3>:         Date in this format: YYMMDD or YYYY/M/D. Feel free to omit this if the event starts and ends on the same day.
+                   # <parameter 4>:         End time
 
-7. deadline <string> <parameter type> <parameter 1> <parameter 2>
-        < Add a task with a specific deadline>
-        @ <string>:      Task name.
-        @ <parameter type>:      /by
-                # <parameter 1>:         Date in this format: YYMMDD or YYYY/M/D.
-                # <parameter 2>:         Deadline time
+   7. deadline <string> <parameter type> <parameter 1> <parameter 2>
+           < Add a task with a specific deadline>
+           @ <string>:      Task name.
+           @ <parameter type>:      /by
+                   # <parameter 1>:         Date in this format: YYMMDD or YYYY/M/D.
+                   # <parameter 2>:         Deadline time
 
-   Note that commands 6 and 7 accepts the following date and time formats:
-        @Date: YYYY*MM*DD or YYMMDD or YY/M/D or YY/MM/D
-        @Time: HH*MM*SS or HH*MM or HHMM or H
-        Note that * represents any non-numeric symbol.
+      Note that commands 6 and 7 accepts the following date and time formats:
+           @Date: YYYY*MM*DD or YYMMDD or YY/M/D or YY/MM/D
+           @Time: HH*MM*SS or HH*MM or HHMM or H
+           Note that * represents any non-numeric symbol.
 
-8. remove <integer>
-        < Remove task by number <integer> from list. >
-   @ <integer>:  Task number on the list. Out-of-bounds and negative inputs are not allowed.
+   8. remove <integer>
+           < Remove task by number <integer> from list. >
+      @ <integer>:  Task number on the list. Out-of-bounds and negative inputs are not allowed.
 
-9. save <parameter type 1> <parameter 1> <parameter type 2> <parameter 1>
-        < Saves current task to local disk. A default folder is: >
-        [~\savestates\]
-        @ <parameter type 1>:    /name
-                # <parameter 1>:         File name, with or without extension. Only .txt files accepted.
-        @ <parameter type 2>:    /dir
-                # <parameter 1>:         Specify a custom save folder path.
+   9. save <parameter type 1> <parameter 1> <parameter type 2> <parameter 1>
+           < Saves current task to local disk. A default folder is: >
+           [~\savestates\]
+           @ <parameter type 1>:    /name
+                   # <parameter 1>:         File name, with or without extension. Only .txt files accepted.
+           @ <parameter type 2>:    /dir
+                   # <parameter 1>:         Specify a custom save folder path.
 
-10. load <parameter type 1> <parameter 1> <parameter type 2> <parameter 1>
-        < Loads saved task from local disk. A default folder is: >
-        [~\savestates\]
-        @ <parameter type 1>:    /name
-                # <parameter 1>:         File name, with or without extension. Only .txt files accepted.
-        @ <parameter type 2>:    /dir
-                # <parameter 1>:         Specify a custom save folder path.
+   10. load <parameter type 1> <parameter 1> <parameter type 2> <parameter 1>
+           < Loads saved task from local disk. A default folder is: >
+           [~\savestates\]
+           @ <parameter type 1>:    /name
+                   # <parameter 1>:         File name, with or without extension. Only .txt files accepted.
+           @ <parameter type 2>:    /dir
+                   # <parameter 1>:         Specify a custom save folder path.
 
-11. saves
-        < Show full list of save states in default directory >
+   11. saves
+           < Show full list of save states in default directory >
 
-12. find <string>
-        < Conducts 1-to-1 search over all tasks for the string match. >
-```
+   12. find <string>
+           < Conducts 1-to-1 search over all tasks for the string match. >
+   ```
 
 
-## 4. Done
-Marks a task with index number specified as done. The index number starts from 1.
->Syntax
+   ## 4. Done
+   Marks a task with index number specified as done. The index number starts from 1.
+   >Syntax
 
-    done <integer>
-        @ <integer>:     Task number on the list. Out-of-bounds and negative inputs are not allowed.
->Example
-```
->>> list
-1. [T][X] run the dog
-2. [D][O] walk the park (by: FRIDAY 2020)
-3. [E][X] run the cat (at: FRIDAY 2020 to FRIDAY 2020)
-4. [T][X] asad
-____________________________________________________________________________________________________
->>> done 1
-Nice! I've marked this task as done:
-  [T][O] run the dog
-____________________________________________________________________________________________________
-```
+       done <integer>
+           @ <integer>:     Task number on the list. Out-of-bounds and negative inputs are not allowed.
+   >Example
+   ```
+   >>> list
+   1. [T][X] run the dog
+   2. [D][O] walk the park (by: FRIDAY 2020)
+   3. [E][X] run the cat (at: FRIDAY 2020 to FRIDAY 2020)
+   4. [T][X] asad
+   ____________________________________________________________________________________________________
+   >>> done 1
+   Nice! I've marked this task as done:
+     [T][O] run the dog
+   ____________________________________________________________________________________________________
+   ```
 ## 5. Todo
 Adds a Todo task to the list. 
 * Contains only the task name. 
@@ -226,13 +226,13 @@ Adds a Todo task to the list.
         <!> Tasks added this way are assumed to not be done and recorded accordingly.
 
 >Example
-```
->>> todo this is a todo
-Got it! I've added this task:
-  [T][X] this is a todo
-Now, you have 1 task  in the list.
-____________________________________________________________________________________________________
-```
+   ```
+   >>> todo this is a todo
+   Got it! I've added this task:
+     [T][X] this is a todo
+   Now, you have 1 task  in the list.
+   ____________________________________________________________________________________________________
+   ```
 
 ## 6. Event
 Adds an Event task to the list. 
@@ -251,18 +251,18 @@ Adds an Event task to the list.
 
 
 >Example
-```
->>> event this is an event /at 200919 1222 thisseperatorcanbeanythingsolongitdoesnotcontainnumbers 1300
-Got it! I've added this task:
-  [E][X] this is an event (at: SATURDAY SEPTEMBER 2020 to SATURDAY SEPTEMBER 2020)
-Now, you have 2 tasks in the list.
-____________________________________________________________________________________________________
-```
+   ```
+   >>> event this is an event /at 200919 1222 thisseperatorcanbeanythingsolongitdoesnotcontainnumbers 1300
+   Got it! I've added this task:
+     [E][X] this is an event (at: SATURDAY SEPTEMBER 2020 to SATURDAY SEPTEMBER 2020)
+   Now, you have 2 tasks in the list.
+   ____________________________________________________________________________________________________
+   ```
    >Note that commands 6 and 7 accepts the following date and time formats:
         <br>@Date: YYYY*MM*DD or YYMMDD or YY/M/D or YY/MM/D
         <br>@Time: HH*MM*SS or HH*MM or HHMM or H
         <br>Note that * represents any non-numeric symbol.
->
+
 
 ## 7. Deadline 
 Adds an Event task to the list. 
@@ -277,13 +277,13 @@ Adds an Event task to the list.
                 # <parameter 1>:         Date in this format: YYMMDD or YYYY/M/D.
                 # <parameter 2>:         Deadline time
 >Example
-```
->>> deadline this is a deadline /by 200919 1222
-Got it! I've added this task:
-  [D][X] this is a deadline (by: SATURDAY SEPTEMBER 2020)
-Now, you have 3 tasks in the list.
-____________________________________________________________________________________________________
-```
+   ```
+   >>> deadline this is a deadline /by 200919 1222
+   Got it! I've added this task:
+     [D][X] this is a deadline (by: SATURDAY SEPTEMBER 2020)
+   Now, you have 3 tasks in the list.
+   ____________________________________________________________________________________________________
+   ```
    >Note that commands 6 and 7 accepts the following date and time formats:
         <br>@Date: YYYY\*MM\*DD or YYMMDD or YY/M/D or YY/MM/D
         <br>@Time: HH\*MM\*SS or HH*MM or HHMM or H
@@ -298,23 +298,23 @@ Removes a task with index number specified from the list. The index number start
         @ <integer>:  Task number on the list. 
                       (Out-of-bounds and negative inputs are not allowed.)
 >Example
-```
->>> list
-1. [T][X] this is a todo
-2. [E][X] this is an event (at: SATURDAY 2020 to SATURDAY 2020)
-3. [D][X] this is a deadline (by: SATURDAY 2020)
-____________________________________________________________________________________________________
->>> remove 1
-Process completed successfully!
-        [NOTE]: You have 2 task/s left.
-Noted! I've removed this task:
-  [T][X] this is a todo
-____________________________________________________________________________________________________
->>> list
-1. [E][X] this is an event (at: SATURDAY 2020 to SATURDAY 2020)
-2. [D][X] this is a deadline (by: SATURDAY 2020)
-____________________________________________________________________________________________________
-```
+   ```
+   >>> list
+   1. [T][X] this is a todo
+   2. [E][X] this is an event (at: SATURDAY 2020 to SATURDAY 2020)
+   3. [D][X] this is a deadline (by: SATURDAY 2020)
+   ____________________________________________________________________________________________________
+   >>> remove 1
+   Process completed successfully!
+           [NOTE]: You have 2 task/s left.
+   Noted! I've removed this task:
+     [T][X] this is a todo
+   ____________________________________________________________________________________________________
+   >>> list
+   1. [E][X] this is an event (at: SATURDAY 2020 to SATURDAY 2020)
+   2. [D][X] this is a deadline (by: SATURDAY 2020)
+   ____________________________________________________________________________________________________
+   ```
 ## 9. Manual save 
 Saves current list of tasks onto local disk as a save state. 
 * Users can specify the save directory, and the name of the save state.
@@ -329,24 +329,24 @@ Saves current list of tasks onto local disk as a save state.
                 # <parameter 1>:         Specify a custom save folder path.
 
 >Example
-```
->>> saves
-Save states in [~\savestates\]:
-1.      lastSave.txt
-2.      test.txt
-____________________________________________________________________________________________________
->>> save /name test.txt
-The file name supplied already exists in the directory. Are you sure you want to override it? [Y\N]
-____________________________________________________________________________________________________
->>> y
-Process completed successfully!
-        [NOTE]: Alright, save state below will be overwritten:  [~\savestates\test.txt\]
-Noted! I've saved the list to the following directory: [~\savestates\]
+   ```
+   >>> saves
+   Save states in [~\savestates\]:
+   1.      lastSave.txt
+   2.      test.txt
+   ____________________________________________________________________________________________________
+   >>> save /name test.txt
+   The file name supplied already exists in the directory. Are you sure you want to override it? [Y\N]
+   ____________________________________________________________________________________________________
+   >>> y
+   Process completed successfully!
+           [NOTE]: Alright, save state below will be overwritten:  [~\savestates\test.txt\]
+   Noted! I've saved the list to the following directory: [~\savestates\]
 
-1. [E][X] this is an event (at: SATURDAY 2020 to SATURDAY 2020)
-2. [D][X] this is a deadline (by: SATURDAY 2020)
-____________________________________________________________________________________________________
-```
+   1. [E][X] this is an event (at: SATURDAY 2020 to SATURDAY 2020)
+   2. [D][X] this is a deadline (by: SATURDAY 2020)
+   ____________________________________________________________________________________________________
+   ```
 
 ## 10. Manual load
 Loads an existing save state from local disk into the program as a list of tasks. 
@@ -362,33 +362,33 @@ Loads an existing save state from local disk into the program as a list of tasks
                 # <parameter 1>:         Specify a custom save folder path.
                 
 >Example
-```
->>> list
-1. [T][X] run the dog
-2. [D][O] walk the park (by: FRIDAY 2020)
-3. [E][X] run the cat (at: FRIDAY 2020 to FRIDAY 2020)
-4. [T][X] asad
-____________________________________________________________________________________________________
->>> load /name test
-There is a list currently being constructed. Would you like to save it first? [Y\N]
-____________________________________________________________________________________________________
->>> y
-Process completed successfully!
-        [NOTE]: Alright, Enter the save command now:
->>> save /name anothersave
-Noted! I've saved the list to the following directory: [~\savestates\]
+   ```
+   >>> list
+   1. [T][X] run the dog
+   2. [D][O] walk the park (by: FRIDAY 2020)
+   3. [E][X] run the cat (at: FRIDAY 2020 to FRIDAY 2020)
+   4. [T][X] asad
+   ____________________________________________________________________________________________________
+   >>> load /name test
+   There is a list currently being constructed. Would you like to save it first? [Y\N]
+   ____________________________________________________________________________________________________
+   >>> y
+   Process completed successfully!
+           [NOTE]: Alright, Enter the save command now:
+   >>> save /name anothersave
+   Noted! I've saved the list to the following directory: [~\savestates\]
 
-1. [T][X] run the dog
-2. [D][O] walk the park (by: FRIDAY 2020)
-3. [E][X] run the cat (at: FRIDAY 2020 to FRIDAY 2020)
-4. [T][X] asad
-____________________________________________________________________________________________________
-Noted! I've loaded the list from the following directory: [~\savestates\]
+   1. [T][X] run the dog
+   2. [D][O] walk the park (by: FRIDAY 2020)
+   3. [E][X] run the cat (at: FRIDAY 2020 to FRIDAY 2020)
+   4. [T][X] asad
+   ____________________________________________________________________________________________________
+   Noted! I've loaded the list from the following directory: [~\savestates\]
 
-1. [E][X] this is an event (at: SATURDAY 2020 to SATURDAY 2020)
-2. [D][X] this is a deadline (by: SATURDAY 2020)
-____________________________________________________________________________________________________
-```
+   1. [E][X] this is an event (at: SATURDAY 2020 to SATURDAY 2020)
+   2. [D][X] this is a deadline (by: SATURDAY 2020)
+   ____________________________________________________________________________________________________
+   ```
 
 ## 11. Show save states
 Show full list of save states in the default directory.
@@ -397,22 +397,21 @@ Show full list of save states in the default directory.
     saves
 
 >Example
-```
->>> saves
-Save states in [~\savestates\]:
-1.      anothersave.txt
-2.      lastSave.txt
-3.      test.txt
-____________________________________________________________________________________________________
-```
+   ```
+   >>> saves
+   Save states in [~\savestates\]:
+   1.      anothersave.txt
+   2.      lastSave.txt
+   3.      test.txt
+   ____________________________________________________________________________________________________
+   ```
 
 ## 12. Find 
 Conducts 1-to-1 word search over all tasks in their task name.
-  >Syntax
-
+>Syntax
     find <string>
 
-  >Example
+>Example
   ```
   >>> list
   1. [T][X] run the dog
