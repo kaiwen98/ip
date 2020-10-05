@@ -46,7 +46,6 @@ the saveStates folder. This folder will be automatically created when you first 
 
 > Example: 
 
-1. Output:
    ```
    Hello from
    ____        _
