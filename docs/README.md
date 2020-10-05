@@ -40,8 +40,10 @@ These are implemented commands that you can use.
 ## 1. Bye
 Exits from the program. If you have an outstanding list, it will be saved automatically as lastSave.txt in
 the saveStates folder. This folder will be automatically created when you first run the program.
+
 >Syntax
 
+    
     bye
 
 > Example: 
@@ -85,6 +87,7 @@ the saveStates folder. This folder will be automatically created when you first 
 
 ## 2. List
 Shows full list of appended tasks. You may modify the output format for each task with the appropriate arguements. 
+
 >Syntax
 
     list <parameter type> <parameter 1> 
@@ -118,6 +121,7 @@ Shows full list of appended tasks. You may modify the output format for each tas
 
 ## 3. Commands/ Command
 Displays all outstanding commands executable by the user, with guidance on acceptable syntaxes.
+
 >Syntax
 
     command
@@ -198,13 +202,15 @@ Displays all outstanding commands executable by the user, with guidance on accep
    ```
 
 
-   ## 4. Done
-   Marks a task with index number specified as done. The index number starts from 1.
-   >Syntax
+## 4. Done
+Marks a task with index number specified as done. The index number starts from 1.
+   
+>Syntax
 
-       done <integer>
-           @ <integer>:     Task number on the list. Out-of-bounds and negative inputs are not allowed.
-   >Example
+   done <integer>
+      @ <integer>:     Task number on the list. Out-of-bounds and negative inputs are not allowed.
+   
+>Example
    
    ```
    >>> list
@@ -222,9 +228,10 @@ Displays all outstanding commands executable by the user, with guidance on accep
 Adds a Todo task to the list. 
 * Contains only the task name. 
 * Does not take in datetime inputs.   
+
 >Syntax
  
-    todo <string>
+   todo <string>
         @ <string>:      Task name.
         <!> Tasks added this way are assumed to not be done and recorded accordingly.
 
@@ -242,6 +249,7 @@ Adds a Todo task to the list.
 Adds an Event task to the list. 
 * Contains the task name, the start datetime and the end datetime. 
 * The start and end datetimes can be registered via a myriad of input formats.
+
 >Syntax  
 
     event <string> <parameter type> <parameter 1> <parameter 2> to <parameter 3> <parameter 4>
@@ -273,6 +281,7 @@ Adds an Event task to the list.
 Adds an Event task to the list. 
 * Contains the task name and a deadline datetime. 
 * The deadline datetime can be registered via a myriad of input formats.
+
 >Syntax
 
     deadline <string> <parameter type> <parameter 1> <parameter 2>
@@ -403,6 +412,7 @@ Loads an existing save state from local disk into the program as a list of tasks
 
 ## 11. Show save states
 Show full list of save states in the default directory.
+
 >Syntax
 
     saves
@@ -420,7 +430,9 @@ Show full list of save states in the default directory.
 
 ## 12. Find 
 Conducts 1-to-1 word search over all tasks in their task name.
+
 >Syntax
+
     find <string>
 
 >Example
