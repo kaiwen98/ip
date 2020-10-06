@@ -298,7 +298,7 @@ public class CommandHandler {
                 DukeException.printErrorMessage(Constants.Error.NO_LIST, customErrorMessage);
             } else {
                 for (Task task : list.find(packet.getPacketPayload())){
-                    output += String.format("%d. %s\n", task.getId() + 1, task.getOutputLine());
+                    output += String.format("%d. %s", task.getId() + 1, task.getOutputLine());
                     count++;
                 }
             }

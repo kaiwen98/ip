@@ -17,11 +17,11 @@ import static java.util.stream.Collectors.toList;
 
 public class ListTasks extends Command {
 
-    private ArrayList<Task> tasks = new ArrayList<Task>();
+    private ArrayList<Task> tasks = new ArrayList<>();
     private int numTasks;
     private int maxTaskNameLength = 0;
     private Task deletedTask = null;
-    private String[] outputFormat;
+    private String[] outputFormat = { "datetime" };
 
     /**
      * Non-parameterized class constructor
