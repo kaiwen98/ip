@@ -102,7 +102,7 @@ public class Parser {
      * @return Formatted date or time for parsing with the DateTime class.
      */
     private static String parseDateTime(String input, final String mode) {
-        String partition = mode.equals("time") ? ":":
+        String partition = mode.equals("time") ? ":" :
                 mode.equals("date") ? "-":
                         "?";
         String[] output = new String[3];

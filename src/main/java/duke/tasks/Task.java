@@ -119,10 +119,6 @@ public abstract class Task extends Command {
         return String.format("%s %s\n", this, this.getTypeMessage());
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public String toString(){
         String output = "";

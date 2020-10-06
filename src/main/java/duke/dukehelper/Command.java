@@ -15,6 +15,7 @@ public abstract class Command {
     private boolean acceptEmptyParams = false;
 
     protected abstract Constants.Error handleParams(String paramType);
+
     /**
      * For each param type in the hash table (Param Map), task to handle the contents accordingly with a corresponding action.
      */
@@ -34,6 +35,7 @@ public abstract class Command {
             this.error = Constants.Error.NO_ERROR;
         }
     }
+
     public void setParamMap(HashMap paramMap){
         this.paramMap = new HashMap();
         this.paramMap = (HashMap) paramMap.clone();
@@ -47,6 +49,7 @@ public abstract class Command {
     public Set getParamTypes() {
         return this.paramMap.keySet();
     }
+
     public String getParam(String key){
         return (String)this.paramMap.get(key);
     }

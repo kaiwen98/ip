@@ -37,6 +37,7 @@ public class CommandHandler {
             throw new DukeException.NoList();
         }
     }
+
     /**
      * Handles command and prints messages, if any onto console depending on input parameter.
      *

@@ -3,16 +3,22 @@
  */
 package duke.dukehelper;
 public class DukeException {
+
     public static class InvalidDescription extends Exception{
     }
+
     public static class NoList extends Exception{
     }
+
     public static class TaskCreateFail extends Exception{
     }
+
     public static class ListSaveLoadFail extends Exception{
     }
+
     public static class FileNotFound extends Exception{
     }
+
     public static class TaskAlreadyDone extends Exception{
     }
 

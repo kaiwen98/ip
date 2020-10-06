@@ -52,7 +52,7 @@ public class DateTimeManager {
             output = this.dateTime.format(DateTimeFormatter.ofPattern("YYYY/MM/dd HH:mm:ss"));
             break;
         default:
-            String[] args = {"day", "month", "year", "time"};
+            String[] args = {"datetime"};
             output = this.getDateFormatted(args);
             break;
         }
